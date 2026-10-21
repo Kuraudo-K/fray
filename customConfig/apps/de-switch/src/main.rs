@@ -269,9 +269,9 @@ fn nix_uid() -> u32 {
         .unwrap_or(1000)
 }
 
-fn main() -> ExitCode {
+fn run() -> io::Result<()> {
     let cli = Cli::parse();
-    let result = match cli.cmd {
+    match cli.cmd {
         Commands::List => {
             let st = load_state();
             let current = detect_de();
@@ -300,7 +300,7 @@ fn main() -> ExitCode {
             save_profile(de)
         }
         Commands::Restore { de } => restore_profile(de),
-        Commands::Switch { to } => (|| -> io::Result<()> {
+        Commands::Switch { to } => {
             if let Some(cur) = detect_de() {
                 if cur != to {
                     save_profile(cur)?;
@@ -319,7 +319,7 @@ fn main() -> ExitCode {
                 to.session_id()
             );
             Ok(())
-        })(),
+        }
         Commands::Explain => {
             println!(
                 r#"Mécanisme / Mechanism
@@ -339,9 +339,11 @@ restent isolées et sont rechargées à chaque switch.
             );
             Ok(())
         }
-    };
+    }
+}
 
-    match result {
+fn main() -> ExitCode {
+    match run() {
         Ok(()) => ExitCode::SUCCESS,
         Err(e) => {
             eprintln!("[fray-de-switch] erreur: {e}");
