@@ -300,7 +300,7 @@ fn main() -> ExitCode {
             save_profile(de)
         }
         Commands::Restore { de } => restore_profile(de),
-        Commands::Switch { to } => {
+        Commands::Switch { to } => (|| -> io::Result<()> {
             if let Some(cur) = detect_de() {
                 if cur != to {
                     save_profile(cur)?;
@@ -319,7 +319,7 @@ fn main() -> ExitCode {
                 to.session_id()
             );
             Ok(())
-        }
+        })(),
         Commands::Explain => {
             println!(
                 r#"Mécanisme / Mechanism
