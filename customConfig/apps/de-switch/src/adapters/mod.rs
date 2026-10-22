@@ -1,4 +1,4 @@
-//! Adapters — filesystem, env, greeter ~/.dmrc
+//! Adapters - filesystem, env, greeter ~/.dmrc
 
 mod fs_profiles;
 mod greeter_dmrc;

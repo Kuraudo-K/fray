@@ -1,4 +1,4 @@
-# customConfig — une ligne d'import par module
+# customConfig - une ligne d'import par module
 # Commenter une ligne = désactiver ce module
 { ... }:
 

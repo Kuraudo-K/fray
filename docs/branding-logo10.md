@@ -1,4 +1,4 @@
-# Branding Fray — logo 10 (`10-seal-fray`)
+# Branding Fray - logo 10 (`10-seal-fray`)
 
 Logo officiel : sceau Fray (store `media/logos/10-seal-fray.{svg,png}`).
 
@@ -23,10 +23,10 @@ Logo officiel : sceau Fray (store `media/logos/10-seal-fray.{svg,png}`).
 
 ## Où le logo apparaît
 
-1. **Plymouth** (boot) — `logo.png` centré + anneau progress  
-2. **GDM** — `services.displayManager.gdm.logo`  
-3. **Icônes** — `hicolor/*/apps/fray.png` (menus Plasma / GNOME)  
-4. **Calamares** — `iso-cfg/calamares/branding/fray/`  
-5. **Wallpaper tool** — fonds sous `$FRAY_BRANDING/share/backgrounds/fray/`
+1. **Plymouth** (boot) - `logo.png` centré + anneau progress  
+2. **GDM** - `services.displayManager.gdm.logo`  
+3. **Icônes** - `hicolor/*/apps/fray.png` (menus Plasma / GNOME)  
+4. **Calamares** - `iso-cfg/calamares/branding/fray/`  
+5. **Wallpaper tool** - fonds sous `$FRAY_BRANDING/share/backgrounds/fray/`
 
-Activer : `fray.branding.enable = true` (déjà dans `hosts/vm.nix` et `hosts/iso.nix`).
+Activer : `fray.branding.enable = true` (déjà dans `hosts/iso.nix`).

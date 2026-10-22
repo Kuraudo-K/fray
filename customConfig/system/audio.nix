@@ -1,4 +1,4 @@
-# PipeWire / WirePlumber (gaming + desktop) — low-latency + RNNoise optionnel (mona)
+# PipeWire / WirePlumber (gaming + desktop) - low-latency + RNNoise optionnel (mona)
 {
   config,
   lib,

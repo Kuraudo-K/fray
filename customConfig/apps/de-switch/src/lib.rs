@@ -1,4 +1,4 @@
-//! fray-de-switch — architecture hexagonale
+//! fray-de-switch - architecture hexagonale
 //! domain (règles) ← application (cas d'usage) ← ports ← adapters / CLI
 
 pub mod adapters;

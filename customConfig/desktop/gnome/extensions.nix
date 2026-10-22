@@ -1,4 +1,4 @@
-# Extensions GNOME — uniquement celles activées chez kouro (interrupteurs orange)
+# Extensions GNOME - uniquement celles activées chez kouro (interrupteurs orange)
 {
   config,
   lib,

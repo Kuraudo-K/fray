@@ -1,4 +1,4 @@
-# Splash Plymouth (quiet boot) — thème Fray (logo 10) si branding actif
+# Splash Plymouth (quiet boot) - thème Fray (logo 10) si branding actif
 {
   config,
   lib,

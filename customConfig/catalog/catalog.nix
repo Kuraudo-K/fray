@@ -1,4 +1,4 @@
-# Catalogue Fray — modules / options (données pures, pas de pkgs).
+# Catalogue Fray - modules / options (données pures, pas de pkgs).
 # Alimente fray.features.* et /etc/fray/catalog.json.
 # Slot 8bitdo préparé (module pas encore câblé).
 
@@ -68,11 +68,11 @@
             en = "MangoHud";
           };
         };
-        # Slot catalogue — module Nix pas encore dans Fray
+        # Slot catalogue - module Nix pas encore dans Fray
         "8bitdo" = {
           label = {
-            fr = "8BitDo (Wine) — bientôt";
-            en = "8BitDo (Wine) — later";
+            fr = "8BitDo (Wine) - bientôt";
+            en = "8BitDo (Wine) - later";
           };
         };
       };

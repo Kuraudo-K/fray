@@ -1,5 +1,5 @@
 # KDE Plasma 6 (Wayland)
-# Greeter : GDM (déjà activé par le module GNOME) — pas de SDDM en parallèle
+# Greeter : GDM (déjà activé par le module GNOME) - pas de SDDM en parallèle
 # Branding : icône / wallpaper Fray via fray.branding (logo 10)
 {
   config,

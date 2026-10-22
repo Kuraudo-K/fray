@@ -1,4 +1,4 @@
-//! Domaine : fonds d'écran — zéro I/O
+//! Domaine : fonds d'écran - zéro I/O
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct Wallpaper {

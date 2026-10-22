@@ -23,7 +23,7 @@ Presentation {
             wrapMode: Text.WordWrap
             color: "#3DDC97"
             font.pixelSize: 28
-            text: "Fray — NixOS gaming"
+            text: "Fray - NixOS gaming"
         }
         Text {
             anchors.horizontalCenter: parent.horizontalCenter

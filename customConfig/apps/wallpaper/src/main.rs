@@ -1,4 +1,4 @@
-//! CLI — clap → application::WallpaperService
+//! CLI - clap -> application::WallpaperService
 
 use clap::{Parser, Subcommand};
 use fray_wallpaper::adapters::{CompositeApplier, EnvDesktopDetector, FsCatalog};

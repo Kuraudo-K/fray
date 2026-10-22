@@ -16,7 +16,6 @@ let
     fray-gens = "sudo nix-env --list-generations --profile /nix/var/nix/profiles/system";
     fray-history = "nix store diff-closures $(ls -d1v /nix/var/nix/profiles/system-*-link | tail -n 2)";
     fray-info = "inxi -Fxxxz";
-    fray-vm-build = "fray-update --build --host fray-vm --flake ${esc flake}";
     fray-iso-build = "fray-update --build --host fray-iso --flake ${esc flake}";
   };
 in

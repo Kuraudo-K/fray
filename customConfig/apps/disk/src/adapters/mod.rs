@@ -1,4 +1,4 @@
-//! Adapters — lsblk, udisksctl, outils DE
+//! Adapters - lsblk, udisksctl, outils DE
 
 mod desktop_open;
 mod lsblk;

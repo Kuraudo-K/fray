@@ -1,4 +1,4 @@
-# Branding Fray — logo officiel 10-seal-fray
+# Branding Fray - logo officiel 10-seal-fray
 # Branché : icônes hicolor, GDM (dconf), wallpapers GNOME/Plasma, paquet Plymouth
 {
   config,

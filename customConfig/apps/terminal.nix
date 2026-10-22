@@ -1,4 +1,4 @@
-# Terminal commun aux 3 DE — kitty (GPU, très customisable)
+# Terminal commun aux 3 DE - kitty (GPU, très customisable)
 # GNOME/Plasma gardent aussi leurs terminaux natifs ; niri l’utilise déjà
 {
   config,

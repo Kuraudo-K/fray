@@ -1,4 +1,4 @@
-# umu-launcher — lanceur unifié (Steam Linux Runtime) pour jeux Windows
+# umu-launcher - lanceur unifié (Steam Linux Runtime) pour jeux Windows
 {
   config,
   lib,

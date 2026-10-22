@@ -1,4 +1,4 @@
-# Fray Apply — éditeur / apply Python (GTK)
+# Fray Apply - éditeur / apply Python (GTK)
 # Source : GLF Config Editor, adapté (chemins FRAY_FLAKE, CLI fray-update)
 # Le update-manager Rust GLF n'est pas porté ici (pas encore).
 {

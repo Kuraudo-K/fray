@@ -1,7 +1,7 @@
-# Fray — flake NixOS (gaming perso)
+# Fray - flake NixOS (gaming perso)
 # Inputs pinés dans flake.lock ; modules dans customConfig/
 {
-  description = "Fray — NixOS gaming (GNOME / Niri / Plasma / Mango+DMS)";
+  description = "Fray - NixOS gaming (GNOME / Niri / Plasma / Mango+DMS)";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -13,7 +13,7 @@
       flake = false;
     };
 
-    # MangoWM + DankMaterialShell (4ᵉ DE, reprise mona)
+    # MangoWM + DankMaterialShell (4e DE, reprise mona)
     mango = {
       url = "github:mangowm/mango";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -47,7 +47,7 @@
 
       frayOverlay = final: prev: {
         faugus-launcher = final.callPackage "${faugus-launcher}/default.nix" { };
-        # nixpkgs khal 0.14.1 : sortie « man » absente → casse system-path
+        # nixpkgs khal 0.14.1 : sortie « man » absente -> casse system-path
         khal = prev.khal.overrideAttrs (old: {
           postInstall = (old.postInstall or "") + ''
             mkdir -p "$man/share/man"
@@ -79,14 +79,12 @@
       nixosModules.fray = ./customConfig;
 
       nixosConfigurations = {
-        fray-vm = mkNixos [ ./hosts/vm.nix ];
         fray-iso = mkNixos [ ./hosts/iso.nix ];
       };
 
       packages.${system} = {
-        vm = self.nixosConfigurations.fray-vm.config.system.build.vm;
         iso = self.nixosConfigurations.fray-iso.config.system.build.isoImage;
-        default = self.nixosConfigurations.fray-vm.config.system.build.vm;
+        default = self.nixosConfigurations.fray-iso.config.system.build.isoImage;
       };
     };
 }

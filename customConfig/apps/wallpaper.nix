@@ -1,4 +1,4 @@
-# fray-wallpaper — liste / applique les fonds Fray (Rust hexagonal)
+# fray-wallpaper - liste / applique les fonds Fray (Rust hexagonal)
 {
   config,
   lib,
@@ -46,7 +46,7 @@ let
 in
 {
   options.fray.apps.wallpaper = {
-    enable = lib.mkEnableOption "fray-wallpaper (Rust) — fonds Fray";
+    enable = lib.mkEnableOption "fray-wallpaper (Rust) - fonds Fray";
   };
 
   config = lib.mkIf cfg.enable {

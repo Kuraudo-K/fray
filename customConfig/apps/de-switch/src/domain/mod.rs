@@ -1,4 +1,4 @@
-//! Domaine : sessions et chemins de profil — zéro I/O
+//! Domaine : sessions et chemins de profil - zéro I/O
 
 use std::path::PathBuf;
 
@@ -65,7 +65,7 @@ impl SessionId {
     }
 }
 
-/// Relatif live path → nom dans le profil stocké
+/// Relatif live path -> nom dans le profil stocké
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct ProfileEntry {
     pub relative_live: &'static str,

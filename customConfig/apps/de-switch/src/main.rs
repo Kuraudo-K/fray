@@ -1,4 +1,4 @@
-//! CLI — clap uniquement ; délègue à application::SwitchService
+//! CLI - clap uniquement ; délègue à application::SwitchService
 
 use clap::{Parser, Subcommand, ValueEnum};
 use fray_de_switch::adapters::{DmrcGreeter, FsProfileStore, JsonStateStore, XdgSessionDetector};
@@ -71,7 +71,7 @@ fn main() -> ExitCode {
             let info = svc.list();
             println!("DE disponibles / available:");
             for de in SessionId::all() {
-                println!("  {:7} — {}", de.as_str(), de.label());
+                println!("  {:7} - {}", de.as_str(), de.label());
             }
             println!(
                 "Session courante / current: {}",
@@ -96,7 +96,7 @@ fn main() -> ExitCode {
             let to = SessionId::from(to);
             svc.switch(to).map(|_| {
                 eprintln!(
-                    "[fray-de-switch] OK → {}. Déconnecte-toi puis choisis « {} ».",
+                    "[fray-de-switch] OK -> {}. Déconnecte-toi puis choisis « {} ».",
                     to.label(),
                     to.greeter_id()
                 );

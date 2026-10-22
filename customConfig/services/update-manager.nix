@@ -12,7 +12,7 @@ let
   nhCfg = config.fray.system.nh or { };
   defaultFlake =
     nhCfg.flake or "/home/kouro/Téléchargements/GLF pc/NIX/fray";
-  defaultHost = nhCfg.hostname or "fray-vm";
+  defaultHost = nhCfg.hostname or "fray-iso";
 
   frayUpdate = pkgs.writeShellApplication {
     name = "fray-update";
@@ -38,15 +38,15 @@ let
 
       usage() {
         cat <<'EOF'
-fray-update — mise à jour Fray (pas l'hôte GLF)
+fray-update - mise à jour Fray (pas l'hôte GLF)
 
   fray-update              flake update + Flatpak (pas de switch)
-  fray-update --switch     nh os switch  (VM / système Fray seulement)
+  fray-update --switch     nh os switch  (système Fray seulement)
   fray-update --build      nh os build
   fray-update --boot       nh os boot
   fray-update --help
 
-Variables : FRAY_FLAKE, FRAY_HOST (défaut fray-vm)
+Variables : FRAY_FLAKE, FRAY_HOST (défaut fray-iso)
 EOF
       }
 
@@ -143,7 +143,7 @@ EOF
         if _update_flatpaks; then
           echo "[INFO] Flatpak OK" >&2
         else
-          _notify "Fray update — Flatpak" "Au moins une mise à jour Flatpak a échoué." normal
+          _notify "Fray update - Flatpak" "Au moins une mise à jour Flatpak a échoué." normal
         fi
         _cleanup_flatpaks
 
@@ -154,11 +154,11 @@ EOF
             _notify "Fray update" "flake.lock à jour. Ensuite : fray-update --switch" normal
           else
             echo "[WARN] flake update failed" >&2
-            _notify "Fray update — erreur" "nix flake update a échoué." critical
+            _notify "Fray update - erreur" "nix flake update a échoué." critical
             return 1
           fi
         else
-          echo "[INFO] Pas de flake Fray ($FLAKE_DIR) — Flatpak only" >&2
+          echo "[INFO] Pas de flake Fray ($FLAKE_DIR) - Flatpak only" >&2
         fi
       }
 

@@ -9,3 +9,8 @@ __pycache__/
 
 iso/
 result-iso
+
+# Local agent VM artefacts (not published)
+fray-vm.qcow2
+result-vm
+result-vm-*

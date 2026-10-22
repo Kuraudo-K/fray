@@ -5,7 +5,7 @@ Outil Rust **hexagonal** (comme `fray-disk` / `fray-de-switch`) pour lister et a
 ## Chemins
 
 - Sources : `customConfig/apps/wallpaper/`
-- Module : `customConfig/apps/wallpaper.nix` → `fray.apps.wallpaper.enable`
+- Module : `customConfig/apps/wallpaper.nix` -> `fray.apps.wallpaper.enable`
 - Image livrée : `customConfig/branding/assets/wallpaper/fray-gaming-arena.png`
 
 ## Commandes

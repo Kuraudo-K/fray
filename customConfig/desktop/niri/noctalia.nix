@@ -12,7 +12,7 @@ let
   # Config de base : lance Noctalia au démarrage
   # Base config: start Noctalia at startup
   niriConfig = pkgs.writeTextDir "niri/config.kdl" ''
-    // Fray — config niri par défaut
+    // Fray - config niri par défaut
     // Customs utilisateur : ~/.config/niri (profils fray-de-switch)
 
     spawn-at-startup "noctalia"

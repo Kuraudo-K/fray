@@ -1,5 +1,5 @@
-# Matrix — Element Desktop Flatpak (E2EE, appels ; auto-update Flathub)
-# Alternative plus légère : pkgs.fractal (GNOME) — voir docs
+# Matrix - Element Desktop Flatpak (E2EE, appels ; auto-update Flathub)
+# Alternative plus légère : pkgs.fractal (GNOME) - voir docs
 {
   config,
   lib,

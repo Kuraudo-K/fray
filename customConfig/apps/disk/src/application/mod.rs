@@ -55,7 +55,7 @@ impl<'a> DiskService<'a> {
         self.desktop.open()
     }
 
-    /// Montage via udisks — confirmation côté CLI (flag --yes)
+    /// Montage via udisks - confirmation côté CLI (flag --yes)
     pub fn mount(&self, source: &str, confirmed: bool) -> DiskResult<()> {
         if !confirmed {
             return Err(DiskError::Refused(
@@ -77,7 +77,7 @@ impl<'a> DiskService<'a> {
     }
 
     pub fn explain(&self) -> String {
-        r#"fray-disk — viewer disques (hexagonal, lecture d'abord)
+        r#"fray-disk - viewer disques (hexagonal, lecture d'abord)
 =======================================================
 list              lsblk (disques / partitions / FS / montage)
 info <name>       détail d'un nœud (ex. sda1, /dev/nvme0n1p2)
@@ -85,7 +85,7 @@ open              lance GNOME Disks ou KDE Partition Manager
 mount <dev> --yes  udisksctl mount (confirmation obligatoire)
 umount <cible> --yes  udisksctl unmount
 
-Pas de wipe / format / resize ici — utilise l'outil DE via « open ».
+Pas de wipe / format / resize ici - utilise l'outil DE via « open ».
 "#
         .into()
     }

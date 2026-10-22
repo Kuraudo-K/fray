@@ -38,7 +38,7 @@ in
         HASH=$(${pkgs.nix-prefetch-github}/bin/nix-prefetch-github Faugus faugus-launcher --rev "$LATEST" \
           | ${pkgs.jq}/bin/jq -r '.hash')
         cat > "$VERSION_FILE" <<EOF
-        # Pin Faugus GitHub — généré par check-faugus.sh
+        # Pin Faugus GitHub - généré par check-faugus.sh
         {
           version = "$LATEST";
           hash = "$HASH";

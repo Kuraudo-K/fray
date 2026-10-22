@@ -1,4 +1,4 @@
-//! fray-disk — architecture hexagonale
+//! fray-disk - architecture hexagonale
 //! domain ← application ← ports ← adapters / CLI
 
 pub mod adapters;

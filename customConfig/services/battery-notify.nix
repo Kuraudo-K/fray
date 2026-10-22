@@ -1,4 +1,4 @@
-# Notifs batterie manettes / souris (upower hidpp) — NixOS user services
+# Notifs batterie manettes / souris (upower hidpp) - NixOS user services
 {
   config,
   lib,

@@ -12,7 +12,7 @@ impl GreeterConfig for DmrcGreeter {
         let body = format!("[Desktop]\nSession={}\n", session.greeter_id());
         fs::write(&dmrc, body).map_err(|e| SwitchError::Io(e.to_string()))?;
         eprintln!(
-            "[fray-de-switch] session greeter → {} ({})",
+            "[fray-de-switch] session greeter -> {} ({})",
             session.greeter_id(),
             dmrc.display()
         );

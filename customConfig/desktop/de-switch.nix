@@ -1,4 +1,4 @@
-# Switcher de bureau (Rust) — GNOME / Niri / Plasma, profils persistants
+# Switcher de bureau (Rust) - GNOME / Niri / Plasma, profils persistants
 {
   config,
   lib,

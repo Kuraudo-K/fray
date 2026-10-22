@@ -1,4 +1,4 @@
-//! Ports — traits vers l'extérieur (fs, greeter, détection session)
+//! Ports - traits vers l'extérieur (fs, greeter, détection session)
 
 use crate::domain::{SessionId, SwitchResult};
 use std::path::PathBuf;

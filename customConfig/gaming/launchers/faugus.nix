@@ -1,4 +1,4 @@
-# Faugus — overlay framagit (défaut) ou pin GitHub (faugus-version.nix)
+# Faugus - overlay framagit (défaut) ou pin GitHub (faugus-version.nix)
 {
   config,
   lib,

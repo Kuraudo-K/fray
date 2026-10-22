@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Fray Apply — éditeur / apply de config (Python).
+Fray Apply - éditeur / apply de config (Python).
 Adapté du GLF Config Editor ; chemins Fray, CLI fray-update.
-Le port Rust update-manager n'est pas prêt — cet outil le remplace pour apply.
+Le port Rust update-manager n'est pas prêt - cet outil le remplace pour apply.
 """
 
 import gi
@@ -516,7 +516,7 @@ RED='\033[0;31m'; GREEN='\033[0;32m'; YELLOW='\033[1;33m'
 CYAN='\033[0;36m'; BOLD='\033[1m'; RESET='\033[0m'
 
 header() {
-  echo -e "\n${BOLD}${CYAN}Fray — maintenance${RESET}\n"
+  echo -e "\n${BOLD}${CYAN}Fray - maintenance${RESET}\n"
 }
 pause()      { echo -e "\n${YELLOW}Appuie sur Entrée pour continuer...${RESET}"; read -r _; }
 pause_etape(){ echo -e "\n${YELLOW}Appuie sur Entrée pour l'étape suivante...${RESET}"; read -r _; }
@@ -587,7 +587,7 @@ action_nettoyer_flatpak() {
 action_reparer_nix() {
   echo -e "${CYAN}-- Réparation du store Nix --${RESET}"
   confirm "Vérifier l'intégrité du store Nix ?" || return
-  echo -e "\n${CYAN}→ Vérification du store Nix...${RESET}"
+  echo -e "\n${CYAN}-> Vérification du store Nix...${RESET}"
   sudo nix-store --verify --check-contents
   echo -e "${GREEN}Terminé.${RESET}"; pause
 }
@@ -595,7 +595,7 @@ action_reparer_nix() {
 action_reparer_flatpak() {
   echo -e "${CYAN}-- Réparation Flatpak --${RESET}"
   confirm "Vérifier l'intégrité des Flatpak ?" || return
-  echo -e "\n${CYAN}→ Réparation des Flatpak...${RESET}"
+  echo -e "\n${CYAN}-> Réparation des Flatpak...${RESET}"
   flatpak repair
   echo -e "${GREEN}Terminé.${RESET}"; pause
 }
@@ -609,13 +609,13 @@ action_reparer_tout() {
     echo -e "${YELLOW}Aucune action sélectionnée.${RESET}"; pause; return
   fi
   if [[ "$do_nix" -eq 1 ]]; then
-    echo -e "\n${CYAN}→ Vérification du store Nix...${RESET}"
+    echo -e "\n${CYAN}-> Vérification du store Nix...${RESET}"
     sudo nix-store --verify --check-contents
     echo -e "${GREEN}Store Nix : terminé.${RESET}"
     [[ "$do_flat" -eq 1 ]] && pause_etape
   fi
   if [[ "$do_flat" -eq 1 ]]; then
-    echo -e "\n${CYAN}→ Réparation des Flatpak...${RESET}"
+    echo -e "\n${CYAN}-> Réparation des Flatpak...${RESET}"
     flatpak repair
     echo -e "${GREEN}Flatpak : terminé.${RESET}"
   fi
@@ -742,7 +742,7 @@ def _load_settings():
         return {}
 
 def _init_settings():
-    """Premier lancement → mode Novice par défaut, persistance explicite."""
+    """Premier lancement -> mode Novice par défaut, persistance explicite."""
     if os.path.isfile(SETTINGS_FILE):
         data = _load_settings()
         if 'advanced_mode' not in data:
@@ -851,7 +851,7 @@ def _backup_diff_desc(old, new, rel_path):
         shown = ', '.join(ranges[:4])
         if len(ranges) > 4:
             shown += '…'
-        return f"Édition {rel_path} — lignes {shown}"
+        return f"Édition {rel_path} - lignes {shown}"
     return f"Édition {rel_path}"
 
 def _backup_read_storage(finfo):
@@ -1063,7 +1063,7 @@ def _backup_line_label(text):
     return text.strip()
 
 def _backup_map_equal_lines(left, right):
-    """Aligne les lignes identiques entre deux versions (index gauche → index droite)."""
+    """Aligne les lignes identiques entre deux versions (index gauche -> index droite)."""
     sm = difflib.SequenceMatcher(None, left, right)
     mapping = {}
     for tag, i1, i2, j1, j2 in sm.get_opcodes():
@@ -1106,7 +1106,7 @@ def _backup_find_chunk(result, ref_lines, start, end, hint=None):
 
 def _backup_revert_selective(current, before, after):
     """
-    Annule uniquement le changement before→after sur le fichier actuel.
+    Annule uniquement le changement before->after sur le fichier actuel.
     Utilise les blocs de diff (opcodes) avec contexte multi-lignes pour éviter
     les mauvaises correspondances sur les lignes dupliquées ou vides.
     """
@@ -1163,7 +1163,7 @@ def _backup_revert_selective(current, before, after):
             if pos is not None and result[pos:pos + len(rem)] == rem:
                 result[pos:pos + len(rem)] = add
                 notes.append(
-                    f"Bloc L{pos + 1} rétabli ({len(rem)}→{len(add)} ligne(s))")
+                    f"Bloc L{pos + 1} rétabli ({len(rem)}->{len(add)} ligne(s))")
             else:
                 notes.append("Bloc modifié introuvable dans le fichier actuel")
 
@@ -1192,7 +1192,7 @@ def _backup_selective_preview(current, before, after):
         parts.append(f"{n_add} rétablissement(s)")
     if n_mod:
         parts.append(f"{n_mod} modification(s)")
-    return ', '.join(parts) + " — reste du fichier conservé", "mod"
+    return ', '.join(parts) + " - reste du fichier conservé", "mod"
 
 def _backup_format_line_ranges(line_nums):
     if not line_nums:
@@ -1210,7 +1210,7 @@ def _backup_format_line_ranges(line_nums):
     return ', '.join(ranges)
 
 def _backup_analyze_change(before, after):
-    """Analyse before→after : lignes touchées, ajouts, suppressions, modifications."""
+    """Analyse before->after : lignes touchées, ajouts, suppressions, modifications."""
     before = before if before is not None else ''
     after = after if after is not None else ''
     if before == after:
@@ -1285,7 +1285,7 @@ def _backup_format_change_lines(analysis, max_items=6):
     if analysis['modified']:
         out.append(f"   ~ Modifié ({len(analysis['modified'])}) :")
         for old_ln, new_ln, old_t, new_t in analysis['modified'][:max_items]:
-            out.append(f"      L{old_ln}→L{new_ln}")
+            out.append(f"      L{old_ln}->L{new_ln}")
             out.append(f"         − {old_t.strip()}")
             out.append(f"         + {new_t.strip()}")
         if len(analysis['modified']) > max_items:
@@ -1302,13 +1302,13 @@ def _backup_file_history_lines(path, current_backup_id, max_items=8):
             rev = _backup_file_revision(rec['id'], path)
             marker = " ← sélection" if rec['id'] == current_backup_id else ""
             entries.append(
-                f"   #{rev}  {rec.get('timestamp', '')} — "
+                f"   #{rev}  {rec.get('timestamp', '')} - "
                 f"{rec.get('description', '')}{marker}")
     if len(entries) > max_items:
         return entries[-max_items:]
     return entries
 
-# ─── Thème sombre — clair et confortable ──────────────────────────────────────
+# Thème sombre - clair et confortable
 CSS_DARK = b"""
 * { font-family: 'Noto Sans', sans-serif; }
 window {
@@ -1729,7 +1729,7 @@ filechooser searchbar entry { background: #ffffff; color: #1f2328; border: 1px s
 .modal-body { background: #f6f8fa; }
 """
 
-# ─── Helpers ──────────────────────────────────────────────────────────────────
+# Helpers
 
 def run_pkexec(content, dest):
     for cmd in (['pkexec', 'tee', dest], ['sudo', 'tee', dest]):
@@ -1810,8 +1810,8 @@ def _make_env():
 _ANSI_RE = re.compile(
     r'\x1b(?:'
     r'\[[0-9;?]*[ -/]*[@-~]'                # CSI  (ex: \x1b[32m, \x1b[?25l)
-    r'|\][^\x07\x1b]*(?:\x07|\x1b\\)'       # OSC  (ex: \x1b]0;titre\x07) — AVANT le catch-all
-    r'|[@-Z\\^_]'                           # FE 2 chars (@..Z, \, ^, _) — exclut ] et [
+    r'|\][^\x07\x1b]*(?:\x07|\x1b\\)'       # OSC  (ex: \x1b]0;titre\x07) - AVANT le catch-all
+    r'|[@-Z\\^_]'                           # FE 2 chars (@..Z, \, ^, _) - exclut ] et [
     r'|\([A-Z]'                             # Désignation charset G0 (ex: \x1b(B)
     r'|\)[A-Za-z]'                          # Désignation charset G1
     r'|[PX^]'                               # DCS / SOS / PM
@@ -1857,7 +1857,7 @@ def _flake_dir():
     return os.environ.get("FRAY_FLAKE", "").strip() or FLAKE_DIR
 
 def _default_fray_host():
-    return os.environ.get("FRAY_HOST", "").strip() or "fray-vm"
+    return os.environ.get("FRAY_HOST", "").strip() or "fray-iso"
 
 def _is_glf_host():
     # Binaires GLF-OS hôte (noms volontaires glf-*)
@@ -1958,7 +1958,7 @@ def _nh_os_switch_plan():
         'refuse_glf': True,
     }
 
-# ─── Application ──────────────────────────────────────────────────────────────
+# Application
 
 class App(Gtk.Window):
     def __init__(self):
@@ -2066,7 +2066,7 @@ class App(Gtk.Window):
         self.connect("realize", lambda *_: self._darken_gtk_window(self))
         self.show_all()
 
-    # ─── Mode Novice / Avancé ─────────────────────────────────────────────────
+    # Mode Novice / Avancé
     def _sync_mode_tabs(self):
         """Mode Novice : Configuration, Packages, Restaurer et Système (simplifié)."""
         for page_id, _label, _page in self._tab_defs:
@@ -2100,9 +2100,9 @@ class App(Gtk.Window):
             self.hb.props.subtitle = "Mode avancé"
             self.sidebar_footer.set_text("Toutes les sections disponibles")
         else:
-            self.hb.props.subtitle = "Mode novice — fray-update et redémarrage"
+            self.hb.props.subtitle = "Mode novice - fray-update et redémarrage"
             self.sidebar_footer.set_text(
-                "Mode novice — Configuration, Packages, Restaurer, Système\n"
+                "Mode novice - Configuration, Packages, Restaurer, Système\n"
                 "Passez en mode avancé pour le reste")
         self.show_all()
 
@@ -2112,17 +2112,17 @@ class App(Gtk.Window):
         if hasattr(self, 'sys_cmds_lbl'):
             if novice:
                 self.sys_cmds_lbl.set_markup(
-                    '<b>fray-update</b>  →  flake update + Flatpak (pas de switch). '
+                    '<b>fray-update</b>  ->  flake update + Flatpak (pas de switch). '
                     'Redémarrage recommandé après.\n\n'
                     'Utilisez <b>Redémarrer</b> une fois la mise à jour terminée.')
             else:
                 self.sys_cmds_lbl.set_markup(
-                    '<b>fray-update</b>  →  flake update + Flatpak (pas de switch). '
+                    '<b>fray-update</b>  ->  flake update + Flatpak (pas de switch). '
                     'Redémarrage recommandé après.\n'
-                    '<b>fray-update --switch</b>  →  Applique les modifications immédiatement sans redémarrer.\n'
-                    '<b>Nix-Rebuild</b>  →  Applique <b>uniquement</b> vos fichiers dans '
+                    '<b>fray-update --switch</b>  ->  Applique les modifications immédiatement sans redémarrer.\n'
+                    '<b>Nix-Rebuild</b>  ->  Applique <b>uniquement</b> vos fichiers dans '
                     '<tt>customConfig</tt> (nh os switch). '
-                    '<b>Ne fait pas</b> le switch — pour ça, utilisez fray-update --switch.\n\n'
+                    '<b>Ne fait pas</b> le switch - pour ça, utilisez fray-update --switch.\n\n'
                     '⚠  Certaines modifications (nouveau noyau, services bas niveau) '
                     'nécessitent un redémarrage complet même après un switch.')
         for widget in (
@@ -2165,7 +2165,7 @@ class App(Gtk.Window):
 
     def _on_page_shown(self, page_id):
         label = next(l for pid, l, _ in self._tab_defs if pid == page_id)
-        self.hb.props.title = f"Fray Apply — {label}"
+        self.hb.props.title = f"Fray Apply - {label}"
         if page_id == "edit":
             if not getattr(self, "_edit_loaded_once", False):
                 self._edit_loaded_once = True
@@ -2196,7 +2196,7 @@ class App(Gtk.Window):
         _save_settings(settings)
         self._sync_mode_tabs()
 
-    # ─── Thème ────────────────────────────────────────────────────────────────
+    # Thème
     def _apply_gtk_theme_settings(self):
         """Demande à GTK (et au gestionnaire de fenêtres) d'utiliser le thème sombre."""
         prefer_dark = self.theme == "dark"
@@ -2259,7 +2259,7 @@ class App(Gtk.Window):
                 f'<span foreground="{path_col}" size="small"><tt>📂  {CONFIG_FILE}</tt></span>'
             )
 
-    # ─── Helpers UI ───────────────────────────────────────────────────────────
+    # Helpers UI
     def _h1(self, t):
         l = Gtk.Label(label=t); apply_css(l, "h1"); l.set_halign(Gtk.Align.START); return l
 
@@ -2375,7 +2375,7 @@ class App(Gtk.Window):
         return added
 
     def _style_dialog_csd(self, dlg, title):
-        """Barre de titre sombre (HeaderBar seul, boutons en bas — compatible KDE)."""
+        """Barre de titre sombre (HeaderBar seul, boutons en bas - compatible KDE)."""
         hb = Gtk.HeaderBar()
         hb.set_title(title)
         hb.set_show_close_button(True)
@@ -2490,7 +2490,7 @@ class App(Gtk.Window):
         return resp
 
     def _open_nix_file_chooser(self, title, start_folder, ok_label="Choisir"):
-        """Sélecteur de fichiers .nix — layout GTK classique (sans header bar)."""
+        """Sélecteur de fichiers .nix - layout GTK classique (sans header bar)."""
         dlg = Gtk.FileChooserDialog(
             title=title,
             parent=self,
@@ -2540,7 +2540,7 @@ class App(Gtk.Window):
         self._maint_script_path = path
         return self._maint_script_path
 
-    # ── Sauvegardes automatiques ───────────────────────────────────────────────
+    # Sauvegardes automatiques
     def _backup_snapshot(self, action, description, paths, include_default=False):
         """Copie locale des fichiers avant modification (dossier utilisateur)."""
         paths = list(dict.fromkeys(p for p in paths if p))
@@ -2708,7 +2708,7 @@ class App(Gtk.Window):
             f"Action : {_backup_action_label(record.get('action', ''))}",
             f"Description : {record.get('description', '')}",
             "",
-            "Modification enregistrée (état avant → état après l'action) :",
+            "Modification enregistrée (état avant -> état après l'action) :",
             "",
         ]
         paths = []
@@ -2718,7 +2718,7 @@ class App(Gtk.Window):
             paths.append(path)
             rev = finfo.get('revision') or rev_map.get((backup_id, path), 0)
             rev_lbl = f"#{rev}" if rev else "?"
-            lines.append(f"── {rel}  (version {rev_lbl}) ──")
+            lines.append(f"-- {rel}  (version {rev_lbl}) --")
 
             before = _backup_read_storage(finfo)
             after = _backup_after_content(path, backup_id, finfo)
@@ -2742,13 +2742,13 @@ class App(Gtk.Window):
             effect, kind = _backup_restore_effect_label(
                 backup_content, path, backup_id, finfo)
             prefix = {'add': '➕', 'mod': '✏️', 'same': '✓', 'err': '❌', 'warn': '⚠'}.get(kind, '•')
-            lines.append(f"{prefix}  {rel} — {effect}")
+            lines.append(f"{prefix}  {rel} - {effect}")
             before = backup_content or ''
             after = _backup_after_content(path, backup_id, finfo) or ''
             current, _ = read_file(path)
             _, detail_notes = _backup_revert_selective(current or '', before, after)
             for note in detail_notes[:8]:
-                lines.append(f"      → {note}")
+                lines.append(f"      -> {note}")
             if len(detail_notes) > 8:
                 lines.append(f"      … +{len(detail_notes) - 8}")
 
@@ -2793,7 +2793,7 @@ class App(Gtk.Window):
         if ok:
             if not changed:
                 self._status(self.backup_status,
-                             "ℹ  Aucun changement nécessaire — sauvegarde retirée.", "warn")
+                             "ℹ  Aucun changement nécessaire - sauvegarde retirée.", "warn")
             else:
                 self._status(self.backup_status,
                              f"✅  Sauvegarde {backup_id} restaurée et retirée.", "ok")
@@ -2961,7 +2961,7 @@ class App(Gtk.Window):
             _darken_dialog(dlg)
 
     # ---
-    # ONGLET 1 — Config
+    # ONGLET 1 - Config
     # ---
     def tab_config(self):
         box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=10)
@@ -2970,13 +2970,13 @@ class App(Gtk.Window):
         box.pack_start(self._h1("Ajouter une ligne de configuration"), False, False, 0)
 
         box.pack_start(self._infobox(
-            '<b>ℹ️  Options de configuration Fray</b> — ex : <tt>services.openssh.enable = true;</tt>\n'
+            '<b>ℹ️  Options de configuration Fray</b> - ex : <tt>services.openssh.enable = true;</tt>\n'
             'Supporte les blocs multi-lignes et les commentaires <tt>#</tt>.\n'
             '<b>📦  Pour les packages</b> (<tt>pkgs.</tt>), utilisez l\'<b>onglet Packages</b>.'
         ), False, False, 0)
 
         box.pack_start(self._lbl(
-            '<span foreground="#9aa8c0" size="small">Ligne(s) à ajouter — '
+            '<span foreground="#9aa8c0" size="small">Ligne(s) à ajouter - '
             'blocs <tt>{ }</tt> et commentaires <tt>#</tt> acceptés :</span>'
         ), False, False, 0)
 
@@ -3183,7 +3183,7 @@ class App(Gtk.Window):
             self._status(self.cfg_status, f"❌  {err}", "err")
 
     # ---
-    # ONGLET 2 — Packages
+    # ONGLET 2 - Packages
     # ---
     def tab_packages(self):
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
@@ -3311,10 +3311,10 @@ class App(Gtk.Window):
         vbox.pack_start(bot, False, False, 0)
         return vbox
 
-    # ─── Fichier cible (import auto) ────────────────────────────────────────
+    # Fichier cible (import auto)
     def _pkg_target_path(self):
         """Résout le chemin absolu du fichier cible depuis le champ de saisie.
-        Chemin relatif → résolu depuis CUSTOM_DIR. Ajoute .nix si absent."""
+        Chemin relatif -> résolu depuis CUSTOM_DIR. Ajoute .nix si absent."""
         txt = self.pkg_target_entry.get_text().strip() if hasattr(self, 'pkg_target_entry') else ''
         if not txt:
             return CONFIG_FILE
@@ -3351,7 +3351,7 @@ class App(Gtk.Window):
         if not getattr(self, '_pkg_nix_warmed', False):
             self._status(self.pkg_status,
                 f"⏳  Première recherche « {query} » : index nixpkgs en cours "
-                "— 1 à 2 min possibles…", "warn")
+                "- 1 à 2 min possibles…", "warn")
         else:
             self._status(self.pkg_status, f"🔍  Recherche de « {query} »…", "warn")
         threading.Thread(
@@ -3532,7 +3532,7 @@ class App(Gtk.Window):
                 locs = ', '.join(
                     f"{os.path.relpath(f, CUSTOM_DIR)}:{ln}" for f, ln, _ in refs[:4])
                 extra = '…' if len(refs) > 4 else ''
-                lines.append(f"• {pkg} → {locs}{extra}")
+                lines.append(f"• {pkg} -> {locs}{extra}")
             self._question_dialog(
                 "Packages déjà présents",
                 body_text="Ignorés (déjà déclarés dans la configuration) :\n\n"
@@ -3549,7 +3549,7 @@ class App(Gtk.Window):
 
         new_target_content = '\n'.join(result) + '\n'
 
-        # ── Cas simple : fichier cible = default.nix (comportement historique) ──
+        # Cas simple : fichier cible = default.nix (comportement historique)
         if is_root:
             bid = self._backup_snapshot(
                 'packages',
@@ -3566,7 +3566,7 @@ class App(Gtk.Window):
                 self._status(self.pkg_status, f"❌  {err}", "err")
             return
 
-        # ── Fichier cible ≠ default.nix : vérifier/ajouter l'import associé ──
+        # Fichier cible ≠ default.nix : vérifier/ajouter l'import associé
         import_msg = ""
         cfg_new_content = None
         refs = self._find_import_references(target)
@@ -3704,7 +3704,7 @@ class App(Gtk.Window):
         return result
 
     # ---
-    # GESTION DES IMPORTS — regroupement par dossier (onglets Packages/Déplacer)
+    # GESTION DES IMPORTS - regroupement par dossier (onglets Packages/Déplacer)
     # ---
     _GROUP_TITLES = {
         "system":   "Système",
@@ -3719,7 +3719,7 @@ class App(Gtk.Window):
 
     def _group_key(self, rel_path):
         """Retourne le nom du sous-dossier immédiat d'un chemin d'import relatif
-        (ex: './system/foo.nix' → 'system'), ou None pour un fichier à la racine."""
+        (ex: './system/foo.nix' -> 'system'), ou None pour un fichier à la racine."""
         p = rel_path[2:] if rel_path.startswith('./') else rel_path
         parts = p.split('/')
         return parts[0].lower() if len(parts) > 1 else None
@@ -3966,7 +3966,7 @@ class App(Gtk.Window):
         new_lines, _ = self._insert_import_grouped(lines, rel_new)
         return [(CONFIG_FILE, '\n'.join(new_lines) + '\n')]
 
-    # ─── Helper coloration syntaxique Nix — mutualisé ────────────────────────
+    # Helper coloration syntaxique Nix - mutualisé
     _NIX_TAGS_DEF = [
         # Ordre = priorité GTK (le PREMIER = priorité la plus BASSE)
         # nix-comment doit être le plus bas : les strings le surchargent
@@ -4065,7 +4065,7 @@ class App(Gtk.Window):
             except Exception: pass
 
     # ---
-    # RECHERCHE Ctrl+F — barre de recherche pour les éditeurs (onglets 3 et 5)
+    # RECHERCHE Ctrl+F - barre de recherche pour les éditeurs (onglets 3 et 5)
     # ---
     def _attach_search(self, tv):
         """Crée une barre de recherche Ctrl+F pour un TextView.
@@ -4080,7 +4080,7 @@ class App(Gtk.Window):
         if tt.lookup("search-cur") is None:
             buf.create_tag("search-cur", background="#72aef5", foreground="#1a1e2e")
 
-        # ── Widgets de la barre ──────────────────────────────────────────────
+        # Widgets de la barre
         bar = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=4)
         bar.set_border_width(4)
         apply_css(bar, "search-bar")
@@ -4110,7 +4110,7 @@ class App(Gtk.Window):
         rev.set_transition_duration(150)
         rev.add(bar)
 
-        # ── Logique de recherche ─────────────────────────────────────────────
+        # Logique de recherche
         def _clear_hl():
             s, e = buf.get_bounds()
             buf.remove_tag_by_name("search-hl",  s, e)
@@ -4218,7 +4218,7 @@ class App(Gtk.Window):
         return rev
 
     # ---
-    # UNDO / REDO Ctrl+Z / Ctrl+Shift+Z — onglets 1, 3 et 5
+    # UNDO / REDO Ctrl+Z / Ctrl+Shift+Z - onglets 1, 3 et 5
     # ---
     def _attach_undo(self, tv, handler_attr=None):
         """Branche Ctrl+Z (undo) et Ctrl+Shift+Z (redo) sur un Gtk.TextView.
@@ -4279,7 +4279,7 @@ class App(Gtk.Window):
         return reset
 
     # ---
-    # ONGLET 3 — Nouveau .nix
+    # ONGLET 3 - Nouveau .nix
     # ---
     def tab_new_nix(self):
         paned = Gtk.Paned(orientation=Gtk.Orientation.VERTICAL)
@@ -4289,7 +4289,7 @@ class App(Gtk.Window):
         top.pack_start(self._h1("Créer un nouveau fichier .nix"), False, False, 0)
 
         top.pack_start(self._infobox(
-            '<b>Module NixOS</b> — sera importé automatiquement dans '
+            '<b>Module NixOS</b> - sera importé automatiquement dans '
             f'<tt>{CONFIG_FILE}</tt> uniquement '
             '(regroupement par dossier : Système, Gaming, Apps…). '
             f'Limité à <tt>{CUSTOM_DIR}/</tt> et ses sous-dossiers.\n'
@@ -4524,7 +4524,7 @@ class App(Gtk.Window):
             self._status(self.nix_status, f"❌  {err}", "err")
 
     # ---
-    # ONGLET 4 — Déplacer un fichier .nix
+    # ONGLET 4 - Déplacer un fichier .nix
     # ---
     def tab_move(self):
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
@@ -4580,7 +4580,7 @@ class App(Gtk.Window):
             f'Sous-dossier destination <tt>(dans {CUSTOM_DIR}/)</tt> :</span>'
         ), False, False, 0)
         self.move_dst_sub = Gtk.Entry()
-        self.move_dst_sub.set_placeholder_text("ex: system, gaming, apps — vide = racine")
+        self.move_dst_sub.set_placeholder_text("ex: system, gaming, apps - vide = racine")
         self.move_dst_sub.set_width_chars(28)
         apply_css(self.move_dst_sub, "entry")
         self.move_dst_sub.connect("changed", self._move_upd_path)
@@ -4670,7 +4670,7 @@ class App(Gtk.Window):
                 name += '.nix'
             base = os.path.join(CUSTOM_DIR, sub) if sub else CUSTOM_DIR
             dest = os.path.join(base, name) if name else base + '/'
-            self.move_path_lbl.set_text(f"📂  →  {dest}")
+            self.move_path_lbl.set_text(f"📂  ->  {dest}")
         else:
             self.move_path_lbl.set_text("")
 
@@ -4868,7 +4868,7 @@ class App(Gtk.Window):
             self._status(self.move_status, f"❌  {err}", "err")
 
     # ---
-    # ONGLET 5 — Supprimer un fichier .nix
+    # ONGLET 5 - Supprimer un fichier .nix
     # ---
     def tab_delete(self):
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
@@ -4880,7 +4880,7 @@ class App(Gtk.Window):
 
         top.pack_start(self._infobox(
             f'<b>Suppression dans</b> <tt>{CUSTOM_DIR}</tt>\n'
-            '• <tt>default.nix</tt> est protégé — impossible à supprimer.\n'
+            '• <tt>default.nix</tt> est protégé - impossible à supprimer.\n'
             '• Les imports associés dans <tt>default.nix</tt> sont retirés automatiquement.\n'
             '• La suppression d\'un dossier retire aussi le groupe correspondant '
             '(# Système, # Gaming…) s\'il ne reste plus d\'import.'
@@ -5094,7 +5094,7 @@ class App(Gtk.Window):
         return new_lines, changed
 
     # ---
-    # ONGLET 6 — Éditer un fichier .nix
+    # ONGLET 6 - Éditer un fichier .nix
     # ---
     def tab_edit(self):
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
@@ -5148,7 +5148,7 @@ class App(Gtk.Window):
         self._edit_load(CONFIG_FILE)
         return vbox
 
-    # ─── Numéros de ligne ─────────────────────────────────────────────────────
+    # Numéros de ligne
     def _make_editor_with_lineno(self, tv, css_class="code"):
         """Retourne un HBox avec [gutter numéros | ScrolledWindow(tv)]."""
         apply_css(tv, css_class)
@@ -5240,7 +5240,7 @@ class App(Gtk.Window):
             "ok" if ok else "err")
 
     # ---
-    # ONGLET — Restaurer une sauvegarde
+    # ONGLET - Restaurer une sauvegarde
     # ---
     def tab_restore(self):
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=0)
@@ -5343,7 +5343,7 @@ class App(Gtk.Window):
         return vbox
 
     # ---
-    # ONGLET 6 — Système (fray-update en vert + terminal lisible)
+    # ONGLET 6 - Système (fray-update en vert + terminal lisible)
     # ---
     def tab_system(self):
         vbox = Gtk.Box(orientation=Gtk.Orientation.VERTICAL)
@@ -5354,12 +5354,12 @@ class App(Gtk.Window):
         top.pack_start(self._h1("Commandes système Fray"), False, False, 0)
 
         self.sys_cmds_infobox = self._infobox(
-            '<b>fray-update</b>  →  flake update + Flatpak (pas de switch). '
+            '<b>fray-update</b>  ->  flake update + Flatpak (pas de switch). '
             'Redémarrage recommandé après.\n'
-            '<b>fray-update --switch</b>  →  Applique les modifications immédiatement sans redémarrer.\n'
-            '<b>Nix-Rebuild</b>  →  Applique <b>uniquement</b> vos fichiers dans '
+            '<b>fray-update --switch</b>  ->  Applique les modifications immédiatement sans redémarrer.\n'
+            '<b>Nix-Rebuild</b>  ->  Applique <b>uniquement</b> vos fichiers dans '
             '<tt>customConfig</tt> (nh os switch). '
-            '<b>Ne fait pas</b> le switch — pour ça, utilisez fray-update --switch.\n\n'
+            '<b>Ne fait pas</b> le switch - pour ça, utilisez fray-update --switch.\n\n'
             '⚠  Certaines modifications (nouveau noyau, services bas niveau) '
             'nécessitent un redémarrage complet même après un switch.')
         self.sys_cmds_lbl = self.sys_cmds_infobox.get_children()[0]
@@ -5384,9 +5384,9 @@ class App(Gtk.Window):
         self.sys_maint_title = self._h1("Maintenance et nettoyage")
         top.pack_start(self.sys_maint_title, False, False, 0)
         self.sys_maint_infobox = self._infobox(
-            '<b>Nettoyer</b> — menu interactif intégré '
+            '<b>Nettoyer</b> - menu interactif intégré '
             '(générations Nix, logs, corbeille, Flatpak…).\n'
-            '<b>Réparer</b> — vérifie le store Nix et répare les Flatpak.')
+            '<b>Réparer</b> - vérifie le store Nix et répare les Flatpak.')
         top.pack_start(self.sys_maint_infobox, False, False, 0)
         maint_row = Gtk.Box(spacing=10)
         self.sys_maint_row = maint_row
@@ -5465,7 +5465,7 @@ class App(Gtk.Window):
                     with tempfile.NamedTemporaryFile(
                             mode='w', suffix='.sh',
                             prefix='/tmp/fray-vte-rc-', delete=False) as _f:
-                        _f.write('# Fray — VTE : sourcing profil NixOS\n')
+                        _f.write('# Fray - VTE : sourcing profil NixOS\n')
                         _f.write('[ -f /etc/profile ] && source /etc/profile 2>/dev/null\n')
                         _f.write('[ -f /etc/bashrc ]  && source /etc/bashrc  2>/dev/null\n')
                         _f.write('[ -f ~/.bashrc ]    && source ~/.bashrc    2>/dev/null\n')
@@ -5524,12 +5524,12 @@ class App(Gtk.Window):
             scroll.add(self._fallback_tv)
             vbox.pack_start(scroll, True, True, 0)
             self._sys_log = ""
-            self._vte_append("⚠  python3-gi-vte non installé — terminal basique.\n", "warn")
-            self._vte_append("Fray Apply — Terminal prêt.\n", "info")
+            self._vte_append("⚠  python3-gi-vte non installé - terminal basique.\n", "warn")
+            self._vte_append("Fray Apply - Terminal prêt.\n", "info")
 
         return vbox
 
-    # ── Coloration syntaxique Nix ─────────────────────────────────────────────
+    # Coloration syntaxique Nix
     _NIX_COMMENT   = re.compile(r'#[^\n]*')
     _NIX_MLSTRING  = re.compile(r"''(?:[^']|'(?!')|''(?=[$'\\]))*''", re.DOTALL)
     _NIX_STRING    = re.compile(r'"(?:[^"\\]|\\.)*"')
@@ -5637,7 +5637,7 @@ class App(Gtk.Window):
         for m in self._NIX_BRACKET.finditer(text):
             if not in_skip(m): apply(m, "nix-bracket")
 
-    # ─── Terminal VTE — méthodes ──────────────────────────────────────────────
+    # Terminal VTE - méthodes
     _TAG_ANSI = {
         'ok':   '\x1b[32m',
         'err':  '\x1b[31m',
@@ -5731,7 +5731,7 @@ class App(Gtk.Window):
         """Envoie une commande au terminal intégré (onglet Système)."""
         self._go_system_tab()
         ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self._vte_append(f"\n{'─'*50}\n", "info")
+        self._vte_append(f"\n{'-'*50}\n", "info")
         self._vte_append(f"[{ts}] {label}\n", "cmd")
         if _HAS_VTE and getattr(self, '_vte_shell_pid', -1) > 0:
             self._sys_log = ""
@@ -5768,7 +5768,7 @@ class App(Gtk.Window):
                 "Confirmer Nix-Rebuild ?",
                 body_markup=(
                     "Reconstruit et applique <b>uniquement</b> vos modifications dans "
-                    "<tt>customConfig</tt> — <b>sans</b> mise à jour Fray "
+                    "<tt>customConfig</tt> - <b>sans</b> mise à jour Fray "
                     "(pas de téléchargement de paquets système).\n\n"
                     f"<tt>{GLib.markup_escape_text(plan['cmd'])}</tt>\n\n"
                     f"Outil : <b>{GLib.markup_escape_text(plan['tool'])}</b>\n"
@@ -5793,7 +5793,7 @@ class App(Gtk.Window):
             steps_mk = []
             for i, (cmdline, label, *_rest) in enumerate(plan["steps"], 1):
                 steps_mk.append(
-                    f"<b>Étape {i}</b> — {GLib.markup_escape_text(label)} :\n"
+                    f"<b>Étape {i}</b> - {GLib.markup_escape_text(label)} :\n"
                     f"<tt>  {GLib.markup_escape_text(cmdline)}</tt>"
                 )
             body = (
@@ -5830,7 +5830,7 @@ class App(Gtk.Window):
         self._sys_log = ""; self.sys_save_btn.set_sensitive(False)
         self.sys_log_lbl.set_text("")
         ts = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        self._vte_append(f"\n{'─'*50}\n", "info")
+        self._vte_append(f"\n{'-'*50}\n", "info")
         self._vte_append(f"[{ts}] $ {cmd_name}\n", "cmd")
 
         def _run():
@@ -5882,7 +5882,7 @@ class App(Gtk.Window):
                     if askpass:
                         _try_unlink(askpass)
                 if proc.returncode == 0:
-                    self._vte_append("\n✅  Succès — nh os switch terminé.\n", "ok")
+                    self._vte_append("\n✅  Succès - nh os switch terminé.\n", "ok")
                 else:
                     self._vte_append(
                         f"\n❌  nh os switch a échoué (code {proc.returncode}).\n", "err")
@@ -5902,7 +5902,7 @@ class App(Gtk.Window):
                         cmd = sudo_pfx + argv[1:]
                     else:
                         cmd = argv
-                    self._vte_append(f"▶  Étape {idx}/3 — {label}…\n", "info")
+                    self._vte_append(f"▶  Étape {idx}/3 - {label}…\n", "info")
                     try:
                         proc = subprocess.Popen(
                             cmd, stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
@@ -5929,7 +5929,7 @@ class App(Gtk.Window):
 
                 if askpass:
                     _try_unlink(askpass)
-                self._vte_append(f"\n✅  Succès — {cmd_name} terminé.\n", "ok")
+                self._vte_append(f"\n✅  Succès - {cmd_name} terminé.\n", "ok")
                 GLib.idle_add(self.sys_save_btn.set_sensitive, True)
                 return
 
@@ -5978,7 +5978,7 @@ class App(Gtk.Window):
             log_text = self._sys_log
             with open(path, 'w') as f:
                 f.write(log_text or "")
-            self.sys_log_lbl.set_text(f"✅  Sauvegardé → {path}")
+            self.sys_log_lbl.set_text(f"✅  Sauvegardé -> {path}")
             apply_css(self.sys_log_lbl, "ok")
         except Exception as e:
             self.sys_log_lbl.set_text(f"❌  {e}")

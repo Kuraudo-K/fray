@@ -1,4 +1,4 @@
-# Bootloader Limine (ISO / install réelle — pas utilisé par QEMU build-vm)
+# Bootloader Limine (ISO / install réelle - pas utilisé par QEMU build-vm)
 {
   config,
   lib,

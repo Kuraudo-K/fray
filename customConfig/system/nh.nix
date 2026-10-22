@@ -1,5 +1,5 @@
-# nh — helper rebuild flake (chemin Fray, pas /etc/nixos GLF)
-# Alias courts → fray-update --… (CLI unifiée)
+# nh - helper rebuild flake (chemin Fray, pas /etc/nixos GLF)
+# Alias courts -> fray-update --… (CLI unifiée)
 {
   config,
   lib,
@@ -19,13 +19,13 @@ in
     };
     hostname = lib.mkOption {
       type = lib.types.str;
-      default = "fray-vm";
-      description = "nixosConfigurations attr for nh -H (fray-vm | fray-iso)";
+      default = "fray-iso";
+      description = "nixosConfigurations attr for nh -H (ex. fray-iso)";
     };
     aliases = lib.mkOption {
       type = lib.types.bool;
       default = true;
-      description = "Compat aliases → fray-update --switch|--build|--boot";
+      description = "Compat aliases -> fray-update --switch|--build|--boot";
     };
   };
 

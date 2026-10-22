@@ -25,7 +25,7 @@ impl WallpaperApplier for CompositeApplier {
                 match Command::new("swww").args(["img", path]).status() {
                     Ok(st) if st.success() => Ok(()),
                     Ok(st) => Err(WallpaperError::Io(format!(
-                        "swww img a échoué ({st}) — chemin noté dans ~/.local/share/fray/"
+                        "swww img a échoué ({st}) - chemin noté dans ~/.local/share/fray/"
                     ))),
                     Err(_) => Err(WallpaperError::Unsupported(format!(
                         "DE {} : installe swww ou applique manuellement (chemin noté)",

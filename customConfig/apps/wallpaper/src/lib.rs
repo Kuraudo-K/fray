@@ -1,4 +1,4 @@
-//! fray-wallpaper — architecture hexagonale
+//! fray-wallpaper - architecture hexagonale
 //! domain ← application ← ports ← adapters / CLI
 
 pub mod adapters;

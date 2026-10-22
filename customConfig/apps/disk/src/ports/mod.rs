@@ -1,4 +1,4 @@
-//! Ports — lsblk, montage, ouverture outil DE
+//! Ports - lsblk, montage, ouverture outil DE
 
 use crate::domain::{BlockDevice, DiskResult};
 

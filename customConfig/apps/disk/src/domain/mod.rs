@@ -1,4 +1,4 @@
-//! Domaine : blocs / partitions — zéro I/O
+//! Domaine : blocs / partitions - zéro I/O
 
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub struct BlockDevice {

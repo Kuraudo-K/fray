@@ -58,7 +58,7 @@ impl<'a> WallpaperService<'a> {
     }
 
     pub fn explain(&self) -> String {
-        r#"fray-wallpaper — fonds d'écran Fray (hexagonal)
+        r#"fray-wallpaper - fonds d'écran Fray (hexagonal)
 ==============================================
 list                 inventaire Fray / système / ~/Images
 set <id|chemin>      applique selon le DE (gsettings / plasma / swww)

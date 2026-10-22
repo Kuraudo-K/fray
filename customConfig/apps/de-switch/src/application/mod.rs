@@ -1,4 +1,4 @@
-//! Cas d'usage — orchestre domain + ports
+//! Cas d'usage - orchestre domain + ports
 
 use crate::domain::{SessionId, SwitchError, SwitchResult};
 use crate::ports::{GreeterConfig, ProfileStore, SessionDetector, StateStore};
@@ -59,11 +59,11 @@ impl<'a> SwitchService<'a> {
 =====================
 Profils : ~/.local/share/fray/de-profiles/{gnome,niri,plasma,mango}/
 
-  gnome  → dconf, paperwm, extensions gnome-shell
-  niri   → ~/.config/niri, ~/.config/noctalia
-  plasma → plasma*/kwin*/kdeglobals, dolphin/konsole,
+  gnome  -> dconf, paperwm, extensions gnome-shell
+  niri   -> ~/.config/niri, ~/.config/noctalia
+  plasma -> plasma*/kwin*/kdeglobals, dolphin/konsole,
            ~/.local/share/{plasma,kwin,konsole}
-  mango  → ~/.config/mango, DankMaterialShell, quickshell
+  mango  -> ~/.config/mango, DankMaterialShell, quickshell
 
 switch <de> :
   1. sauve le DE courant

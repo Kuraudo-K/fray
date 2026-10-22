@@ -1,5 +1,5 @@
 # MangoWM + DankMaterialShell (4ᵉ DE)
-# Config système sans Home Manager — customs user via fray-de-switch (profil mango)
+# Config système sans Home Manager - customs user via fray-de-switch (profil mango)
 {
   config,
   lib,
@@ -12,7 +12,7 @@ let
 
   # Config minimale Fray (pas de moniteurs hardcodés mona)
   mangoConf = pkgs.writeText "mango-config.conf" ''
-    # Fray — défauts Mango ; profils : ~/.config/mango (fray-de-switch)
+    # Fray - défauts Mango ; profils : ~/.config/mango (fray-de-switch)
 
     bind=SUPER,Return,spawn,kitty
     bind=SUPER,q,killclient

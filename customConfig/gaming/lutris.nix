@@ -1,4 +1,4 @@
-# Lutris + umu / mangohud / vkbasalt (même nixpkgs — pas de mismatch glibc)
+# Lutris + umu / mangohud / vkbasalt (même nixpkgs - pas de mismatch glibc)
 {
   config,
   lib,

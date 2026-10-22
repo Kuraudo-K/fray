@@ -21,7 +21,7 @@ impl ProfileStore for FsProfileStore {
             let _ = remove_tree(&dest);
             copy_tree(&live, &dest).map_err(|e| SwitchError::Io(e.to_string()))?;
             eprintln!(
-                "[fray-de-switch] sauvé {} → {}",
+                "[fray-de-switch] sauvé {} -> {}",
                 live.display(),
                 dest.display()
             );

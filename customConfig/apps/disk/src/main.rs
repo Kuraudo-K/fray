@@ -1,4 +1,4 @@
-//! CLI — clap → application::DiskService
+//! CLI - clap -> application::DiskService
 
 use clap::{Parser, Subcommand};
 use fray_disk::adapters::{LsblkLister, UdisksMounter, WhichDesktopTool};

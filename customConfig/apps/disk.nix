@@ -1,4 +1,4 @@
-# fray-disk — viewer disques Rust hexagonal (+ GNOME Disks / Partition Manager)
+# fray-disk - viewer disques Rust hexagonal (+ GNOME Disks / Partition Manager)
 {
   config,
   lib,

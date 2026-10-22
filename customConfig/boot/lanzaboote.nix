@@ -1,4 +1,4 @@
-# Secure Boot via lanzaboote (optionnel — clés dans /var/lib/sbctl)
+# Secure Boot via lanzaboote (optionnel - clés dans /var/lib/sbctl)
 # Off par défaut. Ne jamais enroll-keys depuis Fray.
 # Module flake importé dans flake.nix (inputs.lanzaboote).
 {

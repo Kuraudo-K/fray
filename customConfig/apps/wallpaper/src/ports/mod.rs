@@ -1,4 +1,4 @@
-//! Ports — inventaire, application DE, détection bureau
+//! Ports - inventaire, application DE, détection bureau
 
 use crate::domain::{DesktopKind, Wallpaper, WallpaperResult};
 

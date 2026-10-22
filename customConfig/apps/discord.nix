@@ -1,4 +1,4 @@
-# Discord via Flatpak (Krisp + auto-update — pas le paquet nixpkgs patché)
+# Discord via Flatpak (Krisp + auto-update - pas le paquet nixpkgs patché)
 {
   config,
   lib,
@@ -24,7 +24,7 @@ let
       fi
       runtime="''${XDG_RUNTIME_DIR:-/run/user/$(id -u)}"
       mkdir -p "$runtime/app/com.discordapp.Discord"
-      # Rich Presence : lien IPC hôte → sandbox Flatpak
+      # Rich Presence : lien IPC hôte -> sandbox Flatpak
       if [ ! -S "$runtime/discord-ipc-0" ] || [ -L "$runtime/discord-ipc-0" ]; then
         rm -f "$runtime/discord-ipc-0"
         ln -sfn "app/com.discordapp.Discord/discord-ipc-0" "$runtime/discord-ipc-0"
