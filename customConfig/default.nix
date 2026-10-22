@@ -42,6 +42,8 @@
     ./apps/flatpak.nix
     ./apps/fhs-bwrap.nix
     ./apps/disk.nix
+    ./apps/discord.nix
+    ./apps/matrix.nix
     ./apps/firefox.nix
     ./apps/terminal.nix
     ./apps/base.nix

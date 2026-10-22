@@ -47,6 +47,8 @@
   fray.apps.flatpak.enable = true;
   fray.apps.fhsBwrap.enable = true;
   fray.apps.disk.enable = true;
+  fray.apps.discord.enable = true;
+  fray.apps.matrix.enable = true;
   fray.apps.firefox.enable = true;
   fray.apps.terminal.enable = true;
   fray.apps.base.enable = true;
