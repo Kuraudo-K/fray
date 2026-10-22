@@ -1,0 +1,8 @@
+[Plymouth Theme]
+Name=fray
+Description=Fray NixOS gaming Plymouth theme
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/fray
+ScriptFile=/usr/share/plymouth/themes/fray/fray.script

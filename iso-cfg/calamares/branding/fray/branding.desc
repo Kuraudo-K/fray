@@ -1,0 +1,47 @@
+# SPDX-FileCopyrightText: no
+# SPDX-License-Identifier: CC0-1.0
+---
+componentName: fray
+
+welcomeStyleCalamares: false
+welcomeExpandingLogo: true
+
+windowExpanding: normal
+windowSize: 800px,520px
+windowPlacement: center
+
+sidebar: widget
+navigation: widget
+
+strings:
+    productName:         "Fray"
+    shortProductName:    Fray
+    version:
+    shortVersion:
+    versionedName:       Fray
+    shortVersionedName:  Fray
+    bootloaderEntryName: Fray
+    productUrl:          https://github.com/Kuraudo-K/fray
+    supportUrl:          https://github.com/Kuraudo-K/fray
+    knownIssuesUrl:      https://github.com/Kuraudo-K/fray/issues
+    releaseNotesUrl:     https://github.com/Kuraudo-K/fray
+    donateUrl:           https://github.com/Kuraudo-K/fray
+
+images:
+    productIcon:         "logo-fray.svg"
+    productLogo:         "logo-fray.png"
+    productWelcome:      "logo-fray.svg"
+
+style:
+   SidebarBackground:        "#0C0C0C"
+   SidebarText:              "#FAFAF9"
+   SidebarTextCurrent:       "#0C0C0C"
+   SidebarBackgroundCurrent: "#3DDC97"
+
+slideshow: "show.qml"
+slideshowAPI: 2
+
+uploadServer:
+    type: "fiche"
+    url: "http://termbin.com:9999"
+    sizeLimit: -1

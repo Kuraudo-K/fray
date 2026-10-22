@@ -1,0 +1,23 @@
+Window.SetBackgroundTopColor(0.05, 0.05, 0.05);
+Window.SetBackgroundBottomColor(0.05, 0.05, 0.05);
+
+logo_image = Image("logo.png");
+logo_sprite = Sprite(logo_image);
+logo_sprite.SetX(Window.GetWidth() / 2 - logo_image.GetWidth() / 2);
+logo_sprite.SetY(Window.GetHeight() / 2 - logo_image.GetHeight() / 2 - 40);
+
+for (i = 0; i < 8; i++)
+  ring_image[i] = Image("progress-" + i + ".png");
+ring_sprite = Sprite();
+ring_sprite.SetX(Window.GetWidth() / 2 - ring_image[0].GetWidth() / 2);
+ring_sprite.SetY(Window.GetHeight() / 2 + logo_image.GetHeight() / 2 - 20);
+
+progress = 0;
+
+fun refresh_callback()
+  {
+    ring_sprite.SetImage(ring_image[Math.Int(progress / 4) % 8]);
+    progress++;
+  }
+
+Plymouth.SetRefreshFunction(refresh_callback);

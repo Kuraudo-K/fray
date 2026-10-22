@@ -27,6 +27,7 @@ let
     desktopName = "Fray DE Switch";
     comment = "Basculer GNOME / Niri / Plasma (profils persistants)";
     exec = "fray-de-switch list";
+    icon = "fray";
     terminal = true;
     categories = [
       "Settings"

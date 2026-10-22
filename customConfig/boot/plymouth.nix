@@ -1,4 +1,4 @@
-# Splash Plymouth (quiet boot)
+# Splash Plymouth (quiet boot) — thème Fray (logo 10) si branding actif
 {
   config,
   lib,
@@ -8,14 +8,15 @@
 
 let
   cfg = config.fray.boot.plymouth;
+  plymouth-fray = pkgs.callPackage ../branding/plymouth { };
 in
 {
   options.fray.boot.plymouth = {
     enable = lib.mkEnableOption "Plymouth boot splash";
     theme = lib.mkOption {
       type = lib.types.str;
-      default = "breeze";
-      description = "Plymouth theme name";
+      default = "fray";
+      description = "Plymouth theme name (default: fray)";
     };
   };
 
@@ -25,6 +26,7 @@ in
     boot.plymouth = {
       enable = true;
       theme = cfg.theme;
+      themePackages = lib.mkDefault [ plymouth-fray ];
     };
 
     boot.consoleLogLevel = 3;

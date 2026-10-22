@@ -12,6 +12,10 @@
     ../customConfig
   ];
 
+  # --- Branding / wallpaper ---
+  fray.branding.enable = true;
+  fray.apps.wallpaper.enable = true;
+
   # --- Desktop (4 DE) ---
   fray.desktop.gnomePaperwm.enable = true;
   fray.desktop.gnomeExtensions.enable = true;

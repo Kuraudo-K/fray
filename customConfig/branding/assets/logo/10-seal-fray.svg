@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Fray seal">
+  <rect width="512" height="512" fill="#0C0C0C"/>
+  <circle cx="256" cy="256" r="220" fill="none" stroke="#D6D3D1" stroke-width="8"/>
+  <circle cx="256" cy="256" r="190" fill="none" stroke="#3DDC97" stroke-width="4" stroke-dasharray="8 10"/>
+  <text x="256" y="240" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="96" font-weight="700" fill="#FAFAF9">Fray</text>
+  <text x="256" y="300" text-anchor="middle" font-family="DejaVu Sans, sans-serif" font-size="22" fill="#A8A29E" letter-spacing="4">NIXOS GAMING</text>
+  <path d="M180 340h152" stroke="#3DDC97" stroke-width="6" stroke-linecap="round"/>
+</svg>

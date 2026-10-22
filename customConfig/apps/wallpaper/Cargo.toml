@@ -1,0 +1,20 @@
+[package]
+name = "fray-wallpaper"
+version = "0.1.0"
+edition = "2021"
+description = "Fray wallpaper lister/setter (hexagonal)"
+license = "MIT"
+
+[lib]
+name = "fray_wallpaper"
+path = "src/lib.rs"
+
+[[bin]]
+name = "fray-wallpaper"
+path = "src/main.rs"
+
+[dependencies]
+clap = { version = "4", features = ["derive"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+dirs = "5"

@@ -4,6 +4,9 @@
 
 {
   imports = [
+    # branding (logo 10-seal-fray, wallpapers, thème Plymouth)
+    ./branding
+
     # desktop
     ./desktop/gnome/paperwm.nix
     ./desktop/gnome/extensions.nix
@@ -47,6 +50,7 @@
     ./apps/flatpak.nix
     ./apps/fhs-bwrap.nix
     ./apps/disk.nix
+    ./apps/wallpaper.nix
     ./apps/discord.nix
     ./apps/matrix.nix
     # ./apps/kdeconnect.nix  # pas utile

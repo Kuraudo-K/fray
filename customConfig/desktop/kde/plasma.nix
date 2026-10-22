@@ -1,5 +1,6 @@
 # KDE Plasma 6 (Wayland)
 # Greeter : GDM (déjà activé par le module GNOME) — pas de SDDM en parallèle
+# Branding : icône / wallpaper Fray via fray.branding (logo 10)
 {
   config,
   lib,
@@ -32,5 +33,12 @@ in
       kdePackages.konsole
       kdePackages.spectacle
     ];
+
+    # Entrée menu « À propos » / applications : icône Fray si branding pack présent
+    environment.etc."xdg/plasma-workspace/env/fray-plasma-branding.sh".text = ''
+      # Hint for Fray wallpaper tool / branding
+      export FRAY_WALLPAPERS="''${FRAY_BRANDING:-}/share/wallpapers"
+    '';
   };
 }
+
