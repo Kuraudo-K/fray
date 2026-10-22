@@ -1,4 +1,5 @@
 # nh — helper rebuild flake (chemin Fray, pas /etc/nixos GLF)
+# Alias courts → fray-update --… (CLI unifiée)
 {
   config,
   lib,
@@ -24,16 +25,17 @@ in
     aliases = lib.mkOption {
       type = lib.types.bool;
       default = true;
-      description = "Shell aliases fray-switch / fray-build / fray-boot";
+      description = "Compat aliases → fray-update --switch|--build|--boot";
     };
   };
 
   config = lib.mkIf cfg.enable (
     let
+      # Compat courte ; préférer fray-update --switch
       aliases = {
-        fray-switch = "nh os switch ${lib.escapeShellArg cfg.flake} -H ${cfg.hostname}";
-        fray-build = "nh os build ${lib.escapeShellArg cfg.flake} -H ${cfg.hostname}";
-        fray-boot = "nh os boot ${lib.escapeShellArg cfg.flake} -H ${cfg.hostname}";
+        fray-switch = "fray-update --switch";
+        fray-build = "fray-update --build";
+        fray-boot = "fray-update --boot";
       };
     in
     {
@@ -43,10 +45,10 @@ in
       };
 
       environment.variables.NH_FLAKE = lib.mkDefault cfg.flake;
+      environment.variables.FRAY_FLAKE = lib.mkDefault cfg.flake;
+      environment.variables.FRAY_HOST = lib.mkDefault cfg.hostname;
 
-      # bash/zsh
       environment.shellAliases = lib.mkIf cfg.aliases aliases;
-      # fish (shell user Fray)
       programs.fish.shellAliases = lib.mkIf cfg.aliases aliases;
     }
   );
