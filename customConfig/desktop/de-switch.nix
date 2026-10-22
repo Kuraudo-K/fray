@@ -175,12 +175,28 @@ in
     # mkForce : plasma6 pose aussi defaultSession = plasma.
     services.displayManager.defaultSession = lib.mkForce "gnome";
 
-    # Restaure Session= juste avant GDM (survit a la reecriture logout GNOME).
+    # Restaure Session= avant ET apres GDM :
+    # - avant : base
+    # - apres : GDM greeter peut reecrire Session=gnome au demarrage
     systemd.services.fray-restore-session = {
-      description = "Restore Fray preferred greeter session";
+      description = "Restore Fray preferred greeter session (pre-GDM)";
       wantedBy = [ "display-manager.service" ];
       before = [ "display-manager.service" ];
       after = [ "local-fs.target" "accounts-daemon.service" ];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "${fray-restore-session}/bin/fray-restore-session";
+        RemainAfterExit = true;
+      };
+    };
+    systemd.services.fray-restore-session-post = {
+      description = "Restore Fray preferred greeter session (post-GDM)";
+      wantedBy = [ "graphical.target" ];
+      after = [
+        "display-manager.service"
+        "accounts-daemon.service"
+        "fray-restore-session.service"
+      ];
       serviceConfig = {
         Type = "oneshot";
         ExecStart = "${fray-restore-session}/bin/fray-restore-session";
