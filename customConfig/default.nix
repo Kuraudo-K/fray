@@ -15,7 +15,7 @@
     # boot
     ./boot/limine.nix
     ./boot/plymouth.nix
-    ./boot/lanzaboote.nix
+    # ./boot/lanzaboote.nix  # fichier gardé ; pas utile pour Fray actuel
 
     # system
     ./system/zram-fstrim.nix
@@ -32,7 +32,7 @@
     ./gaming/launchers/faugus-update.nix
     ./gaming/launchers/heroic.nix
     ./gaming/lutris.nix
-    ./gaming/8bitdo.nix
+    # ./gaming/8bitdo.nix  # Wine lourd ; pas utile
     ./gaming/gamemode.nix
     ./gaming/gamescope.nix
     ./gaming/mangohud.nix
@@ -50,7 +50,7 @@
     ./apps/disk.nix
     ./apps/discord.nix
     ./apps/matrix.nix
-    ./apps/kdeconnect.nix
+    # ./apps/kdeconnect.nix  # pas utile
     ./apps/firefox.nix
     ./apps/terminal.nix
     ./apps/base.nix
@@ -59,6 +59,6 @@
     ./services/input-remapper.nix
     ./services/update-manager.nix
     ./services/auto-update.nix
-    ./services/battery-notify.nix
+    # ./services/battery-notify.nix  # off ; réactiver si besoin manettes
   ];
 }

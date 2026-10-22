@@ -26,7 +26,7 @@
   fray.gaming.faugus.enable = false;
   fray.gaming.faugusUpdate.enable = false;
   fray.gaming.lutris.enable = false;
-  fray.gaming.eightBitDo.enable = false;
+  # 8bitdo / kdeconnect / battery-notify / lanzaboote : imports commentés
 
   fray.hardware.amd.enable = true;
   fray.hardware.amd.overdrive = false;
@@ -43,16 +43,13 @@
   fray.apps.obs.enable = false;
   fray.apps.disk.enable = true;
   fray.apps.base.enable = true;
-  fray.apps.kdeconnect.enable = false;
   fray.services.inputRemapper.enable = false;
   fray.services.updateManager.enable = true;
   fray.services.autoUpdate.enable = false;
-  fray.services.batteryNotify.enable = false;
 
   # Boot ISO / install réelle (pas QEMU)
   fray.boot.limine.enable = true;
   fray.boot.plymouth.enable = true;
-  fray.boot.lanzaboote.enable = false;
 
   networking.hostName = "fray-iso";
   nixpkgs.config.allowUnfree = true;
