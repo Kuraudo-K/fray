@@ -1,13 +1,14 @@
 //! Domaine : fonds d'écran - zéro I/O
 
-#[derive(Debug, Clone, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq, serde::Serialize)]
 pub struct Wallpaper {
     pub id: String,
     pub path: String,
     pub source: WallpaperSource,
 }
 
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, serde::Serialize)]
+#[serde(rename_all = "lowercase")]
 pub enum WallpaperSource {
     Fray,
     System,

@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-Fray Apply - éditeur / apply de config (Python).
+Fray Editor Config - éditeur / apply de config (Python).
 Adapté du GLF Config Editor ; chemins Fray, CLI fray-update.
-Le port Rust update-manager n'est pas prêt - cet outil le remplace pour apply.
+Icône : charcoal-crimson. Binaire : fray-apply.
 """
 
 import gi
@@ -454,19 +454,28 @@ def _icon_theme_search_paths(icon_path):
 
 
 def _find_icon_path():
-    """Cherche l'icône (env, thème système, PNG intégré dans ce script)."""
-    env_icon = os.environ.get("FRAY_APPLY_ICON", "").strip()
-    if env_icon and os.path.isfile(env_icon):
-        return env_icon
+    """Cherche l'icône charcoal-crimson (env, branding, thème, fallback)."""
+    for env_key in ("FRAY_APPLY_ICON", "FRAY_ICON"):
+        env_icon = os.environ.get(env_key, "").strip()
+        if env_icon and os.path.isfile(env_icon):
+            return env_icon
+    for path in (
+        "/run/current-system/sw/share/fray/logo/fray-icon.png",
+        "/run/current-system/sw/share/fray/logo/04gr10-charcoal-crimson.png",
+        "/run/current-system/sw/share/pixmaps/fray.png",
+    ):
+        if os.path.isfile(path):
+            return path
     for base in (
         os.path.join(APP_DIR, "share", "icons", "hicolor"),
         "/run/current-system/sw/share/icons/hicolor",
         "/usr/share/icons/hicolor",
     ):
         for size in ("256x256", "128x128", "48x48"):
-            path = os.path.join(base, size, "apps", f"{APP_ID}.png")
-            if os.path.isfile(path):
-                return path
+            for name in (APP_ID, "fray"):
+                path = os.path.join(base, size, "apps", f"{name}.png")
+                if os.path.isfile(path):
+                    return path
     embedded = _materialize_icon()
     if embedded:
         return embedded
@@ -476,7 +485,7 @@ ICON_PATH = _find_icon_path()
 
 def _setup_app_identity():
     """Identité application pour GNOME/KDE (icône barre des tâches + menu)."""
-    GLib.set_application_name("Fray Apply")
+    GLib.set_application_name("Fray Editor Config")
     GLib.set_prgname(APP_ID)
     try:
         Gdk.set_program_class(APP_ID)
@@ -1871,7 +1880,7 @@ def _refuse_glf_rebuild():
     """Même règle que fray-update : pas de rebuild sur hôte GLF."""
     if _is_glf_host():
         raise RuntimeError(
-            "Rebuild hôte GLF interdit via Fray Apply.\n"
+            "Rebuild hôte GLF interdit via Fray Editor Config.\n"
             "Sur l'hôte : glf-switch / glf-update. Pour Fray : VM ou système Fray."
         )
 
@@ -1962,7 +1971,7 @@ def _nh_os_switch_plan():
 
 class App(Gtk.Window):
     def __init__(self):
-        super().__init__(title="Fray Apply")
+        super().__init__(title="Fray Editor Config")
         self.set_default_size(1100, 760)
         self.theme = "dark"
         self._pkg_restoring = False
@@ -1990,7 +1999,7 @@ class App(Gtk.Window):
 
         hb = Gtk.HeaderBar()
         hb.set_show_close_button(True)
-        hb.props.title = "Fray Apply"
+        hb.props.title = "Fray Editor Config"
         hb.props.subtitle = "Configuration NixOS"
         apply_css(hb, "hbar")
         self.set_titlebar(hb)
@@ -2165,7 +2174,7 @@ class App(Gtk.Window):
 
     def _on_page_shown(self, page_id):
         label = next(l for pid, l, _ in self._tab_defs if pid == page_id)
-        self.hb.props.title = f"Fray Apply - {label}"
+        self.hb.props.title = f"Fray Editor Config - {label}"
         if page_id == "edit":
             if not getattr(self, "_edit_loaded_once", False):
                 self._edit_loaded_once = True
@@ -5525,7 +5534,7 @@ class App(Gtk.Window):
             vbox.pack_start(scroll, True, True, 0)
             self._sys_log = ""
             self._vte_append("⚠  python3-gi-vte non installé - terminal basique.\n", "warn")
-            self._vte_append("Fray Apply - Terminal prêt.\n", "info")
+            self._vte_append("Fray Editor Config - Terminal prêt.\n", "info")
 
         return vbox
 
@@ -5742,6 +5751,24 @@ class App(Gtk.Window):
         self.sys_save_btn.set_sensitive(True)
         return False
 
+    def _offer_reboot_after_success(self, what):
+        """Propose un redémarrage uniquement après un apply réussi."""
+        resp = self._question_dialog(
+            "Opération réussie",
+            body_markup=(
+                f"<b>{GLib.markup_escape_text(str(what))}</b> terminé avec succès.\n\n"
+                "Certains changements (noyau, boot, drivers) demandent un redémarrage.\n"
+                "Redémarrer maintenant ?"
+            ),
+            buttons=[
+                ("Plus tard", Gtk.ResponseType.CANCEL, "secondary"),
+                ("Redémarrer", Gtk.ResponseType.OK, "primary"),
+            ],
+        )
+        if resp == Gtk.ResponseType.OK:
+            self._sys_run(None, "__reboot__")
+        return False
+
     def _sys_run(self, btn, cmd_name):
         sudo_path  = '/run/wrappers/bin/sudo'
 
@@ -5883,9 +5910,11 @@ class App(Gtk.Window):
                         _try_unlink(askpass)
                 if proc.returncode == 0:
                     self._vte_append("\n✅  Succès - nh os switch terminé.\n", "ok")
+                    GLib.idle_add(self._offer_reboot_after_success, "nh os switch")
                 else:
                     self._vte_append(
                         f"\n❌  nh os switch a échoué (code {proc.returncode}).\n", "err")
+                    # Pas de proposition de reboot en cas d'échec
                 GLib.idle_add(self.sys_save_btn.set_sensitive, True)
                 return
 
@@ -5930,6 +5959,9 @@ class App(Gtk.Window):
                 if askpass:
                     _try_unlink(askpass)
                 self._vte_append(f"\n✅  Succès - {cmd_name} terminé.\n", "ok")
+                # Reboot proposé seulement après succès (surtout --switch)
+                if cmd_name == "fray-update --switch":
+                    GLib.idle_add(self._offer_reboot_after_success, cmd_name)
                 GLib.idle_add(self.sys_save_btn.set_sensitive, True)
                 return
 

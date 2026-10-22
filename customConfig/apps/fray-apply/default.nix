@@ -1,6 +1,6 @@
-# Fray Apply - éditeur / apply Python (GTK)
+# Fray Editor Config - éditeur / apply Python (GTK)
 # Source : GLF Config Editor, adapté (chemins FRAY_FLAKE, CLI fray-update)
-# Le update-manager Rust GLF n'est pas porté ici (pas encore).
+# Icône : 04gr10-charcoal-crimson
 {
   config,
   pkgs,
@@ -16,37 +16,14 @@ let
 
   pythonEnv = pkgs.python3.withPackages (ps: [ ps.pygobject3 ]);
 
-  src = pkgs.runCommand "fray-apply-src" {
-    nativeBuildInputs = [ pythonEnv ];
-  } ''
-    mkdir -p $out/share/icons/hicolor/{48x48,128x128,256x256}/apps
-    cp ${./fray-apply.py} $out/fray-apply.py
-
-    ${pythonEnv}/bin/python3 <<'PY'
-import ast, base64, os
-
-out = os.environ["out"]
-src_path = os.path.join(out, "fray-apply.py")
-with open(src_path, encoding="utf-8") as f:
-    content = f.read()
-start = content.index("_ICON_PNG_B64 = (")
-end = content.index("\n)\n", start) + 2
-ns = {}
-exec(content[start:end], ns)
-data = base64.b64decode(ns["_ICON_PNG_B64"])
-for size in (48, 128, 256):
-    d = os.path.join(out, "share", "icons", "hicolor", f"{size}x{size}", "apps")
-    os.makedirs(d, exist_ok=True)
-    with open(os.path.join(d, "${iconName}.png"), "wb") as f:
-        f.write(data)
-PY
-  '';
+  # Logo officiel charcoal-crimson (pas le seal)
+  iconSrc = ../../branding/assets/logo/04gr10-charcoal-crimson.png;
 
   frayApplyPkg = pkgs.stdenv.mkDerivation {
     pname = iconName;
-    version = "0.1.0";
+    version = "0.2.0";
 
-    inherit src;
+    dontUnpack = true;
 
     nativeBuildInputs = with pkgs; [
       wrapGAppsHook3
@@ -64,34 +41,42 @@ PY
       pythonEnv
     ];
 
-    dontBuild = true;
-
     installPhase = ''
       runHook preInstall
 
       mkdir -p $out/bin $out/share/applications $out/share/fray-apply
+      mkdir -p $out/share/icons/hicolor/{48x48,128x128,256x256,512x512}/apps
 
-      install -m 644 $src/fray-apply.py $out/share/fray-apply/
-      cp -r $src/share/icons $out/share/
+      install -m 644 ${./fray-apply.py} $out/share/fray-apply/fray-apply.py
+      install -m 644 ${iconSrc} $out/share/icons/hicolor/512x512/apps/${iconName}.png
+      install -m 644 ${iconSrc} $out/share/icons/hicolor/256x256/apps/${iconName}.png
+      install -m 644 ${iconSrc} $out/share/icons/hicolor/128x128/apps/${iconName}.png
+      install -m 644 ${iconSrc} $out/share/icons/hicolor/48x48/apps/${iconName}.png
+      # Alias icône générique fray
+      for s in 48x48 128x128 256x256 512x512; do
+        cp $out/share/icons/hicolor/$s/apps/${iconName}.png \
+           $out/share/icons/hicolor/$s/apps/fray.png
+      done
 
       iconPath="$out/share/icons/hicolor/256x256/apps/${iconName}.png"
 
       makeWrapper ${pythonEnv}/bin/python3 $out/bin/${iconName} \
         --add-flags "$out/share/fray-apply/fray-apply.py" \
         --set FRAY_APPLY_ICON "$iconPath" \
+        --set-default FRAY_ICON "$iconPath" \
         --set-default FRAY_FLAKE ${lib.escapeShellArg flakeDir} \
         --prefix PATH : ${lib.makeBinPath (with pkgs; [ nix nh coreutils ])}
 
       cat > $out/share/applications/${iconName}.desktop <<'DESKTOP'
 [Desktop Entry]
-Name=Fray Apply
+Name=Fray Editor Config
 Comment=Éditeur / apply de la config Fray (customConfig)
 Exec=fray-apply
 Icon=fray-apply
 Terminal=false
 Type=Application
 Categories=System;Settings;Administration;
-Keywords=nix;nixos;config;fray;apply;
+Keywords=nix;nixos;config;fray;apply;editor;
 StartupWMClass=fray-apply
 DESKTOP
 
@@ -101,7 +86,7 @@ DESKTOP
 in
 {
   options.fray.apps.apply = {
-    enable = lib.mkEnableOption "Fray Apply (éditeur Python / apply customConfig)";
+    enable = lib.mkEnableOption "Fray Editor Config (éditeur Python / apply customConfig)";
   };
 
   config = lib.mkIf cfg.enable {

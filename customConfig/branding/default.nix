@@ -1,4 +1,4 @@
-# Branding Fray - logo officiel 10-seal-fray
+# Branding Fray - icône officielle 04gr10-charcoal-crimson
 # Branché : icônes hicolor, GDM (dconf), wallpapers GNOME/Plasma, paquet Plymouth
 {
   config,
@@ -13,11 +13,11 @@ let
   fray-branding = pkgs.callPackage ./package.nix { };
   plymouth-fray = pkgs.callPackage ./plymouth { };
 
-  logoPath = "${fray-branding}/share/fray/logo/10-seal-fray.png";
+  logoPath = "${fray-branding}/share/fray/logo/fray-icon.png";
 in
 {
   options.fray.branding = {
-    enable = lib.mkEnableOption "Fray branding (logo 10 seal, wallpapers, Plymouth theme package)";
+    enable = lib.mkEnableOption "Fray branding (charcoal-crimson icon, wallpapers, Plymouth)";
   };
 
   config = lib.mkIf cfg.enable {

@@ -1,10 +1,10 @@
-# Calamares branding Fray (logo 10) + module nixos Fray
+# Calamares branding Fray (charcoal-crimson) + module nixos Fray
 { ... }:
 
 let
   calamaresFiles = ./calamares;
-  logoSvg = ../customConfig/branding/assets/logo/10-seal-fray.svg;
-  logoPng = ../customConfig/branding/assets/logo/10-seal-fray.png;
+  logoSvg = ../customConfig/branding/assets/logo/04gr10-charcoal-crimson.svg;
+  logoPng = ../customConfig/branding/assets/logo/04gr10-charcoal-crimson.png;
 in
 {
   nixpkgs.overlays = [

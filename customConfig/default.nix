@@ -4,7 +4,7 @@
 
 {
   imports = [
-    # branding (logo 10-seal-fray, wallpapers, thème Plymouth)
+    # branding (charcoal-crimson, wallpapers, thème Plymouth)
     ./branding
 
     # desktop
@@ -58,7 +58,7 @@
     ./apps/firefox.nix
     ./apps/terminal.nix
     ./apps/base.nix
-    ./apps/fray-apply  # apply Python (GLF editor adapté) ; Rust update-manager pas encore
+    ./apps/fray-apply  # Fray Editor Config (Python) ; Rust update-manager pas encore
 
     # catalogue (fray.features.* + /etc/fray/catalog.json)
     ./catalog

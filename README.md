@@ -22,4 +22,4 @@ Après install : clone ce flake et `fray-update --switch` (ou `nh` / `nixos-rebu
 
 ## Modules
 
-`customConfig/` - options `fray.*.enable`. Logo : **10-seal-fray**.
+`customConfig/` - options `fray.*.enable`. Logo : **04gr10-charcoal-crimson**.

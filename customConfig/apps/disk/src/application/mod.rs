@@ -1,9 +1,12 @@
 //! Cas d'usage
 
 use crate::domain::{
-    assert_safe_target, find_by_name, format_row, BlockDevice, DiskError, DiskResult,
+    assert_safe_target, find_by_name, format_row, generate_nix_filesystems, BlockDevice, DiskError,
+    DiskResult,
 };
 use crate::ports::{BlockLister, DesktopDiskTool, Mounter};
+use std::fs;
+use std::path::Path;
 
 pub struct DiskService<'a> {
     pub lister: &'a dyn BlockLister,
@@ -76,14 +79,80 @@ impl<'a> DiskService<'a> {
         self.mounter.unmount(target)
     }
 
+    /// JSON plat pour la GUI (disques + enfants)
+    pub fn list_json(&self) -> DiskResult<String> {
+        let devices = self.list()?;
+        #[derive(serde::Serialize)]
+        struct Row<'a> {
+            name: &'a str,
+            path: &'a str,
+            size: &'a str,
+            fstype: Option<&'a str>,
+            mountpoint: Option<&'a str>,
+            label: Option<&'a str>,
+            kind: &'a str,
+            depth: usize,
+        }
+        fn walk<'a>(devs: &'a [BlockDevice], depth: usize, out: &mut Vec<Row<'a>>) {
+            for d in devs {
+                out.push(Row {
+                    name: &d.name,
+                    path: &d.path,
+                    size: &d.size,
+                    fstype: d.fstype.as_deref(),
+                    mountpoint: d.mountpoint.as_deref(),
+                    label: d.label.as_deref(),
+                    kind: d.kind.as_str(),
+                    depth,
+                });
+                walk(&d.children, depth + 1, out);
+            }
+        }
+        let mut rows = Vec::new();
+        walk(&devices, 0, &mut rows);
+        serde_json::to_string_pretty(&rows)
+            .map_err(|e| DiskError::Io(format!("json: {e}")))
+    }
+
+    pub fn gen_nix_text(&self, include_system: bool) -> DiskResult<String> {
+        let devices = self.list()?;
+        Ok(generate_nix_filesystems(&devices, include_system))
+    }
+
+    /// Écrit le snippet Nix. Confirmation obligatoire (confirmed).
+    pub fn write_nix(&self, path: &Path, include_system: bool, confirmed: bool) -> DiskResult<()> {
+        if !confirmed {
+            return Err(DiskError::Refused(
+                "écriture Nix refusée : passe --yes pour confirmer".into(),
+            ));
+        }
+        let text = self.gen_nix_text(include_system)?;
+        if let Some(parent) = path.parent() {
+            fs::create_dir_all(parent).map_err(|e| DiskError::Io(e.to_string()))?;
+        }
+        fs::write(path, text).map_err(|e| DiskError::Io(format!("écriture {path:?}: {e}")))?;
+        Ok(())
+    }
+
+    pub fn default_nix_out_path() -> std::path::PathBuf {
+        if let Ok(flake) = std::env::var("FRAY_FLAKE") {
+            return Path::new(&flake).join("customConfig/hardware/generated-disks.nix");
+        }
+        let home = std::env::var("HOME").unwrap_or_else(|_| "/tmp".into());
+        Path::new(&home).join(".config/fray/generated-disks.nix")
+    }
+
     pub fn explain(&self) -> String {
         r#"fray-disk - viewer disques (hexagonal, lecture d'abord)
 =======================================================
-list              lsblk (disques / partitions / FS / montage)
-info <name>       détail d'un nœud (ex. sda1, /dev/nvme0n1p2)
-open              lance GNOME Disks ou KDE Partition Manager
-mount <dev> --yes  udisksctl mount (confirmation obligatoire)
-umount <cible> --yes  udisksctl unmount
+list                 lsblk (disques / partitions / FS / montage)
+list-json            même liste en JSON (GUI)
+info <name>          détail d'un nœud (ex. sda1, /dev/nvme0n1p2)
+open                 lance GNOME Disks ou KDE Partition Manager
+mount <dev> --yes    udisksctl mount (confirmation obligatoire)
+umount <cible> --yes udisksctl unmount
+gen-nix [--system]   affiche fileSystems Nix (ext4/btrfs/…)
+write-nix [path] --yes  écrit le fichier (défaut: $FRAY_FLAKE/.../generated-disks.nix)
 
 Pas de wipe / format / resize ici - utilise l'outil DE via « open ».
 "#

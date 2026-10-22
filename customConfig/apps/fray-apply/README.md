@@ -1,10 +1,12 @@
-# Fray Apply (Python)
+# Fray Editor Config (Python)
 
-Éditeur GTK pour `customConfig/` - **apply** Fray en attendant le port Rust.
+Éditeur GTK pour `customConfig/` - apply Fray.
 
+- Nom UI : **Fray Editor Config**
 - Binaire : `fray-apply`
-- Source : GLF Config Editor, renommé / chemins `FRAY_FLAKE`, CLI `fray-update`
-- Rust apply (update-manager GLF) : **pas encore** dans ce tree
+- Icône : `04gr10-charcoal-crimson`
+- CLI : `fray-update` / `fray-update --switch`
+- Reboot proposé seulement après succès (`--switch` / nh)
 
 ```bash
 # Dev rapide (hors Nix)

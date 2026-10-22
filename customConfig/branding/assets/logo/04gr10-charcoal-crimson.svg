@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="Fray frost leaf Charcoal + crimson">
+  <rect width="512" height="512" rx="96" fill="#1F1F1F"/>
+  <path d="M256 96c80 72 120 140 120 208 0 72-48 120-120 120S136 376 136 304c0-68 40-136 120-208z" fill="none" stroke="#5C5C5C" stroke-width="22"/>
+  <path d="M256 140v252" stroke="#5C5C5C" stroke-width="18" stroke-linecap="round"/>
+  <path d="M256 220c-40 20-64 48-72 84M256 220c40 20 64 48 72 84" fill="none" stroke="#E53935" stroke-width="14" stroke-linecap="round"/>
+</svg>

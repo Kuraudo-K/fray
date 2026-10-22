@@ -38,6 +38,8 @@ struct Cli {
 #[derive(Subcommand)]
 enum Commands {
     List,
+    /// État JSON (GUI)
+    ListJson,
     Save {
         #[arg(value_enum)]
         de: Option<DeCli>,
@@ -86,6 +88,10 @@ fn main() -> ExitCode {
                 info.last_saved.as_deref().unwrap_or("(aucun)")
             );
             println!("Profils : {}", info.profiles_root);
+            Ok(())
+        }
+        Commands::ListJson => {
+            println!("{}", svc.list_json());
             Ok(())
         }
         Commands::Save { de } => svc.save(de.map(Into::into)).map(|session| {

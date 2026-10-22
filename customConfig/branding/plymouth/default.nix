@@ -22,7 +22,7 @@ stdenvNoCC.mkDerivation {
   '';
 
   meta = {
-    description = "Fray Plymouth boot theme (logo 10 seal)";
+    description = "Fray Plymouth boot theme (charcoal-crimson)";
     license = lib.licenses.mit;
     platforms = lib.platforms.linux;
   };

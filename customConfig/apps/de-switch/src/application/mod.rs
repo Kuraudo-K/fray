@@ -28,6 +28,29 @@ impl<'a> SwitchService<'a> {
         }
     }
 
+    pub fn list_json(&self) -> String {
+        let info = self.list();
+        let sessions: Vec<_> = SessionId::all()
+            .into_iter()
+            .map(|de| {
+                serde_json::json!({
+                    "id": de.as_str(),
+                    "label": de.label(),
+                    "greeter": de.greeter_id(),
+                    "has_profile": self.profiles.has_profile(de),
+                })
+            })
+            .collect();
+        serde_json::json!({
+            "sessions": sessions,
+            "current": info.current.map(|d| d.as_str()),
+            "preferred": info.preferred,
+            "last_saved": info.last_saved,
+            "profiles_root": info.profiles_root,
+        })
+        .to_string()
+    }
+
     pub fn save(&self, session: Option<SessionId>) -> SwitchResult<SessionId> {
         let session = session
             .or_else(|| self.detector.current())
