@@ -1,5 +1,5 @@
-//! fray-de-switch — bascule GNOME ↔ Niri avec profils persistants
-//! Profiles live under ~/.local/share/fray/de-profiles/
+//! fray-de-switch — bascule GNOME / Niri / Plasma avec profils persistants
+//! Profiles: ~/.local/share/fray/de-profiles/{gnome,niri,plasma}/
 
 use clap::{Parser, Subcommand, ValueEnum};
 use serde::{Deserialize, Serialize};
@@ -15,6 +15,8 @@ enum De {
     Gnome,
     /// Niri + Noctalia
     Niri,
+    /// KDE Plasma 6
+    Plasma,
 }
 
 impl De {
@@ -22,6 +24,7 @@ impl De {
         match self {
             De::Gnome => "gnome",
             De::Niri => "niri",
+            De::Plasma => "plasma",
         }
     }
 
@@ -29,6 +32,7 @@ impl De {
         match self {
             De::Gnome => "gnome",
             De::Niri => "niri",
+            De::Plasma => "plasma",
         }
     }
 
@@ -36,14 +40,19 @@ impl De {
         match self {
             De::Gnome => "GNOME + PaperWM",
             De::Niri => "Niri + Noctalia",
+            De::Plasma => "KDE Plasma 6",
         }
+    }
+
+    fn all() -> [De; 3] {
+        [De::Gnome, De::Niri, De::Plasma]
     }
 }
 
 #[derive(Parser)]
 #[command(
     name = "fray-de-switch",
-    about = "Fray — bascule DE avec persistance des customs / DE switch + profile persist"
+    about = "Bascule de bureau avec persistance des customs / DE switch + profile persist"
 )]
 struct Cli {
     #[command(subcommand)]
@@ -52,33 +61,30 @@ struct Cli {
 
 #[derive(Subcommand)]
 enum Commands {
-    /// Liste les DE et le profil actif / list DEs and active profile
+    /// Liste les DE et le profil actif
     List,
-    /// Sauve le profil du DE courant (ou indiqué) / save current (or given) DE profile
+    /// Sauve le profil du DE courant (ou indiqué)
     Save {
         #[arg(value_enum)]
         de: Option<De>,
     },
-    /// Restaure un profil DE vers les chemins live / restore a DE profile to live paths
+    /// Restaure un profil DE vers les chemins live
     Restore {
         #[arg(value_enum)]
         de: De,
     },
     /// Sauve le DE actuel, restaure la cible, fixe la session greeter
-    /// Save current, restore target, set greeter session
     Switch {
         #[arg(value_enum)]
         to: De,
     },
-    /// Affiche le mécanisme de persistance / show persistence mechanism
+    /// Affiche le mécanisme de persistance
     Explain,
 }
 
 #[derive(Serialize, Deserialize, Default)]
 struct State {
-    /// Dernier DE choisi pour le greeter / last DE chosen for greeter
     preferred: Option<String>,
-    /// Dernier DE dont le profil a été sauvé / last DE whose profile was saved
     last_saved: Option<String>,
 }
 
@@ -117,6 +123,8 @@ fn detect_de() -> Option<De> {
         Some(De::Gnome)
     } else if desk.contains("NIRI") {
         Some(De::Niri)
+    } else if desk.contains("KDE") || desk.contains("PLASMA") {
+        Some(De::Plasma)
     } else {
         None
     }
@@ -133,11 +141,34 @@ fn live_paths(de: De) -> Vec<(PathBuf, &'static str)> {
         De::Gnome => vec![
             (h.join(".config/dconf"), "dconf"),
             (h.join(".config/paperwm"), "paperwm"),
-            (h.join(".local/share/gnome-shell/extensions"), "gnome-shell-extensions"),
+            (
+                h.join(".local/share/gnome-shell/extensions"),
+                "gnome-shell-extensions",
+            ),
         ],
         De::Niri => vec![
             (h.join(".config/niri"), "niri"),
             (h.join(".config/noctalia"), "noctalia"),
+        ],
+        De::Plasma => vec![
+            // Bureau / shell
+            (h.join(".config/plasma-org.kde.plasma.desktop-appletsrc"), "plasma-appletsrc"),
+            (h.join(".config/plasmashellrc"), "plasmashellrc"),
+            (h.join(".config/plasmarc"), "plasmarc"),
+            (h.join(".config/plasmawindowedrc"), "plasmawindowedrc"),
+            // Fenêtre / raccourcis
+            (h.join(".config/kwinrc"), "kwinrc"),
+            (h.join(".config/kwinrulesrc"), "kwinrulesrc"),
+            (h.join(".config/kglobalshortcutsrc"), "kglobalshortcutsrc"),
+            (h.join(".config/kdeglobals"), "kdeglobals"),
+            (h.join(".config/kdedefaults"), "kdedefaults"),
+            // Apps courantes
+            (h.join(".config/dolphinrc"), "dolphinrc"),
+            (h.join(".config/konsolerc"), "konsolerc"),
+            // Thèmes / layouts locaux
+            (h.join(".local/share/plasma"), "share-plasma"),
+            (h.join(".local/share/kwin"), "share-kwin"),
+            (h.join(".local/share/konsole"), "share-konsole"),
         ],
     }
 }
@@ -187,7 +218,11 @@ fn save_profile(de: De) -> io::Result<()> {
         let dest = dest_root.join(name);
         let _ = remove_tree(&dest);
         copy_tree(&live, &dest)?;
-        eprintln!("[fray-de-switch] sauvé {} → {}", live.display(), dest.display());
+        eprintln!(
+            "[fray-de-switch] sauvé {} → {}",
+            live.display(),
+            dest.display()
+        );
     }
     let mut st = load_state();
     st.last_saved = Some(de.as_str().into());
@@ -214,7 +249,11 @@ fn restore_profile(de: De) -> io::Result<()> {
         }
         let _ = remove_tree(&live);
         copy_tree(&src, &live)?;
-        eprintln!("[fray-de-switch] restauré {} ← {}", live.display(), src.display());
+        eprintln!(
+            "[fray-de-switch] restauré {} ← {}",
+            live.display(),
+            src.display()
+        );
     }
     Ok(())
 }
@@ -224,12 +263,8 @@ fn set_preferred_session(de: De) -> io::Result<()> {
     st.preferred = Some(de.as_str().into());
     save_state(&st)?;
 
-    // ~/.dmrc pour GDM / LightDM legacy
     let dmrc = home().join(".dmrc");
-    let body = format!(
-        "[Desktop]\nSession={}\n",
-        de.session_id()
-    );
+    let body = format!("[Desktop]\nSession={}\n", de.session_id());
     fs::write(&dmrc, body)?;
     eprintln!(
         "[fray-de-switch] session greeter → {} ({})",
@@ -237,7 +272,6 @@ fn set_preferred_session(de: De) -> io::Result<()> {
         dmrc.display()
     );
 
-    // AccountsService si présent
     if let Ok(user) = std::env::var("USER") {
         let as_path = PathBuf::from(format!("/var/lib/AccountsService/users/{user}"));
         if as_path.exists() && Command::new("pkexec").arg("true").status().is_ok() {
@@ -275,8 +309,9 @@ fn run() -> io::Result<()> {
             let st = load_state();
             let current = detect_de();
             println!("DE disponibles / available:");
-            println!("  gnome  — {}", De::Gnome.label());
-            println!("  niri   — {}", De::Niri.label());
+            for de in De::all() {
+                println!("  {:7} — {}", de.as_str(), de.label());
+            }
             println!(
                 "Session courante / current: {}",
                 current.map(|d| d.as_str()).unwrap_or("inconnue")
@@ -294,7 +329,10 @@ fn run() -> io::Result<()> {
         }
         Commands::Save { de } => {
             let de = de.or_else(detect_de).ok_or_else(|| {
-                io::Error::new(io::ErrorKind::Other, "DE inconnu — passe gnome|niri")
+                io::Error::new(
+                    io::ErrorKind::Other,
+                    "DE inconnu — passe gnome|niri|plasma",
+                )
             })?;
             save_profile(de)
         }
@@ -308,12 +346,7 @@ fn run() -> io::Result<()> {
             restore_profile(to)?;
             set_preferred_session(to)?;
             eprintln!(
-                "[fray-de-switch] OK → {}. Déconnecte-toi puis choisis la session « {} ».",
-                to.label(),
-                to.session_id()
-            );
-            eprintln!(
-                "[fray-de-switch] Done → {}. Log out, then pick session « {} ».",
+                "[fray-de-switch] OK → {}. Déconnecte-toi puis choisis « {} ».",
                 to.label(),
                 to.session_id()
             );
@@ -323,17 +356,19 @@ fn run() -> io::Result<()> {
             println!(
                 r#"Mécanisme / Mechanism
 =====================
-Profils : ~/.local/share/fray/de-profiles/{{gnome,niri}}/
-  gnome → dconf, paperwm, gnome-shell extensions
-  niri  → ~/.config/niri, ~/.config/noctalia
+Profils : ~/.local/share/fray/de-profiles/{{gnome,niri,plasma}}/
+
+  gnome  → dconf, paperwm, extensions gnome-shell
+  niri   → ~/.config/niri, ~/.config/noctalia
+  plasma → plasma*/kwin*/kdeglobals, dolphin/konsole,
+           ~/.local/share/{{plasma,kwin,konsole}}
 
 switch <de> :
   1. sauve le DE courant
   2. restaure le profil cible
-  3. écrit ~/.dmrc (Session=gnome|niri)
+  3. écrit ~/.dmrc (Session=gnome|niri|plasma)
 
-Au prochain login GDM, choisir la session. Les customs de chaque DE
-restent isolées et sont rechargées à chaque switch.
+Au login GDM, choisir la session. Chaque DE garde ses customs.
 "#
             );
             Ok(())

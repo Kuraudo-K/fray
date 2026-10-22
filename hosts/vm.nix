@@ -15,6 +15,7 @@
   # --- Desktop ---
   fray.desktop.gnomePaperwm.enable = true;
   fray.desktop.niriNoctalia.enable = true;
+  fray.desktop.plasma.enable = true;
   fray.desktop.deSwitch.enable = true;
 
   # --- Gaming ---
@@ -42,7 +43,7 @@
   fray.services.inputRemapper.enable = true;
   fray.services.updateManager.enable = true;
 
-  # Deux sessions au greeter ; GNOME par défaut
+  # Trois sessions au greeter (gnome / niri / plasma) ; GNOME par défaut
   services.displayManager.defaultSession = "gnome";
 
   networking.hostName = "fray-vm";

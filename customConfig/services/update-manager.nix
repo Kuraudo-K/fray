@@ -1,5 +1,5 @@
 # Mise à jour système (CLI)
-# Sur hôte GLF : délègue à glf-update ; sinon refuse un rebuild hôte
+# Délègue à glf-update/glf-switch s'ils existent ; sinon refuse un rebuild hôte
 {
   config,
   lib,

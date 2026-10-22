@@ -19,6 +19,7 @@ hosts/iso.nix         # ISO optionnelle
 customConfig/
   desktop/gnome/      # PaperWM
   desktop/niri/       # Noctalia
+  desktop/kde/        # Plasma 6
   desktop/de-switch.nix
   gaming/launchers/   # Steam, Heroic, Faugus
   gaming/             # gamemode, gamescope, mangohud, proton
@@ -31,8 +32,9 @@ customConfig/
 |---|---|
 | `gnome` | GNOME + PaperWM |
 | `niri` | Niri + Noctalia |
+| `plasma` | KDE Plasma 6 |
 
-Basculer : `fray-de-switch switch gnome|niri`  
+Basculer : `fray-de-switch switch gnome|niri|plasma`  
 Profils : `~/.local/share/fray/de-profiles/`
 
 ## Build VM

@@ -1,4 +1,4 @@
-# Switcher de bureau (Rust) — GNOME ↔ Niri, profils persistants
+# Switcher de bureau (Rust) — GNOME / Niri / Plasma, profils persistants
 {
   config,
   lib,
@@ -17,7 +17,7 @@ let
     src = lib.cleanSource src;
     cargoLock.lockFile = src + /Cargo.lock;
     meta = {
-      description = "Fray desktop switcher with per-DE persistence";
+      description = "Desktop switcher with per-DE config persistence";
       mainProgram = "fray-de-switch";
     };
   };
@@ -25,7 +25,7 @@ let
   desktopItem = pkgs.makeDesktopItem {
     name = "fray-de-switch";
     desktopName = "Fray DE Switch";
-    comment = "Basculer GNOME+PaperWM ↔ Niri+Noctalia";
+    comment = "Basculer GNOME / Niri / Plasma (profils persistants)";
     exec = "fray-de-switch list";
     terminal = true;
     categories = [

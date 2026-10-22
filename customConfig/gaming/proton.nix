@@ -1,5 +1,5 @@
-# Proton-GE (et Proton-CachyOS si le paquet existe)
-# Seulement via Steam extraCompatPackages — pas en systemPackages
+# Proton-GE (+ proton-cachyos-bin s'il est dans nixpkgs)
+# Uniquement via Steam extraCompatPackages
 {
   config,
   lib,
