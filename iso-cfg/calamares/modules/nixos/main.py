@@ -72,6 +72,7 @@ cfgtime = """\
 """
 
 # Locales limitées : hit cache / build léger (pas glibc-locales « all »)
+# LANG doit être glibc-forme (fr_FR.UTF-8), jamais fr_FR.utf8 (Calamares).
 cfglocale = """\
   i18n.defaultLocale = "@@LANG@@";
   i18n.extraLocales = [
@@ -85,6 +86,20 @@ cfglocale = """\
   ];
 
 """
+
+
+def normalize_locale(value):
+    """Calamares donne souvent fr_FR.utf8 ; glibc veut fr_FR.UTF-8."""
+    if not value:
+        return value
+    s = str(value).split("/")[0].strip()
+    if "." in s:
+        lang, enc = s.rsplit(".", 1)
+        enc_u = enc.upper().replace("UTF8", "UTF-8")
+        if enc_u == "UTF-8" or enc_u.endswith("UTF-8"):
+            return f"{lang}.UTF-8"
+        return f"{lang}.{enc_u}"
+    return s
 
 cfglocaleextra = """\
   i18n.extraLocaleSettings = {
@@ -388,21 +403,21 @@ def run():
             gs.value("locationZone"),
         )
 
-    # Locale (toujours avec extraLocales limitées)
+    # Locale (toujours avec extraLocales limitées ; normaliser .utf8 → .UTF-8)
     locale = "fr_FR.UTF-8"
     if gs.value("localeConf") is not None:
         localeconf = dict(gs.value("localeConf"))
         if "LANG" in localeconf:
-            locale = localeconf.pop("LANG").split("/")[0]
+            locale = normalize_locale(localeconf.pop("LANG"))
         cfg += cfglocale
         catenate(variables, "LANG", locale)
         if localeconf and (
-            len(set(localeconf.values())) != 1
-            or list(set(localeconf.values()))[0].split("/")[0] != locale
+            len({normalize_locale(v) for v in localeconf.values()}) != 1
+            or normalize_locale(next(iter(localeconf.values()))) != locale
         ):
             cfg += cfglocaleextra
             for conf in localeconf:
-                catenate(variables, conf, localeconf.get(conf).split("/")[0])
+                catenate(variables, conf, normalize_locale(localeconf.get(conf)))
     else:
         cfg += cfglocale
         catenate(variables, "LANG", locale)
@@ -431,8 +446,6 @@ def run():
             cfg += cfgautologin
 
     cfg += cfgtail
-    version = ".".join(subprocess.getoutput(["nixos-version"]).split(".")[:2])[:5]
-    catenate(variables, "nixosversion", version or "25.11")
 
     for key in list(variables.keys()):
         pattern = "@@{key}@@".format(key=key)
