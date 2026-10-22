@@ -1,18 +1,32 @@
 # Fray — flake NixOS (gaming perso)
 # Inputs pinés dans flake.lock ; modules dans customConfig/
 {
-  description = "Fray — NixOS gaming perso (GNOME+PaperWM / Niri+Noctalia)";
+  description = "Fray — NixOS gaming (GNOME / Niri / Plasma / Mango+DMS)";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
 
-    # Flatpak déclaratif / declarative Flatpak
     nix-flatpak.url = "github:gmodena/nix-flatpak?ref=latest";
 
-    # Faugus n'est pas dans nixpkgs / Faugus is not in nixpkgs
     faugus-launcher = {
       url = "git+https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/faugus-launcher.git?ref=main";
       flake = false;
+    };
+
+    # MangoWM + DankMaterialShell (4ᵉ DE, reprise mona)
+    mango = {
+      url = "github:mangowm/mango";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    dms = {
+      url = "github:AvengeMedia/DankMaterialShell";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Secure Boot optionnel (alternatif Limine SB)
+    lanzaboote = {
+      url = "github:nix-community/lanzaboote/v1.1.0";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
@@ -22,14 +36,15 @@
       nixpkgs,
       nix-flatpak,
       faugus-launcher,
+      mango,
+      dms,
+      lanzaboote,
       ...
-    }:
+    }@inputs:
     let
       system = "x86_64-linux";
       lib = nixpkgs.lib;
 
-      # Overlay : paquets absents de nixpkgs seulement
-      # Overlay: only packages missing from nixpkgs
       frayOverlay = final: prev: {
         faugus-launcher = final.callPackage "${faugus-launcher}/default.nix" { };
       };
@@ -38,13 +53,16 @@
         modules:
         lib.nixosSystem {
           inherit system;
-          specialArgs = { inherit self; };
+          specialArgs = { inherit self inputs; };
           modules = [
             {
               nixpkgs.overlays = [ frayOverlay ];
               nixpkgs.config.allowUnfree = true;
             }
             nix-flatpak.nixosModules.nix-flatpak
+            mango.nixosModules.mango
+            dms.nixosModules.dank-material-shell
+            lanzaboote.nixosModules.lanzaboote
           ]
           ++ modules;
         };

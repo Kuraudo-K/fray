@@ -7,6 +7,7 @@ pub enum SessionId {
     Gnome,
     Niri,
     Plasma,
+    Mango,
 }
 
 impl SessionId {
@@ -15,6 +16,7 @@ impl SessionId {
             Self::Gnome => "gnome",
             Self::Niri => "niri",
             Self::Plasma => "plasma",
+            Self::Mango => "mango",
         }
     }
 
@@ -28,11 +30,12 @@ impl SessionId {
             Self::Gnome => "GNOME + PaperWM",
             Self::Niri => "Niri + Noctalia",
             Self::Plasma => "KDE Plasma 6",
+            Self::Mango => "Mango + DankMaterialShell",
         }
     }
 
-    pub fn all() -> [SessionId; 3] {
-        [Self::Gnome, Self::Niri, Self::Plasma]
+    pub fn all() -> [SessionId; 4] {
+        [Self::Gnome, Self::Niri, Self::Plasma, Self::Mango]
     }
 
     pub fn parse(s: &str) -> Option<SessionId> {
@@ -40,6 +43,7 @@ impl SessionId {
             "gnome" => Some(Self::Gnome),
             "niri" => Some(Self::Niri),
             "plasma" => Some(Self::Plasma),
+            "mango" | "dms" => Some(Self::Mango),
             _ => None,
         }
     }
@@ -53,6 +57,8 @@ impl SessionId {
             Some(Self::Niri)
         } else if d.contains("KDE") || d.contains("PLASMA") {
             Some(Self::Plasma)
+        } else if d.contains("MANGO") {
+            Some(Self::Mango)
         } else {
             None
         }
@@ -151,6 +157,20 @@ impl SessionId {
                     store_name: "share-konsole",
                 },
             ],
+            Self::Mango => &[
+                ProfileEntry {
+                    relative_live: ".config/mango",
+                    store_name: "mango",
+                },
+                ProfileEntry {
+                    relative_live: ".config/DankMaterialShell",
+                    store_name: "dank-material-shell",
+                },
+                ProfileEntry {
+                    relative_live: ".config/quickshell",
+                    store_name: "quickshell",
+                },
+            ],
         }
     }
 
@@ -168,7 +188,7 @@ pub enum SwitchError {
 impl std::fmt::Display for SwitchError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Self::UnknownSession(s) => write!(f, "DE inconnu: {s} (gnome|niri|plasma)"),
+            Self::UnknownSession(s) => write!(f, "DE inconnu: {s} (gnome|niri|plasma|mango)"),
             Self::Io(s) => write!(f, "{s}"),
         }
     }
@@ -186,6 +206,7 @@ mod tests {
     fn parse_sessions() {
         assert_eq!(SessionId::parse("gnome"), Some(SessionId::Gnome));
         assert_eq!(SessionId::parse("PLASMA"), Some(SessionId::Plasma));
+        assert_eq!(SessionId::parse("mango"), Some(SessionId::Mango));
         assert_eq!(SessionId::parse("nope"), None);
     }
 
@@ -199,6 +220,10 @@ mod tests {
         assert_eq!(
             SessionId::from_xdg_desktop("KDE"),
             Some(SessionId::Plasma)
+        );
+        assert_eq!(
+            SessionId::from_xdg_desktop("mango"),
+            Some(SessionId::Mango)
         );
     }
 

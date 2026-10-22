@@ -1,6 +1,6 @@
 # Fray
 
-NixOS gaming personnel (GNOME + PaperWM, ou Niri + Noctalia).
+NixOS gaming personnel — quatre bureaux (GNOME, Niri, Plasma, Mango+DMS).
 
 ## Emplacement
 
@@ -8,22 +8,23 @@ NixOS gaming personnel (GNOME + PaperWM, ou Niri + Noctalia).
 /home/kouro/Téléchargements/GLF pc/NIX/fray/
 ```
 
-Ancienne version : `../fray-old-archive/`.
+Docs : `DOC/` → `../DOC` (copie locale). Ancienne version : `../fray-old-archive/`.
 
 ## Structure
 
 ```
 flake.nix / flake.lock
-hosts/vm.nix          # machine de test
-hosts/iso.nix         # ISO optionnelle
+hosts/vm.nix          # machine de test (4 DE)
+hosts/iso.nix         # ISO optionnelle (légère)
 customConfig/
   desktop/gnome/      # PaperWM
   desktop/niri/       # Noctalia
   desktop/kde/        # Plasma 6
+  desktop/mango/      # MangoWM + DankMaterialShell
   desktop/de-switch.nix
   gaming/launchers/   # Steam, Heroic, Faugus
-  gaming/             # gamemode, gamescope, mangohud, proton
-  hardware/ apps/ services/ system/
+  gaming/             # lutris, 8bitdo (opt), gamemode…
+  hardware/ apps/ services/ system/ boot/
 ```
 
 ## Bureaux
@@ -33,8 +34,9 @@ customConfig/
 | `gnome` | GNOME + PaperWM |
 | `niri` | Niri + Noctalia |
 | `plasma` | KDE Plasma 6 |
+| `mango` | MangoWM + DankMaterialShell |
 
-Basculer : `fray-de-switch switch gnome|niri|plasma`  
+Basculer : `fray-de-switch switch gnome|niri|plasma|mango`  
 Profils : `~/.local/share/fray/de-profiles/`
 
 ## Build VM

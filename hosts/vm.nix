@@ -12,16 +12,20 @@
     ../customConfig
   ];
 
-  # --- Desktop ---
+  # --- Desktop (4 DE) ---
   fray.desktop.gnomePaperwm.enable = true;
   fray.desktop.gnomeExtensions.enable = true;
   fray.desktop.niriNoctalia.enable = true;
   fray.desktop.plasma.enable = true;
+  fray.desktop.mangoDms.enable = true;
   fray.desktop.deSwitch.enable = true;
 
   # --- Gaming ---
   fray.gaming.steam.enable = true;
-  fray.gaming.faugus.enable = false; # lourd ; activer à la main si besoin
+  fray.gaming.faugus.enable = false;
+  fray.gaming.faugusUpdate.enable = true;
+  fray.gaming.lutris.enable = true;
+  fray.gaming.eightBitDo.enable = false; # Wine lourd ; activer à la main
   fray.gaming.heroic.enable = true;
   fray.gaming.gamemode.enable = true;
   fray.gaming.gamescope.enable = true;
@@ -38,6 +42,7 @@
   fray.system.zramFstrim.enable = true;
   fray.system.security.enable = true;
   fray.system.nh.enable = true;
+  fray.system.aliases.enable = true;
   fray.system.audio.enable = true;
   fray.system.firmware.enable = true;
   fray.system.nixCompat.enable = true;
@@ -49,18 +54,21 @@
   fray.apps.disk.enable = true;
   fray.apps.discord.enable = true;
   fray.apps.matrix.enable = true;
+  fray.apps.kdeconnect.enable = true;
   fray.apps.firefox.enable = true;
   fray.apps.terminal.enable = true;
   fray.apps.base.enable = true;
   fray.services.inputRemapper.enable = true;
   fray.services.updateManager.enable = true;
   fray.services.autoUpdate.enable = true;
+  fray.services.batteryNotify.enable = true;
 
-  # Limine/Plymouth : pour ISO / machine réelle, pas la VM QEMU
+  # Limine/Plymouth/Lanzaboote : ISO / machine réelle, pas QEMU
   fray.boot.limine.enable = false;
   fray.boot.plymouth.enable = false;
+  fray.boot.lanzaboote.enable = false;
 
-  # Trois sessions au greeter (gnome / niri / plasma) ; GNOME par défaut
+  # Quatre sessions ; GNOME par défaut
   services.displayManager.defaultSession = "gnome";
 
   networking.hostName = "fray-vm";

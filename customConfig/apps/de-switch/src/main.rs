@@ -11,6 +11,7 @@ enum DeCli {
     Gnome,
     Niri,
     Plasma,
+    Mango,
 }
 
 impl From<DeCli> for SessionId {
@@ -19,6 +20,7 @@ impl From<DeCli> for SessionId {
             DeCli::Gnome => SessionId::Gnome,
             DeCli::Niri => SessionId::Niri,
             DeCli::Plasma => SessionId::Plasma,
+            DeCli::Mango => SessionId::Mango,
         }
     }
 }

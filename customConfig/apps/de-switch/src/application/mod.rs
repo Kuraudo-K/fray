@@ -57,17 +57,18 @@ impl<'a> SwitchService<'a> {
     pub fn explain(&self) -> String {
         r#"Mécanisme / Mechanism
 =====================
-Profils : ~/.local/share/fray/de-profiles/{gnome,niri,plasma}/
+Profils : ~/.local/share/fray/de-profiles/{gnome,niri,plasma,mango}/
 
   gnome  → dconf, paperwm, extensions gnome-shell
   niri   → ~/.config/niri, ~/.config/noctalia
   plasma → plasma*/kwin*/kdeglobals, dolphin/konsole,
            ~/.local/share/{plasma,kwin,konsole}
+  mango  → ~/.config/mango, DankMaterialShell, quickshell
 
 switch <de> :
   1. sauve le DE courant
   2. restaure le profil cible
-  3. écrit ~/.dmrc (Session=gnome|niri|plasma)
+  3. écrit ~/.dmrc (Session=gnome|niri|plasma|mango)
 
 Au login GDM, choisir la session. Chaque DE garde ses customs.
 "#

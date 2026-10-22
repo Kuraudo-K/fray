@@ -13,6 +13,8 @@
 
   fray.desktop.gnomePaperwm.enable = true;
   fray.desktop.niriNoctalia.enable = false;
+  fray.desktop.plasma.enable = false;
+  fray.desktop.mangoDms.enable = false;
   fray.desktop.deSwitch.enable = false;
 
   fray.gaming.steam.enable = false;
@@ -22,6 +24,9 @@
   fray.gaming.mangohud.enable = false;
   fray.gaming.proton.enable = false;
   fray.gaming.faugus.enable = false;
+  fray.gaming.faugusUpdate.enable = false;
+  fray.gaming.lutris.enable = false;
+  fray.gaming.eightBitDo.enable = false;
 
   fray.hardware.amd.enable = true;
   fray.hardware.amd.overdrive = false;
@@ -29,6 +34,7 @@
 
   fray.system.zramFstrim.enable = true;
   fray.system.nh.enable = false;
+  fray.system.aliases.enable = false;
   fray.system.audio.enable = true;
   fray.system.firmware.enable = true;
   fray.system.nixCompat.enable = false;
@@ -37,13 +43,16 @@
   fray.apps.obs.enable = false;
   fray.apps.disk.enable = true;
   fray.apps.base.enable = true;
+  fray.apps.kdeconnect.enable = false;
   fray.services.inputRemapper.enable = false;
   fray.services.updateManager.enable = true;
   fray.services.autoUpdate.enable = false;
+  fray.services.batteryNotify.enable = false;
 
   # Boot ISO / install réelle (pas QEMU)
   fray.boot.limine.enable = true;
   fray.boot.plymouth.enable = true;
+  fray.boot.lanzaboote.enable = false;
 
   networking.hostName = "fray-iso";
   nixpkgs.config.allowUnfree = true;
