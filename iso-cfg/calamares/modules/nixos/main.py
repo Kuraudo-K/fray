@@ -139,11 +139,9 @@ cfgusers = """\
 
 """
 
-cfgautologin = """\
-  services.displayManager.autoLogin.enable = true;
-  services.displayManager.autoLogin.user = "@@username@@";
-
-"""
+# Pas d'autoLogin sur le systeme installe : GDM doit afficher le greeter
+# pour que Fray Switch (AccountsService Session=) persiste apres reboot.
+# L'ISO live garde son propre autoLogin dans hosts/iso.nix.
 
 # stateVersion is owned by hosts/fray.nix (do not redefine here).
 cfgtail = """\
@@ -442,8 +440,7 @@ def run():
             "groups",
             " ".join(['"' + s + '"' for s in groups]),
         )
-        if gs.value("autoLoginUser") is not None:
-            cfg += cfgautologin
+        # Intentionally ignore autoLoginUser — installed Fray needs GDM greeter.
 
     cfg += cfgtail
 
