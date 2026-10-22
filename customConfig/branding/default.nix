@@ -1,5 +1,5 @@
 # Branding Fray — logo officiel 10-seal-fray
-# Branché : icônes hicolor, GDM, wallpapers GNOME/Plasma, paquet Plymouth
+# Branché : icônes hicolor, GDM (dconf), wallpapers GNOME/Plasma, paquet Plymouth
 {
   config,
   lib,
@@ -12,6 +12,8 @@ let
 
   fray-branding = pkgs.callPackage ./package.nix { };
   plymouth-fray = pkgs.callPackage ./plymouth { };
+
+  logoPath = "${fray-branding}/share/fray/logo/10-seal-fray.png";
 in
 {
   options.fray.branding = {
@@ -27,10 +29,15 @@ in
 
     environment.systemPackages = [ fray-branding ];
 
-    # Logo GDM (greeter GNOME — aussi avec Plasma sans SDDM)
-    services.displayManager.gdm = {
-      logo = lib.mkDefault "${fray-branding}/share/fray/logo/10-seal-fray.png";
-    };
+    # Logo écran de connexion GDM (org.gnome.login-screen)
+    programs.dconf.profiles.gdm.databases = [
+      {
+        settings."org/gnome/login-screen" = {
+          logo = logoPath;
+          disable-user-list = false;
+        };
+      }
+    ];
 
     # Thème Plymouth Fray (activé via fray.boot.plymouth)
     boot.plymouth = lib.mkIf (config.fray.boot.plymouth.enable or false) {
@@ -38,7 +45,6 @@ in
       themePackages = lib.mkDefault [ plymouth-fray ];
     };
 
-    # Breeze / Plasma : logo application Fray disponible comme icône « fray »
     environment.variables.FRAY_BRANDING = "${fray-branding}";
   };
 }
