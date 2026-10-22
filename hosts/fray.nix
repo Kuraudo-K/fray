@@ -79,6 +79,10 @@
 
   networking.networkmanager.enable = true;
 
+  # Greeter GDM obligatoire pour Fray Switch (AccountsService Session=).
+  # Calamares mettait parfois autoLogin=true → force GNOME et ecrase le choix.
+  services.displayManager.autoLogin.enable = lib.mkForce false;
+
   # Tests VM (spice / virsh qemu-agent-command)
   services.qemuGuest.enable = true;
   services.openssh = {
