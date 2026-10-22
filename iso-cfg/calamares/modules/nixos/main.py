@@ -130,8 +130,8 @@ cfgautologin = """\
 
 """
 
+# stateVersion is owned by hosts/fray.nix (do not redefine here).
 cfgtail = """\
-  system.stateVersion = "@@nixosversion@@";
 }
 """
 

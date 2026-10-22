@@ -71,7 +71,7 @@
 
   networking.hostName = "fray-iso";
   nixpkgs.config.allowUnfree = true;
-  system.stateVersion = "25.11";
+  system.stateVersion = "26.11";
 
   nix.settings.experimental-features = [
     "nix-command"
