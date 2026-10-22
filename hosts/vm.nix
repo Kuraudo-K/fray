@@ -26,6 +26,7 @@
   fray.gaming.gamescope.enable = true;
   fray.gaming.mangohud.enable = true;
   fray.gaming.proton.enable = true;
+  fray.gaming.umu.enable = true;
 
   # --- Hardware ---
   fray.hardware.amd.enable = true;
@@ -34,12 +35,16 @@
   fray.hardware.kernelGaming.enableScx = false;
 
   fray.system.zramFstrim.enable = true;
+  fray.system.security.enable = true;
 
   # --- Apps / services ---
   fray.apps.obs.enable = true;
   fray.apps.flatpak.enable = true;
   fray.apps.fhsBwrap.enable = true;
   fray.apps.disk.enable = true;
+  fray.apps.firefox.enable = true;
+  fray.apps.terminal.enable = true;
+  fray.apps.base.enable = true;
   fray.services.inputRemapper.enable = true;
   fray.services.updateManager.enable = true;
 
@@ -95,7 +100,6 @@
     vim
     git
     htop
-    firefox
     mesa-demos
   ];
 

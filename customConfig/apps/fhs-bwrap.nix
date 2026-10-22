@@ -1,4 +1,5 @@
 # Helpers FHS / bubblewrap pour jeux (compat, pas une sandbox sécu)
+# Inclut steam-run, umu si activé, libs Vulkan/audio courantes
 {
   config,
   lib,
@@ -8,21 +9,28 @@
 
 let
   cfg = config.fray.apps.fhsBwrap;
+  umuOn = config.fray.gaming.umu.enable or false;
 
   frayGameFhs = pkgs.buildFHSEnv {
     name = "fray-game-fhs";
     targetPkgs =
-      p: with p; [
+      p:
+      with p;
+      [
         steam-run
+        bubblewrap
         vulkan-loader
         libglvnd
         alsa-lib
         pipewire
-      ];
+        gamemode
+      ]
+      ++ lib.optional umuOn umu-launcher;
     multiPkgs =
       p: with p; [
         vulkan-loader
         libglvnd
+        gamemode
       ];
     runScript = "bash";
   };

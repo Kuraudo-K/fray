@@ -44,5 +44,7 @@ in
       remotePlay.openFirewall = true;
       localNetworkGameTransfers.openFirewall = true;
     };
+
+    # steam-run reste disponible via fray.apps.fhsBwrap
   };
 }

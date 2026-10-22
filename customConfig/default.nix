@@ -1,6 +1,5 @@
 # customConfig — une ligne d'import par module
 # Commenter une ligne = désactiver ce module
-# One import line per module; comment out to disable
 { ... }:
 
 {
@@ -13,6 +12,7 @@
 
     # system
     ./system/zram-fstrim.nix
+    ./system/security.nix
 
     # gaming
     ./gaming/launchers/steam.nix
@@ -22,6 +22,7 @@
     ./gaming/gamescope.nix
     ./gaming/mangohud.nix
     ./gaming/proton.nix
+    ./gaming/umu.nix
 
     # hardware
     ./hardware/amd.nix
@@ -32,6 +33,9 @@
     ./apps/flatpak.nix
     ./apps/fhs-bwrap.nix
     ./apps/disk.nix
+    ./apps/firefox.nix
+    ./apps/terminal.nix
+    ./apps/base.nix
 
     # services
     ./services/input-remapper.nix
