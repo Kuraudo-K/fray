@@ -28,10 +28,15 @@
   fray.hardware.kernelGaming.enable = true;
 
   fray.system.zramFstrim.enable = true;
+  fray.system.nh.enable = false;
+  fray.system.audio.enable = true;
+  fray.system.firmware.enable = true;
+  fray.system.nixCompat.enable = false;
   fray.apps.flatpak.enable = false;
   fray.apps.fhsBwrap.enable = false;
   fray.apps.obs.enable = false;
   fray.apps.disk.enable = true;
+  fray.apps.base.enable = true;
   fray.services.inputRemapper.enable = false;
   fray.services.updateManager.enable = true;
   fray.services.autoUpdate.enable = false;

@@ -32,6 +32,7 @@ in
       vulkan-tools
       mesa-demos
       clinfo
+      libva-utils
     ]
     ++ lib.optional cfg.overdrive pkgs.lact;
 

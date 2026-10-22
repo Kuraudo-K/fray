@@ -37,6 +37,10 @@
 
   fray.system.zramFstrim.enable = true;
   fray.system.security.enable = true;
+  fray.system.nh.enable = true;
+  fray.system.audio.enable = true;
+  fray.system.firmware.enable = true;
+  fray.system.nixCompat.enable = true;
 
   # --- Apps / services ---
   fray.apps.obs.enable = true;
@@ -74,12 +78,7 @@
     variant = "alt-intl";
   };
 
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-  };
+  # Audio : fray.system.audio (PipeWire)
 
   users.users.kouro = {
     isNormalUser = true;
@@ -104,9 +103,6 @@
 
   environment.systemPackages = with pkgs; [
     vim
-    git
-    htop
-    mesa-demos
   ];
 
   virtualisation = {

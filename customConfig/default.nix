@@ -18,6 +18,10 @@
     # system
     ./system/zram-fstrim.nix
     ./system/security.nix
+    ./system/nh.nix
+    ./system/audio.nix
+    ./system/firmware.nix
+    ./system/nix-compat.nix
 
     # gaming
     ./gaming/launchers/steam.nix
