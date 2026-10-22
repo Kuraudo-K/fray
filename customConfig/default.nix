@@ -28,6 +28,7 @@
     ./system/audio.nix
     ./system/firmware.nix
     ./system/nix-compat.nix
+    ./system/login-language.nix
 
     # gaming
     ./gaming/launchers/steam.nix

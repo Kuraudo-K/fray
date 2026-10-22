@@ -1,4 +1,4 @@
-# Calamares branding Fray (logo 10) pour l'ISO installable
+# Calamares branding Fray (logo 10) + module nixos Fray
 { ... }:
 
 let
@@ -13,8 +13,11 @@ in
         postInstall = (old.postInstall or "") + ''
           mkdir -p \
             $out/etc/calamares/modules \
+            $out/lib/calamares/modules/nixos \
             $out/share/calamares/branding/fray
 
+          cp ${calamaresFiles}/modules/nixos/main.py \
+            $out/lib/calamares/modules/nixos/main.py
           cp ${calamaresFiles}/config/settings.conf \
             $out/etc/calamares/settings.conf
           cp ${calamaresFiles}/config/modules/*.conf \

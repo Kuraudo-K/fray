@@ -4,6 +4,7 @@
   modulesPath,
   lib,
   pkgs,
+  self,
   ...
 }:
 
@@ -15,6 +16,7 @@
   ];
 
   fray.branding.enable = true;
+  fray.system.loginLanguage.enable = true;
 
   fray.desktop.gnomePaperwm.enable = true;
   fray.desktop.gnomeExtensions.enable = false;
@@ -83,9 +85,20 @@
     isoName = lib.mkForce "fray-${config.system.nixos.release or "unstable"}-x86_64-linux.iso";
     volumeID = lib.mkForce "FRAY_ISO";
     edition = lib.mkForce "fray";
+    # Flake Fray embarqué pour Calamares → nixos-install --flake …#fray
+    contents = [
+      {
+        source = self;
+        target = "/iso-cfg";
+      }
+    ];
   };
+
+  # Locales limitées aussi sur le live (évite glibc-locales « all »)
+  i18n.defaultLocale = lib.mkDefault "fr_FR.UTF-8";
 
   environment.systemPackages = with pkgs; [
     gparted
+    zenity
   ];
 }

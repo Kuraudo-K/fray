@@ -80,6 +80,8 @@
 
       nixosConfigurations = {
         fray-iso = mkNixos [ ./hosts/iso.nix ];
+        # Cible Calamares (hardware + calamares-generated présents après install)
+        fray = mkNixos [ ./hosts/fray.nix ];
       };
 
       packages.${system} = {
