@@ -49,7 +49,17 @@ nix build .#vm -L
 # SSH : ssh -p 2222 root@127.0.0.1   (mdp: fray)
 ```
 
+## Outils
+
+| Commande | Rôle |
+|---|---|
+| `fray-update` / `fray-update --switch` | CLI update unifiée |
+| `fray-apply` | Éditeur / apply Python (`customConfig/apps/fray-apply/`) |
+| Catalogue | `customConfig/catalog/` → `/etc/fray/catalog.json` |
+
+Rust update-manager GLF : **pas encore** (apply = Python pour l’instant).
+
 ## Interdit
 
 - Écrire sous `/etc/nixos` / `glf-switch` sans ordre
-- Push GitHub sans accord
+- Rebuild hôte GLF via `fray-update --switch`

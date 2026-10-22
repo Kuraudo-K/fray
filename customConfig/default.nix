@@ -53,6 +53,10 @@
     ./apps/firefox.nix
     ./apps/terminal.nix
     ./apps/base.nix
+    ./apps/fray-apply  # apply Python (GLF editor adapté) ; Rust update-manager pas encore
+
+    # catalogue (fray.features.* + /etc/fray/catalog.json)
+    ./catalog
 
     # services
     ./services/input-remapper.nix

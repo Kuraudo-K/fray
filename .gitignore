@@ -3,3 +3,6 @@ result-*
 *.qcow2
 .direnv
 **/target/
+
+__pycache__/
+*.pyc

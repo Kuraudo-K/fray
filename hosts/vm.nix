@@ -56,6 +56,8 @@
   fray.apps.firefox.enable = true;
   fray.apps.terminal.enable = true;
   fray.apps.base.enable = true;
+  fray.apps.apply.enable = true;
+  fray.profile = "full";
   fray.services.inputRemapper.enable = true;
   fray.services.updateManager.enable = true;
   fray.services.autoUpdate.enable = true;
