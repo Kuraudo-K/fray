@@ -28,18 +28,26 @@ in
     };
   };
 
-  config = lib.mkIf cfg.enable {
-    programs.nh = {
-      enable = true;
-      flake = cfg.flake;
-    };
+  config = lib.mkIf cfg.enable (
+    let
+      aliases = {
+        fray-switch = "nh os switch ${lib.escapeShellArg cfg.flake} -H ${cfg.hostname}";
+        fray-build = "nh os build ${lib.escapeShellArg cfg.flake} -H ${cfg.hostname}";
+        fray-boot = "nh os boot ${lib.escapeShellArg cfg.flake} -H ${cfg.hostname}";
+      };
+    in
+    {
+      programs.nh = {
+        enable = true;
+        flake = cfg.flake;
+      };
 
-    environment.variables.NH_FLAKE = lib.mkDefault cfg.flake;
+      environment.variables.NH_FLAKE = lib.mkDefault cfg.flake;
 
-    environment.shellAliases = lib.mkIf cfg.aliases {
-      fray-switch = "nh os switch ${lib.escapeShellArg cfg.flake} -H ${cfg.hostname}";
-      fray-build = "nh os build ${lib.escapeShellArg cfg.flake} -H ${cfg.hostname}";
-      fray-boot = "nh os boot ${lib.escapeShellArg cfg.flake} -H ${cfg.hostname}";
-    };
-  };
+      # bash/zsh
+      environment.shellAliases = lib.mkIf cfg.aliases aliases;
+      # fish (shell user Fray)
+      programs.fish.shellAliases = lib.mkIf cfg.aliases aliases;
+    }
+  );
 }

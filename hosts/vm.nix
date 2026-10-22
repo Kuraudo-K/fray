@@ -110,6 +110,8 @@
   virtualisation = {
     memorySize = 6144;
     cores = 4;
+    # Flatpak Discord/Element + runtimes need room (default 1024 Mo trop juste)
+    diskSize = 12288;
     graphics = false;
     forwardPorts = [
       {
