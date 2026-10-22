@@ -11,6 +11,10 @@
     ./desktop/kde/plasma.nix
     ./desktop/de-switch.nix
 
+    # boot (ISO / install réelle — options off en VM QEMU)
+    ./boot/limine.nix
+    ./boot/plymouth.nix
+
     # system
     ./system/zram-fstrim.nix
     ./system/security.nix
@@ -41,5 +45,6 @@
     # services
     ./services/input-remapper.nix
     ./services/update-manager.nix
+    ./services/auto-update.nix
   ];
 }

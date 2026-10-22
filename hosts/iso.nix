@@ -34,6 +34,11 @@
   fray.apps.disk.enable = true;
   fray.services.inputRemapper.enable = false;
   fray.services.updateManager.enable = true;
+  fray.services.autoUpdate.enable = false;
+
+  # Boot ISO / install réelle (pas QEMU)
+  fray.boot.limine.enable = true;
+  fray.boot.plymouth.enable = true;
 
   networking.hostName = "fray-iso";
   nixpkgs.config.allowUnfree = true;

@@ -5,6 +5,14 @@ edition = "2021"
 description = "Desktop switcher with per-DE config persistence"
 license = "MIT"
 
+[lib]
+name = "fray_de_switch"
+path = "src/lib.rs"
+
+[[bin]]
+name = "fray-de-switch"
+path = "src/main.rs"
+
 [dependencies]
 clap = { version = "4", features = ["derive"] }
 serde = { version = "1", features = ["derive"] }

@@ -48,6 +48,11 @@
   fray.apps.base.enable = true;
   fray.services.inputRemapper.enable = true;
   fray.services.updateManager.enable = true;
+  fray.services.autoUpdate.enable = true;
+
+  # Limine/Plymouth : pour ISO / machine réelle, pas la VM QEMU
+  fray.boot.limine.enable = false;
+  fray.boot.plymouth.enable = false;
 
   # Trois sessions au greeter (gnome / niri / plasma) ; GNOME par défaut
   services.displayManager.defaultSession = "gnome";

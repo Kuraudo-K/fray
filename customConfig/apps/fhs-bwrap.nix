@@ -1,5 +1,5 @@
 # Helpers FHS / bubblewrap pour jeux (compat, pas une sandbox sécu)
-# Inclut steam-run, umu si activé, libs Vulkan/audio courantes
+# Socle commun : Steam, Heroic, Faugus (+ umu si activé)
 {
   config,
   lib,
@@ -10,6 +10,8 @@
 let
   cfg = config.fray.apps.fhsBwrap;
   umuOn = config.fray.gaming.umu.enable or false;
+  heroicOn = config.fray.gaming.heroic.enable or false;
+  faugusOn = config.fray.gaming.faugus.enable or false;
 
   frayGameFhs = pkgs.buildFHSEnv {
     name = "fray-game-fhs";
@@ -25,7 +27,9 @@ let
         pipewire
         gamemode
       ]
-      ++ lib.optional umuOn umu-launcher;
+      ++ lib.optional umuOn umu-launcher
+      ++ lib.optional heroicOn heroic
+      ++ lib.optional (faugusOn && (p ? faugus-launcher)) faugus-launcher;
     multiPkgs =
       p: with p; [
         vulkan-loader
@@ -37,7 +41,7 @@ let
 in
 {
   options.fray.apps.fhsBwrap = {
-    enable = lib.mkEnableOption "steam-run, bubblewrap, and a small FHS env for games";
+    enable = lib.mkEnableOption "FHS/bwrap env shared by Steam, Heroic, Faugus and umu";
   };
 
   config = lib.mkIf cfg.enable {
