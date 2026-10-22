@@ -1,4 +1,4 @@
-# GNOME + PaperWM
+# GNOME + tweaks (PaperWM est dans extensions.nix)
 {
   config,
   lib,
@@ -11,7 +11,7 @@ let
 in
 {
   options.fray.desktop.gnomePaperwm = {
-    enable = lib.mkEnableOption "GNOME with PaperWM tiling";
+    enable = lib.mkEnableOption "GNOME desktop (use gnomeExtensions for PaperWM and friends)";
   };
 
   config = lib.mkIf cfg.enable {
@@ -19,10 +19,7 @@ in
     services.displayManager.gdm.enable = true;
     services.desktopManager.gnome.enable = true;
 
-    environment.systemPackages = with pkgs; [
-      gnomeExtensions.paperwm
-      gnome-tweaks
-    ];
+    environment.systemPackages = with pkgs; [ gnome-tweaks ];
 
     programs.dconf.enable = true;
   };

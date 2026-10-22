@@ -14,6 +14,7 @@
 
   # --- Desktop ---
   fray.desktop.gnomePaperwm.enable = true;
+  fray.desktop.gnomeExtensions.enable = true;
   fray.desktop.niriNoctalia.enable = true;
   fray.desktop.plasma.enable = true;
   fray.desktop.deSwitch.enable = true;

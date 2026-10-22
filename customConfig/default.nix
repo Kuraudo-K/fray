@@ -6,6 +6,7 @@
   imports = [
     # desktop
     ./desktop/gnome/paperwm.nix
+    ./desktop/gnome/extensions.nix
     ./desktop/niri/noctalia.nix
     ./desktop/kde/plasma.nix
     ./desktop/de-switch.nix
