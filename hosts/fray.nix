@@ -15,11 +15,13 @@
 
   fray.branding.enable = true;
 
+  # Quatre sessions greeter (Fray Switch) — toutes installées pour que le choix
+  # survive au reboot via AccountsService (voir fray-set-session).
   fray.desktop.gnomePaperwm.enable = true;
   fray.desktop.gnomeExtensions.enable = true;
-  fray.desktop.niriNoctalia.enable = false;
-  fray.desktop.plasma.enable = false;
-  fray.desktop.mangoDms.enable = false;
+  fray.desktop.niriNoctalia.enable = true;
+  fray.desktop.plasma.enable = true;
+  fray.desktop.mangoDms.enable = true;
   fray.desktop.deSwitch.enable = true;
 
   # Launcher lourds : off à l'install (cache / temps). Activer avec fray-apply.
@@ -76,4 +78,11 @@
   ];
 
   networking.networkmanager.enable = true;
+
+  # Tests VM (spice / virsh qemu-agent-command)
+  services.qemuGuest.enable = true;
+  services.openssh = {
+    enable = true;
+    settings.PasswordAuthentication = true;
+  };
 }

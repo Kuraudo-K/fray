@@ -460,8 +460,9 @@ def _find_icon_path():
         if env_icon and os.path.isfile(env_icon):
             return env_icon
     for path in (
+        "/run/current-system/sw/share/icons/hicolor/256x256/apps/fray-apply.png",
+        "/run/current-system/sw/share/fray/logo/apps/fray-apply.png",
         "/run/current-system/sw/share/fray/logo/fray-icon.png",
-        "/run/current-system/sw/share/fray/logo/04gr10-charcoal-crimson.png",
         "/run/current-system/sw/share/pixmaps/fray.png",
     ):
         if os.path.isfile(path):

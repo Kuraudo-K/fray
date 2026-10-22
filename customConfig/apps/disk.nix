@@ -68,14 +68,14 @@ let
       makeWrapper ${pythonEnv}/bin/python3 $out/bin/fray-disk-gui \
         --add-flags "$out/share/fray-disk/gui.py" \
         --set FRAY_DISK_BIN ${fray-disk}/bin/fray-disk \
-        --set-default FRAY_ICON /run/current-system/sw/share/pixmaps/fray.png \
+        --set-default FRAY_ICON /run/current-system/sw/share/icons/hicolor/256x256/apps/fray-disk.png \
         --prefix PATH : ${lib.makeBinPath [ fray-disk pkgs.udisks pkgs.util-linux ]}
       cat > $out/share/applications/fray-disk.desktop <<'DESKTOP'
 [Desktop Entry]
 Name=Fray Disk
 Comment=Disques, montages et génération Nix
 Exec=fray-disk-gui
-Icon=fray
+Icon=fray-disk
 Terminal=false
 Type=Application
 Categories=System;Filesystem;

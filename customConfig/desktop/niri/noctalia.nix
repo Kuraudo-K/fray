@@ -54,9 +54,9 @@ in
       recommendedServices.enable = true;
     };
 
+    # kitty fourni par fray.apps.terminal (terminal unique)
     environment.systemPackages = with pkgs; [
       xwayland-satellite
-      kitty
       fuzzel
     ];
 

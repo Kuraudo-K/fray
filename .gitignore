@@ -16,3 +16,7 @@ result-vm
 result-vm-*
 DOC
 docs/
+
+# agent temp
+fray-src-update.img
+*.qcow2

@@ -66,8 +66,8 @@ in
 
     environment.etc."xdg/mango/config.conf".source = mangoConf;
 
+    # kitty fourni par fray.apps.terminal (terminal unique)
     environment.systemPackages = with pkgs; [
-      kitty
       wl-clipboard
       cliphist
       grim

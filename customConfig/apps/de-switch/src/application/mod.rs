@@ -91,9 +91,10 @@ Profils : ~/.local/share/fray/de-profiles/{gnome,niri,plasma,mango}/
 switch <de> :
   1. sauve le DE courant
   2. restaure le profil cible
-  3. écrit ~/.dmrc (Session=gnome|niri|plasma|mango)
+  3. écrit ~/.dmrc + AccountsService (fray-set-session)
 
-Au login GDM, choisir la session. Chaque DE garde ses customs.
+GDM relit Session= au prochain login (persiste après reboot).
+Chaque DE garde ses customs.
 "#
         .to_string()
     }

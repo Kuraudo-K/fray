@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Fray Wallpaper">
+  <rect width="128" height="128" rx="28" fill="#1F1F1F"/>
+  <rect x="18" y="26" width="92" height="76" rx="10" fill="#2B2B2B" stroke="#8A8A8A" stroke-width="4"/>
+  <circle cx="42" cy="48" r="10" fill="#C41E3A"/>
+  <path d="M26 86l28-26 18 16 14-12 16 22H26z" fill="#8A8A8A"/>
+  <path d="M72 64l16-14 14 36H72z" fill="#C41E3A"/>
+</svg>

@@ -1,4 +1,5 @@
 # Switcher de bureau (Rust + GUI GTK) - GNOME / Niri / Plasma / Mango
+# Persistance greeter : AccountsService via fray-set-session (pas seulement ~/.dmrc)
 {
   config,
   lib,
@@ -23,20 +24,72 @@ let
 
   fray-de-switch = pkgs.rustPlatform.buildRustPackage {
     pname = "fray-de-switch";
-    version = "0.1.0";
+    version = "0.1.1";
     src = rustSrc;
     cargoLock.lockFile = src + /Cargo.lock;
+    nativeBuildInputs = [ pkgs.makeWrapper ];
+    postInstall = ''
+      wrapProgram $out/bin/fray-de-switch \
+        --set FRAY_SET_SESSION_BIN ${fray-set-session}/bin/fray-set-session \
+        --prefix PATH : ${lib.makeBinPath [ fray-set-session pkgs.sudo ]}
+    '';
     meta = {
       description = "Desktop switcher with per-DE config persistence";
       mainProgram = "fray-de-switch";
     };
   };
 
+  # Ecrit Session=/XSession= pour GDM (AccountsService). Appelé en sudo -n.
+  fray-set-session = pkgs.writeShellScriptBin "fray-set-session" ''
+    set -euo pipefail
+    session="''${1:-}"
+    user="''${2:-}"
+    case "$session" in
+      gnome|niri|plasma|mango) ;;
+      *)
+        echo "usage: fray-set-session <gnome|niri|plasma|mango> [user]" >&2
+        exit 2
+        ;;
+    esac
+    if [ -z "$user" ]; then
+      if [ -n "''${SUDO_USER:-}" ]; then
+        user="$SUDO_USER"
+      else
+        user="$(id -un)"
+      fi
+    fi
+    as_dir=/var/lib/AccountsService/users
+    as_file="$as_dir/$user"
+    mkdir -p "$as_dir"
+    if [ -f "$as_file" ]; then
+      tmp="$(mktemp)"
+      ${pkgs.gawk}/bin/awk -v s="$session" '
+        BEGIN { sess=0; xsess=0 }
+        /^Session=/ { print "Session=" s; sess=1; next }
+        /^XSession=/ { print "XSession=" s; xsess=1; next }
+        { print }
+        END {
+          if (!sess) print "Session=" s
+          if (!xsess) print "XSession=" s
+        }
+      ' "$as_file" > "$tmp"
+      mv "$tmp" "$as_file"
+    else
+      printf '%s\n' '[User]' "Session=$session" "XSession=$session" "SystemAccount=false" > "$as_file"
+    fi
+    chmod 644 "$as_file"
+    # Prefetch GDM cache if present
+    if [ -d /var/lib/gdm ]; then
+      rm -f "/var/lib/gdm/.cache/accountsservice/users/$user" 2>/dev/null || true
+    fi
+    echo "[fray-set-session] $user -> $session ($as_file)"
+  '';
+
   pythonEnv = pkgs.python3.withPackages (ps: [ ps.pygobject3 ]);
 
   fray-de-switch-gui = pkgs.stdenv.mkDerivation {
     pname = "fray-de-switch-gui";
-    version = "0.1.0";
+    version = "0.1.1";
     dontUnpack = true;
     nativeBuildInputs = with pkgs; [
       wrapGAppsHook3
@@ -58,14 +111,22 @@ let
       makeWrapper ${pythonEnv}/bin/python3 $out/bin/fray-de-switch-gui \
         --add-flags "$out/share/fray-de-switch/gui.py" \
         --set FRAY_DE_SWITCH_BIN ${fray-de-switch}/bin/fray-de-switch \
-        --set-default FRAY_ICON /run/current-system/sw/share/pixmaps/fray.png \
-        --prefix PATH : ${lib.makeBinPath [ fray-de-switch pkgs.systemd ]}
+        --set FRAY_SET_SESSION_BIN ${fray-set-session}/bin/fray-set-session \
+        --set-default FRAY_ICON /run/current-system/sw/share/icons/hicolor/256x256/apps/fray-de-switch.png \
+        --prefix PATH : ${
+          lib.makeBinPath [
+            fray-de-switch
+            fray-set-session
+            pkgs.systemd
+            pkgs.sudo
+          ]
+        }
       cat > $out/share/applications/fray-de-switch.desktop <<'DESKTOP'
 [Desktop Entry]
 Name=Fray Switch
 Comment=Basculer GNOME / Niri / Plasma / Mango (profils persistants)
 Exec=fray-de-switch-gui
-Icon=fray
+Icon=fray-de-switch
 Terminal=false
 Type=Application
 Categories=Settings;System;
@@ -85,6 +146,28 @@ in
     environment.systemPackages = [
       fray-de-switch
       fray-de-switch-gui
+      fray-set-session
+    ];
+
+    # Defaut greeter initial (AccountsService ecrase apres fray-de-switch).
+    # mkForce : plasma6 pose aussi defaultSession = plasma.
+    services.displayManager.defaultSession = lib.mkForce "gnome";
+
+    # Chemin store + symlink profil (sudo match sur chemin resolu ou invoque)
+    security.sudo.extraRules = [
+      {
+        groups = [ "users" ];
+        commands = [
+          {
+            command = "${fray-set-session}/bin/fray-set-session";
+            options = [ "NOPASSWD" ];
+          }
+          {
+            command = "/run/current-system/sw/bin/fray-set-session";
+            options = [ "NOPASSWD" ];
+          }
+        ];
+      }
     ];
   };
 }

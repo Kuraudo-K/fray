@@ -25,9 +25,9 @@ def _bin():
 def _icon():
     for p in (
         os.environ.get("FRAY_ICON", ""),
+        "/run/current-system/sw/share/icons/hicolor/256x256/apps/fray-disk.png",
+        "/run/current-system/sw/share/fray/logo/apps/fray-disk.png",
         "/run/current-system/sw/share/pixmaps/fray.png",
-        "/run/current-system/sw/share/fray/logo/fray-icon.png",
-        "/run/current-system/sw/share/fray/logo/04gr10-charcoal-crimson.png",
     ):
         if p and os.path.isfile(p):
             return p

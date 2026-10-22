@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Fray Editor Config">
+  <rect width="128" height="128" rx="28" fill="#1F1F1F"/>
+  <rect x="28" y="24" width="72" height="80" rx="8" fill="#2B2B2B" stroke="#8A8A8A" stroke-width="4"/>
+  <path d="M40 44h48M40 60h36M40 76h40" stroke="#8A8A8A" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="92" cy="92" r="22" fill="#C41E3A"/>
+  <path d="M84 92h16M92 84v16" stroke="#1F1F1F" stroke-width="6" stroke-linecap="round"/>
+</svg>

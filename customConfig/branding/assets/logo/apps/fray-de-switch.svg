@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Fray Switch">
+  <rect width="128" height="128" rx="28" fill="#1F1F1F"/>
+  <path d="M28 48h52l-12-14 8-7 28 32-28 32-8-7 12-14H28z" fill="#C41E3A"/>
+  <path d="M100 80H48l12 14-8 7-28-32 28-32 8 7-12 14h52z" fill="#8A8A8A"/>
+</svg>

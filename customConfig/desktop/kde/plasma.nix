@@ -28,11 +28,18 @@ in
     # GNOME (seahorse) + Plasma: only one askPassword
     programs.ssh.askPassword = lib.mkForce (lib.getExe pkgs.kdePackages.ksshaskpass);
 
+    # Konsole exclu : terminal Fray unique = kitty (fray.apps.terminal)
     environment.systemPackages = with pkgs; [
       kdePackages.dolphin
-      kdePackages.konsole
       kdePackages.spectacle
     ];
+
+    environment.plasma6.excludePackages = lib.mkDefault (
+      with pkgs.kdePackages;
+      [
+        konsole
+      ]
+    );
 
     # Entrée menu « À propos » / applications : icône Fray si branding pack présent
     environment.etc."xdg/plasma-workspace/env/fray-plasma-branding.sh".text = ''

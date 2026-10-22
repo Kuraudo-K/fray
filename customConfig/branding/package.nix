@@ -1,4 +1,4 @@
-# Paquet branding Fray : logo charcoal-crimson, wallpaper, icônes session
+# Paquet branding Fray : logo systeme charcoal-crimson + icones apps distinctes
 {
   lib,
   stdenvNoCC,
@@ -7,7 +7,7 @@
 
 stdenvNoCC.mkDerivation {
   pname = "fray-branding";
-  version = "1.1.0";
+  version = "1.2.0";
 
   src = ./assets;
 
@@ -22,19 +22,31 @@ stdenvNoCC.mkDerivation {
       $out/share/backgrounds/gnome \
       $out/share/gnome-background-properties \
       $out/share/pixmaps \
-      $out/share/fray/logo
+      $out/share/fray/logo \
+      $out/share/fray/logo/apps
 
-    # Icône officielle apps : 04gr10-charcoal-crimson (frost-leaf gray/red)
+    # Branding systeme (GDM, Plymouth, pixmap generique)
     cp logo/04gr10-charcoal-crimson.svg $out/share/icons/hicolor/scalable/apps/fray.svg
     cp logo/04gr10-charcoal-crimson.svg $out/share/icons/hicolor/scalable/apps/fray-logo.svg
-    cp logo/04gr10-charcoal-crimson.svg $out/share/icons/hicolor/scalable/apps/fray-apply.svg
     cp logo/04gr10-charcoal-crimson.png $out/share/pixmaps/fray.png
     cp logo/04gr10-charcoal-crimson.png $out/share/fray/logo/fray-icon.png
     cp logo/04gr10-charcoal-crimson.svg $out/share/fray/logo/fray-icon.svg
     cp logo/04gr10-charcoal-crimson.png $out/share/fray/logo/04gr10-charcoal-crimson.png
     cp logo/04gr10-charcoal-crimson.svg $out/share/fray/logo/04gr10-charcoal-crimson.svg
 
-    # Archive seal (référence historique, non utilisée comme icône apps)
+    # Icones apps Fray (distinctes du brand)
+    for app in fray-de-switch fray-disk fray-wallpaper fray-apply; do
+      cp logo/apps/$app.svg $out/share/icons/hicolor/scalable/apps/$app.svg
+      cp logo/apps/$app.svg $out/share/fray/logo/apps/$app.svg
+      cp logo/apps/$app.png $out/share/fray/logo/apps/$app.png
+      for SIZE in 48 128 256 512; do
+        mkdir -p $out/share/icons/hicolor/''${SIZE}x''${SIZE}/apps
+        cp logo/apps/$app-$SIZE.png \
+          $out/share/icons/hicolor/''${SIZE}x''${SIZE}/apps/$app.png
+      done
+    done
+
+    # Archive seal (reference historique)
     if [ -f logo/10-seal-fray.png ]; then
       cp logo/10-seal-fray.png $out/share/fray/logo/10-seal-fray.png
       cp logo/10-seal-fray.svg $out/share/fray/logo/10-seal-fray.svg
@@ -47,14 +59,6 @@ stdenvNoCC.mkDerivation {
         cp logo/fray-logo-$SIZE.png \
           $out/share/icons/hicolor/''${SIZE}x''${SIZE}/apps/fray.png
         cp logo/fray-logo-$SIZE.png \
-          $out/share/icons/hicolor/''${SIZE}x''${SIZE}/apps/fray-apply.png
-        cp logo/fray-logo-$SIZE.png \
-          $out/share/icons/hicolor/''${SIZE}x''${SIZE}/apps/fray-de-switch.png
-        cp logo/fray-logo-$SIZE.png \
-          $out/share/icons/hicolor/''${SIZE}x''${SIZE}/apps/fray-disk.png
-        cp logo/fray-logo-$SIZE.png \
-          $out/share/icons/hicolor/''${SIZE}x''${SIZE}/apps/fray-wallpaper.png
-        cp logo/fray-logo-$SIZE.png \
           $out/share/icons/hicolor/''${SIZE}x''${SIZE}/emblems/fray-logo.png
       fi
     done
@@ -62,7 +66,6 @@ stdenvNoCC.mkDerivation {
     cp wallpaper/fray-gaming-arena.png $out/share/backgrounds/fray/
     cp wallpaper/fray-gaming-arena.png $out/share/backgrounds/gnome/fray-gaming-arena.png
 
-    # KDE wallpaper package
     mkdir -p $out/share/wallpapers/FrayGaming/contents/images
     cp wallpaper/fray-gaming-arena.png \
       $out/share/wallpapers/FrayGaming/contents/images/2560x1440.png
@@ -98,7 +101,7 @@ EOF
   '';
 
   meta = {
-    description = "Fray logos (charcoal-crimson), emblems and wallpapers";
+    description = "Fray logos, distinct app icons and wallpapers";
     license = lib.licenses.mit;
     platforms = lib.platforms.linux;
   };

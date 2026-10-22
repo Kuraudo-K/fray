@@ -67,14 +67,14 @@ let
       makeWrapper ${pythonEnv}/bin/python3 $out/bin/fray-wallpaper-gui \
         --add-flags "$out/share/fray-wallpaper/gui.py" \
         --set FRAY_WALLPAPER_BIN ${fray-wallpaper}/bin/fray-wallpaper \
-        --set-default FRAY_ICON /run/current-system/sw/share/pixmaps/fray.png \
+        --set-default FRAY_ICON /run/current-system/sw/share/icons/hicolor/256x256/apps/fray-wallpaper.png \
         --prefix PATH : ${lib.makeBinPath [ fray-wallpaper pkgs.glib ]}
       cat > $out/share/applications/fray-wallpaper.desktop <<'DESKTOP'
 [Desktop Entry]
 Name=Fray Wallpaper
 Comment=Choisir un fond d'écran Fray
 Exec=fray-wallpaper-gui
-Icon=fray
+Icon=fray-wallpaper
 Terminal=false
 Type=Application
 Categories=Settings;DesktopSettings;
@@ -95,7 +95,7 @@ DESKTOP
       Name=Fray Wallpaper Auto
       Comment=Appliquer le fond Fray au démarrage de session
       Exec=${fray-wallpaper}/bin/fray-wallpaper auto
-      Icon=fray
+      Icon=fray-wallpaper
       Terminal=false
       NoDisplay=true
       X-GNOME-Autostart-enabled=true
