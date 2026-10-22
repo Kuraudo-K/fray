@@ -23,6 +23,10 @@ in
     # Avoid a second greeter if another module suggests one
     services.displayManager.sddm.enable = lib.mkDefault false;
 
+    # GNOME (seahorse) + Plasma : une seule askPassword
+    # GNOME (seahorse) + Plasma: only one askPassword
+    programs.ssh.askPassword = lib.mkForce (lib.getExe pkgs.kdePackages.ksshaskpass);
+
     environment.systemPackages = with pkgs; [
       kdePackages.dolphin
       kdePackages.konsole
