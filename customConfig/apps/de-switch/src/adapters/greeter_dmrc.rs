@@ -31,7 +31,10 @@ impl GreeterConfig for DmrcGreeter {
         // (Session= + XSession=). This is what GDM actually reads after reboot.
         let helper = std::env::var("FRAY_SET_SESSION_BIN")
             .unwrap_or_else(|_| "/run/current-system/sw/bin/fray-set-session".into());
-        let helper_ok = Command::new("sudo")
+        // Prefer NixOS setuid wrapper; never pkgs.sudo from a wrap PATH.
+        let sudo_bin = std::env::var("FRAY_SUDO_BIN")
+            .unwrap_or_else(|_| "/run/wrappers/bin/sudo".into());
+        let helper_ok = Command::new(&sudo_bin)
             .args(["-n", &helper, greeter, &user])
             .status()
             .map(|s| s.success())

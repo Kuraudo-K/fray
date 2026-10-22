@@ -10,7 +10,21 @@
 let
   cfg = config.fray.apps.terminal;
 
-  hideDesktop = name: text: pkgs.writeTextDir "share/applications/${name}.desktop" text;
+  # Ecrase le .desktop amont (meme id, Hidden=true). writeTextFile destination
+  # = chemin sous $out ; le nom du fichier DOIT etre l'id .desktop exact.
+  hideApp =
+    id: pkgs.writeTextFile {
+      name = "hide-${id}";
+      destination = "/share/applications/${id}";
+      text = ''
+        [Desktop Entry]
+        Type=Application
+        Name=Hidden
+        Exec=true
+        NoDisplay=true
+        Hidden=true
+      '';
+    };
 in
 {
   options.fray.apps.terminal = {
@@ -20,47 +34,12 @@ in
   config = lib.mkIf cfg.enable {
     environment.systemPackages = [
       pkgs.kitty
-      # Masque les .desktop fournis par GNOME / Plasma / xterm
-      (hideDesktop "org.gnome.Console.desktop" ''
-        [Desktop Entry]
-        Name=Console
-        Type=Application
-        NoDisplay=true
-        Hidden=true
-        Exec=true
-      '')
-      (hideDesktop "kgx.desktop" ''
-        [Desktop Entry]
-        Name=Console
-        Type=Application
-        NoDisplay=true
-        Hidden=true
-        Exec=true
-      '')
-      (hideDesktop "org.kde.konsole.desktop" ''
-        [Desktop Entry]
-        Name=Konsole
-        Type=Application
-        NoDisplay=true
-        Hidden=true
-        Exec=true
-      '')
-      (hideDesktop "konsole.desktop" ''
-        [Desktop Entry]
-        Name=Konsole
-        Type=Application
-        NoDisplay=true
-        Hidden=true
-        Exec=true
-      '')
-      (hideDesktop "xterm.desktop" ''
-        [Desktop Entry]
-        Name=XTerm
-        Type=Application
-        NoDisplay=true
-        Hidden=true
-        Exec=true
-      '')
+      (hideApp "org.gnome.Console.desktop")
+      (hideApp "kgx.desktop")
+      (hideApp "org.kde.konsole.desktop")
+      (hideApp "konsole.desktop")
+      (hideApp "xterm.desktop")
+      (hideApp "org.gnome.Ptyxis.desktop")
     ];
 
     environment.gnome.excludePackages = lib.mkDefault (

@@ -31,7 +31,8 @@ let
     postInstall = ''
       wrapProgram $out/bin/fray-de-switch \
         --set FRAY_SET_SESSION_BIN ${fray-set-session}/bin/fray-set-session \
-        --prefix PATH : ${lib.makeBinPath [ fray-set-session pkgs.sudo ]}
+        --set FRAY_SUDO_BIN /run/wrappers/bin/sudo \
+        --prefix PATH : /run/wrappers/bin:${lib.makeBinPath [ fray-set-session ]}
     '';
     meta = {
       description = "Desktop switcher with per-DE config persistence";
@@ -112,13 +113,13 @@ let
         --add-flags "$out/share/fray-de-switch/gui.py" \
         --set FRAY_DE_SWITCH_BIN ${fray-de-switch}/bin/fray-de-switch \
         --set FRAY_SET_SESSION_BIN ${fray-set-session}/bin/fray-set-session \
+        --set FRAY_SUDO_BIN /run/wrappers/bin/sudo \
         --set-default FRAY_ICON /run/current-system/sw/share/icons/hicolor/256x256/apps/fray-de-switch.png \
         --prefix PATH : ${
           lib.makeBinPath [
             fray-de-switch
             fray-set-session
             pkgs.systemd
-            pkgs.sudo
           ]
         }
       cat > $out/share/applications/fray-de-switch.desktop <<'DESKTOP'
