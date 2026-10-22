@@ -1,7 +1,4 @@
-# ┌─────────────────────────────────────────────────────────────┐
-# │ Fray — Flatpak déclaratif (input nix-flatpak → flake.lock)  │
-# │ Inspiré Nixerion flatpak.nix                                │
-# └─────────────────────────────────────────────────────────────┘
+# Flatpak déclaratif (module nix-flatpak)
 {
   config,
   lib,
@@ -13,11 +10,11 @@ let
 in
 {
   options.fray.apps.flatpak = {
-    enable = lib.mkEnableOption "Fray Flatpak (nix-flatpak)";
+    enable = lib.mkEnableOption "Declarative Flatpak with Flathub";
     officeApps = lib.mkOption {
       type = lib.types.bool;
       default = true;
-      description = "Apps bureautique Flathub de base";
+      description = "Install basic Flathub office apps (LibreOffice, Evince, etc.)";
     };
   };
 

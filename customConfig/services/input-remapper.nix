@@ -1,6 +1,4 @@
-# ┌─────────────────────────────────────────────────────────────┐
-# │ Fray — input-remapper + autoload (GLF peripherals.nix)      │
-# └─────────────────────────────────────────────────────────────┘
+# input-remapper + autoload après login
 {
   config,
   lib,
@@ -13,7 +11,7 @@ let
 in
 {
   options.fray.services.inputRemapper = {
-    enable = lib.mkEnableOption "Fray input-remapper";
+    enable = lib.mkEnableOption "input-remapper with autoload on graphical session";
   };
 
   config = lib.mkIf cfg.enable {
@@ -31,7 +29,7 @@ in
     '';
 
     systemd.user.services.fray-input-remapper-autoload = {
-      description = "Fray: autoload input-remapper presets";
+      description = "Autoload input-remapper presets";
       wantedBy = [ "graphical-session.target" ];
       after = [ "graphical-session.target" ];
       serviceConfig = {

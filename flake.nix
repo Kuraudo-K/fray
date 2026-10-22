@@ -1,7 +1,5 @@
-# ┌─────────────────────────────────────────────────────────────┐
-# │ Fray — flake (inputs pinés → flake.lock)                    │
-# │ Apps via nixpkgs + faugus overlay ; modules = customConfig  │
-# └─────────────────────────────────────────────────────────────┘
+# Fray — flake NixOS (gaming perso)
+# Inputs pinés dans flake.lock ; modules dans customConfig/
 {
   description = "Fray — NixOS gaming perso (GNOME+PaperWM / Niri+Noctalia)";
 
@@ -11,7 +9,7 @@
     # Flatpak déclaratif / declarative Flatpak
     nix-flatpak.url = "github:gmodena/nix-flatpak?ref=latest";
 
-    # Faugus (GLF) — absent de nixpkgs / not in nixpkgs
+    # Faugus n'est pas dans nixpkgs / Faugus is not in nixpkgs
     faugus-launcher = {
       url = "git+https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/faugus-launcher.git?ref=main";
       flake = false;
@@ -30,7 +28,7 @@
       system = "x86_64-linux";
       lib = nixpkgs.lib;
 
-      # Overlay : seuls les paquets absents de nixpkgs
+      # Overlay : paquets absents de nixpkgs seulement
       # Overlay: only packages missing from nixpkgs
       frayOverlay = final: prev: {
         faugus-launcher = final.callPackage "${faugus-launcher}/default.nix" { };

@@ -1,6 +1,4 @@
-# ┌─────────────────────────────────────────────────────────────┐
-# │ Fray — ISO installateur (optionnel)                         │
-# └─────────────────────────────────────────────────────────────┘
+# ISO Fray (optionnelle, plus légère que la VM)
 {
   modulesPath,
   lib,
@@ -14,7 +12,7 @@
   ];
 
   fray.desktop.gnomePaperwm.enable = true;
-  fray.desktop.niriNoctalia.enable = false; # ISO légère
+  fray.desktop.niriNoctalia.enable = false;
   fray.desktop.deSwitch.enable = false;
 
   fray.gaming.steam.enable = false;
@@ -41,6 +39,6 @@
   nixpkgs.config.allowUnfree = true;
   system.stateVersion = "25.11";
 
-  # ISO : pas de ZFS avec latest kernel
+  # ZFS souvent cassé avec un noyau trop récent
   boot.supportedFilesystems.zfs = lib.mkForce false;
 }

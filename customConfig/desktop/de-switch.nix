@@ -1,7 +1,4 @@
-# ┌─────────────────────────────────────────────────────────────┐
-# │ Fray — switcher DE (Rust) + persistance par profil          │
-# │ GNOME+PaperWM ↔ Niri+Noctalia                               │
-# └─────────────────────────────────────────────────────────────┘
+# Switcher de bureau (Rust) — GNOME ↔ Niri, profils persistants
 {
   config,
   lib,
@@ -20,7 +17,7 @@ let
     src = lib.cleanSource src;
     cargoLock.lockFile = src + /Cargo.lock;
     meta = {
-      description = "Fray desktop environment switcher with per-DE persistence";
+      description = "Fray desktop switcher with per-DE persistence";
       mainProgram = "fray-de-switch";
     };
   };
@@ -28,7 +25,7 @@ let
   desktopItem = pkgs.makeDesktopItem {
     name = "fray-de-switch";
     desktopName = "Fray DE Switch";
-    comment = "Basculer GNOME+PaperWM ↔ Niri+Noctalia (profils persistants)";
+    comment = "Basculer GNOME+PaperWM ↔ Niri+Noctalia";
     exec = "fray-de-switch list";
     terminal = true;
     categories = [
@@ -39,7 +36,7 @@ let
 in
 {
   options.fray.desktop.deSwitch = {
-    enable = lib.mkEnableOption "Fray Rust DE switcher (persistance customs/DE)";
+    enable = lib.mkEnableOption "Rust desktop switcher with per-DE config profiles";
   };
 
   config = lib.mkIf cfg.enable {

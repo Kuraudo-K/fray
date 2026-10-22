@@ -1,6 +1,4 @@
-# ┌─────────────────────────────────────────────────────────────┐
-# │ Fray — FHS + bubblewrap (compat jeux, pas sandbox sécu)     │
-# └─────────────────────────────────────────────────────────────┘
+# Helpers FHS / bubblewrap pour jeux (compat, pas une sandbox sécu)
 {
   config,
   lib,
@@ -31,7 +29,7 @@ let
 in
 {
   options.fray.apps.fhsBwrap = {
-    enable = lib.mkEnableOption "Fray FHS/bwrap helpers";
+    enable = lib.mkEnableOption "steam-run, bubblewrap, and a small FHS env for games";
   };
 
   config = lib.mkIf cfg.enable {

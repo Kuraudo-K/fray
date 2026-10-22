@@ -1,6 +1,4 @@
-# ┌─────────────────────────────────────────────────────────────┐
-# │ Fray — outil disque simple (nixpkgs → flake.lock)           │
-# └─────────────────────────────────────────────────────────────┘
+# Outil disque (GNOME Disks)
 {
   config,
   lib,
@@ -13,7 +11,7 @@ let
 in
 {
   options.fray.apps.disk = {
-    enable = lib.mkEnableOption "Fray disk utility (GNOME Disks)";
+    enable = lib.mkEnableOption "GNOME Disks and udisks2";
   };
 
   config = lib.mkIf cfg.enable {

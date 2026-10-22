@@ -1,6 +1,4 @@
-# ┌─────────────────────────────────────────────────────────────┐
-# │ Fray — OBS + plugins (GLF streaming/obs.nix)                │
-# └─────────────────────────────────────────────────────────────┘
+# OBS Studio + plugins utiles
 {
   config,
   lib,
@@ -13,7 +11,7 @@ let
 in
 {
   options.fray.apps.obs = {
-    enable = lib.mkEnableOption "Fray OBS Studio";
+    enable = lib.mkEnableOption "OBS Studio with common capture plugins";
   };
 
   config = lib.mkIf cfg.enable {

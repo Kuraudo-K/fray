@@ -1,8 +1,4 @@
-# ┌─────────────────────────────────────────────────────────────┐
-# │ Fray — noyau + sysctl + scheduler gaming                    │
-# │ GLF boot.nix + Nixerion perf-gaming + Bazzite split_lock    │
-# │ CachyOS : ananicy-cpp + rules                               │
-# └─────────────────────────────────────────────────────────────┘
+# Noyau + sysctl + priorités processus (gaming)
 {
   config,
   lib,
@@ -15,18 +11,16 @@ let
 in
 {
   options.fray.hardware.kernelGaming = {
-    enable = lib.mkEnableOption "Fray gaming kernel tweaks";
+    enable = lib.mkEnableOption "Gaming kernel tweaks (sysctl, ntsync, ananicy)";
     useLatest = lib.mkOption {
       type = lib.types.bool;
       default = true;
-      description = "linuxPackages_latest / latest kernel set";
+      description = "Use the latest kernel package set";
     };
-    # GLF : scx installé mais pas démarré ; Nixerion : scx_bpfland on
-    # Option off par défaut (prudence GLF) / default off (GLF caution)
     enableScx = lib.mkOption {
       type = lib.types.bool;
       default = false;
-      description = "Activer services.scx (scx_bpfland) — Nixerion/CachyOS style";
+      description = "Start the scx_bpfland CPU scheduler at boot (off by default)";
     };
   };
 
@@ -34,15 +28,14 @@ in
     boot.kernelPackages = lib.mkIf cfg.useLatest pkgs.linuxPackages_latest;
     boot.supportedFilesystems.zfs = lib.mkForce false;
 
-    boot.kernelParams = [
-      "preempt=full" # GLF boot.nix
-    ];
+    boot.kernelParams = [ "preempt=full" ];
 
-    # ntsync : Wine/Proton (GLF + Nixerion)
+    # Meilleure sync Wine/Proton / Better Wine/Proton sync
     boot.kernelModules = [ "ntsync" ];
 
-    # Sysctl gaming — GLF boot.nix + Bazzite split_lock_mitigate=0
     boot.kernel.sysctl = {
+      # Jeux mal alignés : ne pas les ralentir volontairement
+      # Misaligned games: do not intentionally slow them down
       "kernel.split_lock_mitigate" = 0;
       "vm.swappiness" = 60;
       "vm.vfs_cache_pressure" = 50;
@@ -55,17 +48,15 @@ in
       "fs.file-max" = 2097152;
     };
 
-    # CachyOS-style process priorities
     services.ananicy = {
       enable = true;
       package = pkgs.ananicy-cpp;
       rulesProvider = pkgs.ananicy-rules-cachyos;
     };
 
-    # scx : comme GLF (présent) ; démarrage seulement si enableScx
     services.scx = lib.mkIf cfg.enableScx {
       enable = true;
-      scheduler = "scx_bpfland"; # Nixerion (lavd évité)
+      scheduler = "scx_bpfland";
     };
   };
 }

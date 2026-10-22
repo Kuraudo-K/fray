@@ -1,9 +1,8 @@
-# fray-de-switch — change de DE + persistance des customs
 [package]
 name = "fray-de-switch"
 version = "0.1.0"
 edition = "2021"
-description = "Fray desktop switcher with per-DE config persistence"
+description = "Desktop switcher with per-DE config persistence"
 license = "MIT"
 
 [dependencies]

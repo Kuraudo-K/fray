@@ -1,7 +1,4 @@
-# ┌─────────────────────────────────────────────────────────────┐
-# │ Fray — hosts/vm.nix (SEULE machine de test)                 │
-# │ Pas de docs ici ; pas d'activation hôte                     │
-# └─────────────────────────────────────────────────────────────┘
+# VM de test Fray (QEMU) — pas d'activation sur la machine réelle
 {
   lib,
   pkgs,
@@ -15,11 +12,12 @@
     ../customConfig
   ];
 
-  # ── Activer les briques Fray / enable Fray bricks ───────────
+  # --- Desktop ---
   fray.desktop.gnomePaperwm.enable = true;
   fray.desktop.niriNoctalia.enable = true;
   fray.desktop.deSwitch.enable = true;
 
+  # --- Gaming ---
   fray.gaming.steam.enable = true;
   fray.gaming.faugus.enable = false; # lourd ; activer à la main si besoin
   fray.gaming.heroic.enable = true;
@@ -28,6 +26,7 @@
   fray.gaming.mangohud.enable = true;
   fray.gaming.proton.enable = true;
 
+  # --- Hardware ---
   fray.hardware.amd.enable = true;
   fray.hardware.amd.overdrive = false; # LACT inutile en VM
   fray.hardware.kernelGaming.enable = true;
@@ -35,15 +34,15 @@
 
   fray.system.zramFstrim.enable = true;
 
+  # --- Apps / services ---
   fray.apps.obs.enable = true;
   fray.apps.flatpak.enable = true;
   fray.apps.fhsBwrap.enable = true;
   fray.apps.disk.enable = true;
-
   fray.services.inputRemapper.enable = true;
   fray.services.updateManager.enable = true;
 
-  # Deux sessions au greeter ; défaut GNOME (niri module pose mkDefault niri)
+  # Deux sessions au greeter ; GNOME par défaut
   services.displayManager.defaultSession = "gnome";
 
   networking.hostName = "fray-vm";
@@ -87,7 +86,6 @@
   programs.fish.enable = true;
   security.sudo.wheelNeedsPassword = false;
 
-  # SSH headless
   services.openssh.enable = true;
   services.openssh.settings.PermitRootLogin = "yes";
   users.users.root.initialPassword = "fray";

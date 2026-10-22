@@ -1,6 +1,6 @@
 # Fray
 
-NixOS gaming perso — **pas** un fork GLF-OS.
+NixOS gaming personnel (GNOME + PaperWM, ou Niri + Noctalia).
 
 ## Emplacement
 
@@ -8,28 +8,32 @@ NixOS gaming perso — **pas** un fork GLF-OS.
 /home/kouro/Téléchargements/GLF pc/NIX/fray/
 ```
 
-Archive ancienne version : `../fray-old-archive/`.  
-Docs Nixerion à côté (`00B__…`, `00C__…`) — non touchés.
+Ancienne version : `../fray-old-archive/`.
 
 ## Structure
 
 ```
-flake.nix          # inputs → flake.lock (apps pinées)
-hosts/vm.nix       # seule machine de test
-hosts/iso.nix      # ISO optionnelle
-customConfig/      # tout le custom, 1 module = 1 enable
-  desktop/         # GNOME+PaperWM, Niri+Noctalia, de-switch Rust
-  gaming/ hardware/ apps/ services/ system/
+flake.nix / flake.lock
+hosts/vm.nix          # machine de test
+hosts/iso.nix         # ISO optionnelle
+customConfig/
+  desktop/gnome/      # PaperWM
+  desktop/niri/       # Noctalia
+  desktop/de-switch.nix
+  gaming/launchers/   # Steam, Heroic, Faugus
+  gaming/             # gamemode, gamescope, mangohud, proton
+  hardware/ apps/ services/ system/
 ```
 
-## DE
+## Bureaux
 
-| DE | Session greeter | Shell |
-|---|---|---|
-| A | `gnome` | GNOME + PaperWM |
-| B | `niri` | Niri + Noctalia |
+| Session | Contenu |
+|---|---|
+| `gnome` | GNOME + PaperWM |
+| `niri` | Niri + Noctalia |
 
-Switcher : `fray-de-switch switch gnome|niri` (persistance `~/.local/share/fray/de-profiles/`).
+Basculer : `fray-de-switch switch gnome|niri`  
+Profils : `~/.local/share/fray/de-profiles/`
 
 ## Build VM
 
@@ -43,5 +47,5 @@ nix build .#vm -L
 
 ## Interdit
 
-- Écrire sous `/etc/nixos` / `glf-switch`
+- Écrire sous `/etc/nixos` / `glf-switch` sans ordre
 - Push GitHub sans accord

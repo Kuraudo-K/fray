@@ -1,6 +1,4 @@
-# ┌─────────────────────────────────────────────────────────────┐
-# │ Fray — zram + fstrim (Nixerion perf-gaming + GLF system)    │
-# └─────────────────────────────────────────────────────────────┘
+# zram (swap compressé) + TRIM périodique des SSD
 {
   config,
   lib,
@@ -12,11 +10,11 @@ let
 in
 {
   options.fray.system.zramFstrim = {
-    enable = lib.mkEnableOption "Fray zram zstd + fstrim";
+    enable = lib.mkEnableOption "zram swap (zstd) and periodic fstrim";
     memoryPercent = lib.mkOption {
       type = lib.types.int;
       default = 30;
-      description = "zram % RAM (Nixerion 30 ; GLF 50)";
+      description = "Percent of RAM reserved for compressed zram swap";
     };
   };
 

@@ -1,7 +1,4 @@
-# ┌─────────────────────────────────────────────────────────────┐
-# │ Fray — AMD (RDNA4 / RX 9060 XT)                             │
-# │ Sources : GLF amdgpu.nix + Nixerion LACT/overdrive + rapport│
-# └─────────────────────────────────────────────────────────────┘
+# AMD GPU (RDNA4 / RX 9060 XT et cousins)
 {
   config,
   lib,
@@ -14,11 +11,11 @@ let
 in
 {
   options.fray.hardware.amd = {
-    enable = lib.mkEnableOption "Fray AMD graphics (RDNA4-ready)";
+    enable = lib.mkEnableOption "AMD graphics stack (Vulkan, Mesa, initrd)";
     overdrive = lib.mkOption {
       type = lib.types.bool;
       default = true;
-      description = "hardware.amdgpu.overdrive (LACT / fréquences) — Nixerion";
+      description = "Allow GPU frequency/fan tuning (LACT / amdgpu overdrive)";
     };
   };
 

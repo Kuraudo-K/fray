@@ -1,7 +1,4 @@
-# ┌─────────────────────────────────────────────────────────────┐
-# │ Fray — Steam (adapté GLF gaming/steam.nix)                  │
-# │ OBS_VKCAPTURE, HOST_LC_ALL, gamescope-wsi, capSysNice=false │
-# └─────────────────────────────────────────────────────────────┘
+# Steam
 {
   config,
   lib,
@@ -15,6 +12,7 @@ let
   fraySteam = pkgs.steam.override {
     extraEnv = {
       OBS_VKCAPTURE = "1";
+      # Proton utilise la locale hôte / Proton uses host locale
       HOST_LC_ALL = config.i18n.defaultLocale;
     };
     extraPkgs =
@@ -26,14 +24,15 @@ let
 in
 {
   options.fray.gaming.steam = {
-    enable = lib.mkEnableOption "Fray Steam";
+    enable = lib.mkEnableOption "Steam client and steam-hardware";
   };
 
   config = lib.mkIf cfg.enable {
     hardware.steam-hardware.enable = true;
     environment.systemPackages = [ pkgs.gamescope-wsi ];
 
-    # false : évite setuid bwrap / pressure-vessel (GLF) — pas true (Nixerion)
+    # capSysNice=false évite un bwrap setuid qui casse pressure-vessel
+    # capSysNice=false avoids setuid bwrap that breaks pressure-vessel
     programs.gamescope = {
       enable = true;
       capSysNice = false;

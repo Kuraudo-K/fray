@@ -1,8 +1,5 @@
-# ┌─────────────────────────────────────────────────────────────┐
-# │ Fray — Proton-GE (+ CachyOS si dispo)                       │
-# │ Sources : GLF compatibility.nix + CachyOS proton            │
-# │ Uniquement extraCompatPackages (pas systemPackages)         │
-# └─────────────────────────────────────────────────────────────┘
+# Proton-GE (et Proton-CachyOS si le paquet existe)
+# Seulement via Steam extraCompatPackages — pas en systemPackages
 {
   config,
   lib,
@@ -16,7 +13,7 @@ let
 in
 {
   options.fray.gaming.proton = {
-    enable = lib.mkEnableOption "Fray Proton-GE / CachyOS compat tools";
+    enable = lib.mkEnableOption "Proton-GE compatibility tools for Steam";
   };
 
   config = lib.mkIf cfg.enable {

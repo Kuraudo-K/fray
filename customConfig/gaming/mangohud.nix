@@ -1,6 +1,4 @@
-# ┌─────────────────────────────────────────────────────────────┐
-# │ Fray — MangoHud (paquet ; pas programs.mangohud partout)    │
-# └─────────────────────────────────────────────────────────────┘
+# MangoHud (+ GOverlay)
 {
   config,
   lib,
@@ -13,7 +11,7 @@ let
 in
 {
   options.fray.gaming.mangohud = {
-    enable = lib.mkEnableOption "Fray MangoHud";
+    enable = lib.mkEnableOption "MangoHud performance overlay";
   };
 
   config = lib.mkIf cfg.enable {

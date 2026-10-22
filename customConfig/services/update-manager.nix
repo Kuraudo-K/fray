@@ -1,7 +1,5 @@
-# ┌─────────────────────────────────────────────────────────────┐
-# │ Fray — update manager (CLI)                                 │
-# │ Délègue glf-update sur hôte ; refuse rebuild hôte depuis VM │
-# └─────────────────────────────────────────────────────────────┘
+# Mise à jour système (CLI)
+# Sur hôte GLF : délègue à glf-update ; sinon refuse un rebuild hôte
 {
   config,
   lib,
@@ -21,8 +19,6 @@ let
     text = ''
       #!/usr/bin/env bash
       set -euo pipefail
-      # français / English
-      # Sur hôte GLF : déléguer / On GLF host: delegate
       if [ -x /run/current-system/sw/bin/glf-update ]; then
         exec /run/current-system/sw/bin/glf-update "$@"
       fi
@@ -42,7 +38,7 @@ let
 in
 {
   options.fray.services.updateManager = {
-    enable = lib.mkEnableOption "Fray update manager CLI";
+    enable = lib.mkEnableOption "fray-update CLI (delegates or refuses host rebuild)";
   };
 
   config = lib.mkIf cfg.enable {

@@ -1,6 +1,5 @@
-//! Fray DE switcher — GNOME+PaperWM ↔ Niri+Noctalia
-//! Persiste les customs par DE sous ~/.local/share/fray/de-profiles/
-//! Persists per-DE customs under ~/.local/share/fray/de-profiles/
+//! fray-de-switch — bascule GNOME ↔ Niri avec profils persistants
+//! Profiles live under ~/.local/share/fray/de-profiles/
 
 use clap::{Parser, Subcommand, ValueEnum};
 use serde::{Deserialize, Serialize};
