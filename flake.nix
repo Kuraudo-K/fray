@@ -47,6 +47,12 @@
 
       frayOverlay = final: prev: {
         faugus-launcher = final.callPackage "${faugus-launcher}/default.nix" { };
+        # nixpkgs khal 0.14.1 : sortie « man » absente → casse system-path
+        khal = prev.khal.overrideAttrs (old: {
+          postInstall = (old.postInstall or "") + ''
+            mkdir -p "$man/share/man"
+          '';
+        });
       };
 
       mkNixos =
