@@ -535,31 +535,39 @@ def run():
     except Exception:
         pass
 
-    # Sécuriser chemins nix / tmp
+    # Sécuriser chemins nix / tmp (évite « Path /tmp is world-writable »)
     status = _("Installing Fray")
     libcalamares.job.setprogress(INSTALL_PROGRESS_START)
 
     try:
-        subprocess.check_output(
-            ["pkexec", "chmod", "755", root_mount_point],
-            stderr=subprocess.STDOUT,
+        libcalamares.utils.host_env_process_output(
+            ["chmod", "0755", root_mount_point], None
         )
-    except subprocess.CalledProcessError as e:
+        libcalamares.utils.host_env_process_output(
+            ["chown", "root:root", root_mount_point], None
+        )
+    except Exception as e:
         libcalamares.utils.warning(
-            "Failed to set permissions on {}: {}".format(root_mount_point, e.output)
+            "Failed to set permissions on {}: {}".format(root_mount_point, e)
         )
 
     secure_tmpdir = os.path.join(root_mount_point, "var/tmp/nix-installer")
+    secure_builddir = os.path.join(root_mount_point, "nix/var/nix/builds")
     for d, mode in (
         (secure_tmpdir, "0700"),
         (os.path.join(root_mount_point, "nix"), "0755"),
         (os.path.join(root_mount_point, "nix/var"), "0755"),
         (os.path.join(root_mount_point, "nix/var/nix"), "0755"),
-        (os.path.join(root_mount_point, "nix/var/nix/builds"), "0755"),
+        (secure_builddir, "0755"),
+        (os.path.join(root_mount_point, "nix/var/nix/db"), "0755"),
+        (os.path.join(root_mount_point, "nix/var/nix/profiles"), "0755"),
     ):
         try:
             libcalamares.utils.host_env_process_output(["mkdir", "-p", d], None)
             libcalamares.utils.host_env_process_output(["chmod", mode, d], None)
+            libcalamares.utils.host_env_process_output(
+                ["chown", "root:root", d], None
+            )
         except Exception as e:
             libcalamares.utils.warning("mkdir/chmod {}: {}".format(d, e))
 
@@ -581,7 +589,7 @@ def run():
             "",
             "--option",
             "build-dir",
-            "/nix/var/nix/builds",
+            secure_builddir,
             "--log-format",
             "internal-json",
         ]
