@@ -23,7 +23,7 @@ customConfig/
   desktop/mango/      # MangoWM + DankMaterialShell
   desktop/de-switch.nix
   gaming/launchers/   # Steam, Heroic, Faugus
-  gaming/             # lutris, 8bitdo (opt), gamemode…
+  gaming/             # lutris, gamemode, gamescope…
   hardware/ apps/ services/ system/ boot/
 ```
 

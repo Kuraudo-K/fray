@@ -59,7 +59,7 @@
   fray.services.inputRemapper.enable = true;
   fray.services.updateManager.enable = true;
   fray.services.autoUpdate.enable = true;
-  # 8bitdo / kdeconnect / battery-notify / lanzaboote : imports commentés (pas utiles)
+  # kdeconnect / battery-notify / lanzaboote : fichiers gardés, imports commentés
 
   # Limine/Plymouth : ISO / machine réelle, pas QEMU
   fray.boot.limine.enable = false;

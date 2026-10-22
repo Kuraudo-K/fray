@@ -32,7 +32,6 @@
     ./gaming/launchers/faugus-update.nix
     ./gaming/launchers/heroic.nix
     ./gaming/lutris.nix
-    # ./gaming/8bitdo.nix  # Wine lourd ; pas utile
     ./gaming/gamemode.nix
     ./gaming/gamescope.nix
     ./gaming/mangohud.nix

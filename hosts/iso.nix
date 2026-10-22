@@ -26,7 +26,7 @@
   fray.gaming.faugus.enable = false;
   fray.gaming.faugusUpdate.enable = false;
   fray.gaming.lutris.enable = false;
-  # 8bitdo / kdeconnect / battery-notify / lanzaboote : imports commentés
+  # kdeconnect / battery-notify / lanzaboote : fichiers gardés, imports commentés
 
   fray.hardware.amd.enable = true;
   fray.hardware.amd.overdrive = false;
