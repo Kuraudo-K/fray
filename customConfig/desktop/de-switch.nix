@@ -79,11 +79,31 @@ let
       printf '%s\n' '[User]' "Session=$session" "XSession=$session" "SystemAccount=false" > "$as_file"
     fi
     chmod 644 "$as_file"
+    # Copie durable : GNOME reecrit Session= avec le DE courant a la deconnexion.
+    mkdir -p /var/lib/fray/preferred-session
+    printf '%s\n' "$session" > "/var/lib/fray/preferred-session/$user"
+    chmod 644 "/var/lib/fray/preferred-session/$user"
     # Prefetch GDM cache if present
     if [ -d /var/lib/gdm ]; then
       rm -f "/var/lib/gdm/.cache/accountsservice/users/$user" 2>/dev/null || true
     fi
     echo "[fray-set-session] $user -> $session ($as_file)"
+  '';
+
+  fray-restore-session = pkgs.writeShellScriptBin "fray-restore-session" ''
+    set -euo pipefail
+    root=/var/lib/fray/preferred-session
+    [ -d "$root" ] || exit 0
+    for f in "$root"/*; do
+      [ -f "$f" ] || continue
+      user="$(basename "$f")"
+      session="$(tr -d '[:space:]' < "$f")"
+      case "$session" in
+        gnome|niri|plasma|mango)
+          ${fray-set-session}/bin/fray-set-session "$session" "$user" || true
+          ;;
+      esac
+    done
   '';
 
   pythonEnv = pkgs.python3.withPackages (ps: [ ps.pygobject3 ]);
@@ -148,11 +168,25 @@ in
       fray-de-switch
       fray-de-switch-gui
       fray-set-session
+      fray-restore-session
     ];
 
     # Defaut greeter initial (AccountsService ecrase apres fray-de-switch).
     # mkForce : plasma6 pose aussi defaultSession = plasma.
     services.displayManager.defaultSession = lib.mkForce "gnome";
+
+    # Restaure Session= juste avant GDM (survit a la reecriture logout GNOME).
+    systemd.services.fray-restore-session = {
+      description = "Restore Fray preferred greeter session";
+      wantedBy = [ "display-manager.service" ];
+      before = [ "display-manager.service" ];
+      after = [ "local-fs.target" "accounts-daemon.service" ];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "${fray-restore-session}/bin/fray-restore-session";
+        RemainAfterExit = true;
+      };
+    };
 
     # Chemin store + symlink profil (sudo match sur chemin resolu ou invoque)
     security.sudo.extraRules = [
