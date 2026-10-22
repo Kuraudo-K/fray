@@ -15,8 +15,10 @@ Docs : `DOC/` → `../DOC` (copie locale). Ancienne version : `../fray-old-archi
 ```
 flake.nix / flake.lock
 hosts/vm.nix          # machine de test (4 DE)
-hosts/iso.nix         # ISO optionnelle (légère)
+hosts/iso.nix         # ISO Calamares (logo 10)
+iso-cfg/              # branding Calamares Fray
 customConfig/
+  branding/           # logo 10-seal-fray, wallpaper, Plymouth
   desktop/gnome/      # PaperWM
   desktop/niri/       # Noctalia
   desktop/kde/        # Plasma 6
@@ -55,7 +57,11 @@ nix build .#vm -L
 |---|---|
 | `fray-update` / `fray-update --switch` | CLI update unifiée |
 | `fray-apply` | Éditeur / apply Python (`customConfig/apps/fray-apply/`) |
+| `fray-wallpaper` | Fonds Fray (Rust hexa) |
 | Catalogue | `customConfig/catalog/` → `/etc/fray/catalog.json` |
+
+Logo officiel : **10-seal-fray** — voir `docs/branding-logo10.md`.  
+ISO : `nix build .#iso -o result-iso` — voir `docs/iso-calamares.md`.
 
 Rust update-manager GLF : **pas encore** (apply = Python pour l’instant).
 
