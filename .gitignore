@@ -6,3 +6,6 @@ result-*
 
 __pycache__/
 *.pyc
+
+iso/
+result-iso
