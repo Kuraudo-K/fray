@@ -1,0 +1,20 @@
+[package]
+name = "fray-update-manager"
+version = "1.0.0"
+edition = "2021"
+description = "GUI pour gérer les mises à jour Fray"
+
+[lib]
+name = "fray_update_manager"
+path = "src/lib.rs"
+
+[[bin]]
+name = "fray-update-manager"
+path = "src/main.rs"
+
+[dependencies]
+gdk = "0.18"
+gio = "0.18"
+glib = "0.18"
+gtk = { version = "0.18", features = ["v3_24"] }
+regex = "1"

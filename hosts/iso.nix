@@ -16,7 +16,10 @@
   ];
 
   fray.branding.enable = true;
+  # Live : dialogue langue (autologin saute GDM)
   fray.system.loginLanguage.enable = true;
+  fray.system.loginLanguage.firstSessionDialog = true;
+  fray.system.loginLanguage.unsetSessionLang = true;
 
   fray.desktop.gnomePaperwm.enable = true;
   fray.desktop.gnomeExtensions.enable = false;
@@ -51,6 +54,7 @@
   fray.apps.fhsBwrap.enable = false;
   fray.apps.obs.enable = false;
   fray.apps.disk.enable = true;
+  fray.apps.firewall.enable = true;
   fray.apps.wallpaper.enable = true;
   fray.apps.discord.enable = false;
   fray.apps.matrix.enable = false;
@@ -61,7 +65,9 @@
 
   fray.services.inputRemapper.enable = false;
   fray.services.updateManager.enable = true;
-  fray.services.autoUpdate.enable = false;
+  fray.services.updateManager.gui = true;
+  # Live ISO : pas de maj auto en arriere-plan
+  fray.services.updateManagerGui.autoUpgrade = false;
 
   # Live ISO : pas de Limine (conflit isoImage) ; Plymouth Fray OK
   fray.boot.limine.enable = false;

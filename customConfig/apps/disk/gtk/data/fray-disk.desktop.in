@@ -1,0 +1,14 @@
+[Desktop Entry]
+Name=Fray Disk
+GenericName=Disk Manager
+X-GNOME-FullName=Fray Disk
+Comment=Manage disks and Nix fileSystems on Fray / NixOS
+Comment[fr]=Disques, montages et génération Nix (Fray)
+Exec=fray-disk
+Icon=fray-disk
+Terminal=false
+Type=Application
+Categories=GNOME;System;Filesystem;
+Keywords=Disk;fray;nix;mount;
+StartupNotify=true
+StartupWMClass=org.fray.disk

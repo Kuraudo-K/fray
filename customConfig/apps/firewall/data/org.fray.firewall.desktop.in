@@ -1,0 +1,25 @@
+[Desktop Entry]
+Name=Fray Firewall
+Comment=Manage firewall rules on NixOS / Fray
+Comment[fr]=Gerez les regles de pare-feu sous NixOS / Fray
+Comment[br]=Mereit reolennou moger-dan war NixOS / Fray
+Comment[de]=Firewall-Regeln unter NixOS / Fray verwalten
+Comment[es]=Gestione las reglas de cortafuegos en NixOS / Fray
+Comment[it]=Gestisci le regole del firewall su NixOS / Fray
+Comment[nl]=Beheer firewallregels op NixOS / Fray
+Comment[pt]=Gerencie as regras de firewall no NixOS / Fray
+Comment[wa]=Manaedjî les regues do morea d' feu so NixOS / Fray
+Exec=fray-firewall
+Icon=org.fray.firewall
+Terminal=false
+Type=Application
+Categories=System;Settings;Security;
+Keywords=firewall;security;network;nix;nixos;pare-feu;
+Keywords[de]=firewall;sicherheit;netzwerk;nix;nixos;
+Keywords[es]=cortafuegos;seguridad;red;nix;nixos;
+Keywords[it]=firewall;sicurezza;rete;nix;nixos;
+Keywords[pt]=firewall;seguranca;rede;nix;nixos;
+Keywords[br]=moger-dan;surentez;rouedad;nix;nixos;
+Keywords[nl]=firewall;beveiliging;netwerk;nix;nixos;
+Keywords[wa]=morea;feu;surete;rantoele;nix;nixos;
+StartupNotify=true

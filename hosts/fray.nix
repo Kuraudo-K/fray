@@ -45,12 +45,16 @@
   fray.system.audio.enable = true;
   fray.system.firmware.enable = true;
   fray.system.nixCompat.enable = true;
+  # Locales OK ; pas de dialogue post-install (Calamares a deja choisi)
   fray.system.loginLanguage.enable = true;
+  fray.system.loginLanguage.firstSessionDialog = false;
+  fray.system.loginLanguage.unsetSessionLang = false;
 
   fray.apps.flatpak.enable = false;
   fray.apps.fhsBwrap.enable = false;
   fray.apps.obs.enable = false;
   fray.apps.disk.enable = true;
+  fray.apps.firewall.enable = true;
   fray.apps.wallpaper.enable = true;
   fray.apps.discord.enable = false;
   fray.apps.matrix.enable = false;
@@ -61,7 +65,8 @@
 
   fray.services.inputRemapper.enable = false;
   fray.services.updateManager.enable = true;
-  fray.services.autoUpdate.enable = false;
+  fray.services.updateManager.gui = true;
+  # Auto-maj pilotee par updateManagerGui (defaut ON, comme GLF)
 
   fray.boot.limine.enable = false;
   fray.boot.plymouth.enable = true;

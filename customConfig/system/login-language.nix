@@ -1,6 +1,6 @@
-# Sélecteur de langue session (live ISO + système installé)
-# Live : autologin GDM saute l'écran de login → dialogue au 1er démarrage.
-# Installé : locales + LANG null pour que le menu langue GDM / AccountsService s'applique.
+# Selecteur de langue session
+# Live ISO : dialogue au 1er demarrage (autologin saute le menu GDM).
+# Systeme installe (Calamares) : PAS de dialogue - respecte i18n.defaultLocale.
 {
   config,
   lib,
@@ -34,23 +34,38 @@ let
       marker="''${XDG_CONFIG_HOME:-$HOME/.config}/fray/lang-selected"
       mkdir -p "$(dirname "$marker")"
 
-      if [[ "''${1:-}" != "--force" && -f "$marker" ]]; then
+      force=0
+      if [[ "''${1:-}" == "--force" ]]; then
+        force=1
+      fi
+
+      if [[ "$force" != 1 && -f "$marker" ]]; then
         exit 0
       fi
 
-      # zenity --list returns the selected column
+      # Systeme installe (Calamares) : ne jamais re-proposer (ecrase le choix install).
+      # Live ISO : /iso present ou hostname fray-iso.
+      if [[ "$force" != 1 ]]; then
+        if [[ -f /etc/calamares-generated.nix ]] \
+          || { [[ ! -d /iso ]] && [[ "$(hostname 2>/dev/null || true)" != "fray-iso" ]]; }; then
+          date -Iseconds > "$marker"
+          echo "skipped-installed" >> "$marker"
+          exit 0
+        fi
+      fi
+
       choice="$(
         zenity --list \
-          --title="Fray — langue / language" \
+          --title="Fray - langue / language" \
           --text="Choisir la langue de la session\nChoose the session language" \
           --column="Code" --column="Langue" \
           --width=420 --height=320 \
-          "fr_FR.UTF-8" "Français" \
+          "fr_FR.UTF-8" "Francais" \
           "en_US.UTF-8" "English" \
           "de_DE.UTF-8" "Deutsch" \
-          "es_ES.UTF-8" "Español" \
+          "es_ES.UTF-8" "Espanol" \
           "it_IT.UTF-8" "Italiano" \
-          "pt_BR.UTF-8" "Português (Brasil)" \
+          "pt_BR.UTF-8" "Portugues (Brasil)" \
           || true
       )"
 
@@ -69,7 +84,6 @@ let
 
       printf 'LANG=%s\n' "$choice" > "''${XDG_CONFIG_HOME:-$HOME/.config}/locale.conf"
 
-      # AccountsService : GDM / GNOME lit Language= pour la prochaine session
       if uid="$(id -u)" && [[ -n "$uid" ]]; then
         user_path="$(
           dbus-send --system --print-reply --dest=org.freedesktop.Accounts \
@@ -95,7 +109,7 @@ let
       echo "$choice" >> "$marker"
 
       zenity --info --title="Fray" --width=360 \
-        --text="Langue réglée : $choice\nClavier : $xkb\n\nReconnecte-toi (ou reboot) pour appliquer partout.\nLog out (or reboot) to apply everywhere." \
+        --text="Langue reglee : $choice\nClavier : $xkb\n\nReconnecte-toi (ou reboot) pour appliquer partout.\nLog out (or reboot) to apply everywhere." \
         || true
     '';
   };
@@ -107,7 +121,7 @@ let
       [Desktop Entry]
       Type=Application
       Name=Fray language
-      Comment=Choose session language on first login
+      Comment=Choose session language on first login (live ISO only)
       Exec=${fray-lang-select}/bin/fray-lang-select
       OnlyShowIn=GNOME;KDE;X-Cinnamon;Unity;
       X-GNOME-Autostart-enabled=true
@@ -122,24 +136,27 @@ in
     extraLocales = lib.mkOption {
       type = lib.types.listOf lib.types.str;
       default = locales;
-      description = "Locales glibc limitées (évite rebuild massif, alimente le sélecteur).";
+      description = "Locales glibc limitees (evite rebuild massif, alimente le selecteur).";
     };
 
     firstSessionDialog = lib.mkOption {
       type = lib.types.bool;
-      default = true;
-      description = "Dialogue zenity au 1er login (utile sur ISO avec autologin).";
+      default = false;
+      description = "Dialogue zenity au 1er login. True sur ISO live seulement.";
+    };
+
+    unsetSessionLang = lib.mkOption {
+      type = lib.types.bool;
+      default = false;
+      description = "Force LANG=null (menu GDM). Eviter sur systeme installe Calamares.";
     };
   };
 
   config = lib.mkIf cfg.enable {
-    # Petit set = dérivation légère ; pas "all" (rebuild énorme / OOM VM)
     i18n.extraLocales = cfg.extraLocales;
 
-    # Laisse AccountsService / ~/.config/locale.conf piloter LANG en session
-    environment.sessionVariables.LANG = lib.mkForce null;
+    environment.sessionVariables.LANG = lib.mkIf cfg.unsetSessionLang (lib.mkForce null);
 
-    # Menu disposition clavier GDM / GNOME
     services.xserver.xkb.layout = lib.mkDefault "fr,us";
     services.xserver.xkb.options = lib.mkDefault "grp:alt_shift_toggle";
 

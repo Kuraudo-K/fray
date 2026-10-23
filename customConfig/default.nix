@@ -29,6 +29,7 @@
     ./system/firmware.nix
     ./system/nix-compat.nix
     ./system/login-language.nix
+    ./system/firewall-managed.nix
 
     # gaming
     ./gaming/launchers/steam.nix
@@ -51,6 +52,7 @@
     ./apps/flatpak.nix
     ./apps/fhs-bwrap.nix
     ./apps/disk.nix
+    ./apps/firewall.nix
     ./apps/wallpaper.nix
     ./apps/discord.nix
     ./apps/matrix.nix

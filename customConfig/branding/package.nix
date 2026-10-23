@@ -35,7 +35,7 @@ stdenvNoCC.mkDerivation {
     cp logo/04gr10-charcoal-crimson.svg $out/share/fray/logo/04gr10-charcoal-crimson.svg
 
     # Icones apps Fray (distinctes du brand)
-    for app in fray-de-switch fray-disk fray-wallpaper fray-apply; do
+    for app in fray-de-switch fray-disk fray-firewall fray-wallpaper fray-apply fray-update-manager; do
       cp logo/apps/$app.svg $out/share/icons/hicolor/scalable/apps/$app.svg
       cp logo/apps/$app.svg $out/share/fray/logo/apps/$app.svg
       cp logo/apps/$app.png $out/share/fray/logo/apps/$app.png
