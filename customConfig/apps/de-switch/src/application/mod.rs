@@ -80,13 +80,11 @@ impl<'a> SwitchService<'a> {
     pub fn explain(&self) -> String {
         r#"Mécanisme / Mechanism
 =====================
-Profils : ~/.local/share/fray/de-profiles/{gnome,niri,plasma,mango}/
+Profils : ~/.local/share/fray/de-profiles/{gnome,plasma}/
 
   gnome  -> dconf, paperwm, extensions gnome-shell
-  niri   -> ~/.config/niri, ~/.config/noctalia
   plasma -> plasma*/kwin*/kdeglobals, dolphin/konsole,
            ~/.local/share/{plasma,kwin,konsole}
-  mango  -> ~/.config/mango, DankMaterialShell, quickshell
 
 switch <de> :
   1. sauve le DE courant

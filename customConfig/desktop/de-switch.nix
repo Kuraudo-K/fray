@@ -1,4 +1,4 @@
-# Switcher de bureau (Rust + GUI GTK) - GNOME / Niri / Plasma / Mango
+# Switcher de bureau (Rust + GUI GTK) - GNOME / Plasma
 # Persistance greeter : AccountsService via fray-set-session (pas seulement ~/.dmrc)
 {
   config,
@@ -24,7 +24,7 @@ let
 
   fray-de-switch = pkgs.rustPlatform.buildRustPackage {
     pname = "fray-de-switch";
-    version = "0.1.1";
+    version = "0.2.0";
     src = rustSrc;
     cargoLock.lockFile = src + /Cargo.lock;
     nativeBuildInputs = [ pkgs.makeWrapper ];
@@ -46,10 +46,14 @@ let
     set -euo pipefail
     session="''${1:-}"
     user="''${2:-}"
+    # Anciens niri/mango → gnome (DE retires)
     case "$session" in
-      gnome|niri|plasma|mango) ;;
+      niri|mango|dms) session=gnome ;;
+    esac
+    case "$session" in
+      gnome|plasma) ;;
       *)
-        echo "usage: fray-set-session <gnome|niri|plasma|mango> [user]" >&2
+        echo "usage: fray-set-session <gnome|plasma> [user]" >&2
         exit 2
         ;;
     esac
@@ -121,7 +125,7 @@ let
       user="$(basename "$f")"
       session="$(tr -d '[:space:]' < "$f")"
       case "$session" in
-        gnome|niri|plasma|mango)
+        gnome|plasma|niri|mango|dms)
           ${fray-set-session}/bin/fray-set-session "$session" "$user" || true
           ;;
       esac
@@ -132,7 +136,7 @@ let
 
   fray-de-switch-gui = pkgs.stdenv.mkDerivation {
     pname = "fray-de-switch-gui";
-    version = "0.1.1";
+    version = "0.2.0";
     dontUnpack = true;
     nativeBuildInputs = with pkgs; [
       wrapGAppsHook3
@@ -167,7 +171,7 @@ let
       cat > $out/share/applications/fray-de-switch.desktop <<'DESKTOP'
 [Desktop Entry]
 Name=Fray Switch
-Comment=Basculer GNOME / Niri / Plasma / Mango (profils persistants)
+Comment=Basculer GNOME / Plasma (profils persistants)
 Exec=fray-de-switch-gui
 Icon=fray-de-switch
 Terminal=false

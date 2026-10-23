@@ -20,9 +20,7 @@
 
   fray.desktop.gnomePaperwm.enable = true;
   fray.desktop.gnomeExtensions.enable = false;
-  fray.desktop.niriNoctalia.enable = false;
   fray.desktop.plasma.enable = false;
-  fray.desktop.mangoDms.enable = false;
   fray.desktop.deSwitch.enable = false;
 
   fray.gaming.steam.enable = false;

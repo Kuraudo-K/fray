@@ -246,7 +246,7 @@
     };
   };
 
-  # Quatre sessions Fray
+  # Deux sessions Fray
   desktops = {
     gnome = {
       label = {
@@ -254,22 +254,10 @@
         en = "GNOME + PaperWM";
       };
     };
-    niri = {
-      label = {
-        fr = "Niri + Noctalia";
-        en = "Niri + Noctalia";
-      };
-    };
     plasma = {
       label = {
         fr = "KDE Plasma 6";
         en = "KDE Plasma 6";
-      };
-    };
-    mango = {
-      label = {
-        fr = "MangoWM + DankMaterialShell";
-        en = "MangoWM + DankMaterialShell";
       };
     };
   };

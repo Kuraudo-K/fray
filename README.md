@@ -1,6 +1,6 @@
 # Fray
 
-NixOS gaming (GNOME, Niri, Plasma, Mango+DMS).
+NixOS gaming (GNOME + PaperWM, KDE Plasma 6).
 
 ## Clone
 

@@ -1,7 +1,7 @@
 # Fray - flake NixOS (gaming perso)
 # Inputs pinés dans flake.lock ; modules dans customConfig/
 {
-  description = "Fray - NixOS gaming (GNOME / Niri / Plasma / Mango+DMS)";
+  description = "Fray - NixOS gaming (GNOME / Plasma)";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
@@ -11,16 +11,6 @@
     faugus-launcher = {
       url = "git+https://framagit.org/gaming-linux-fr/glf-os/app-glf-os/faugus-launcher.git?ref=main";
       flake = false;
-    };
-
-    # MangoWM + DankMaterialShell (4e DE, reprise mona)
-    mango = {
-      url = "github:mangowm/mango";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    dms = {
-      url = "github:AvengeMedia/DankMaterialShell";
-      inputs.nixpkgs.follows = "nixpkgs";
     };
 
     # Secure Boot optionnel (alternatif Limine SB)
@@ -36,8 +26,6 @@
       nixpkgs,
       nix-flatpak,
       faugus-launcher,
-      mango,
-      dms,
       lanzaboote,
       ...
     }@inputs:
@@ -66,8 +54,6 @@
               nixpkgs.config.allowUnfree = true;
             }
             nix-flatpak.nixosModules.nix-flatpak
-            mango.nixosModules.mango
-            dms.nixosModules.dank-material-shell
             lanzaboote.nixosModules.lanzaboote
           ]
           ++ modules;

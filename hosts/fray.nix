@@ -15,13 +15,10 @@
 
   fray.branding.enable = true;
 
-  # Quatre sessions greeter (Fray Switch) — toutes installées pour que le choix
-  # survive au reboot via AccountsService (voir fray-set-session).
+  # Deux sessions : GNOME + Plasma (Fray Switch / AccountsService).
   fray.desktop.gnomePaperwm.enable = true;
   fray.desktop.gnomeExtensions.enable = true;
-  fray.desktop.niriNoctalia.enable = true;
   fray.desktop.plasma.enable = true;
-  fray.desktop.mangoDms.enable = true;
   fray.desktop.deSwitch.enable = true;
 
   # Launcher lourds : off à l'install (cache / temps). Activer avec fray-apply.

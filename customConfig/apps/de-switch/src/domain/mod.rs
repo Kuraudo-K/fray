@@ -5,18 +5,14 @@ use std::path::PathBuf;
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SessionId {
     Gnome,
-    Niri,
     Plasma,
-    Mango,
 }
 
 impl SessionId {
     pub fn as_str(self) -> &'static str {
         match self {
             Self::Gnome => "gnome",
-            Self::Niri => "niri",
             Self::Plasma => "plasma",
-            Self::Mango => "mango",
         }
     }
 
@@ -28,22 +24,20 @@ impl SessionId {
     pub fn label(self) -> &'static str {
         match self {
             Self::Gnome => "GNOME + PaperWM",
-            Self::Niri => "Niri + Noctalia",
             Self::Plasma => "KDE Plasma 6",
-            Self::Mango => "Mango + DankMaterialShell",
         }
     }
 
-    pub fn all() -> [SessionId; 4] {
-        [Self::Gnome, Self::Niri, Self::Plasma, Self::Mango]
+    pub fn all() -> [SessionId; 2] {
+        [Self::Gnome, Self::Plasma]
     }
 
     pub fn parse(s: &str) -> Option<SessionId> {
         match s.trim().to_lowercase().as_str() {
             "gnome" => Some(Self::Gnome),
-            "niri" => Some(Self::Niri),
             "plasma" => Some(Self::Plasma),
-            "mango" | "dms" => Some(Self::Mango),
+            // Anciens DE retires : bascule vers GNOME
+            "niri" | "mango" | "dms" => Some(Self::Gnome),
             _ => None,
         }
     }
@@ -53,12 +47,10 @@ impl SessionId {
         let d = desktop.to_uppercase();
         if d.contains("GNOME") {
             Some(Self::Gnome)
-        } else if d.contains("NIRI") {
-            Some(Self::Niri)
         } else if d.contains("KDE") || d.contains("PLASMA") {
             Some(Self::Plasma)
-        } else if d.contains("MANGO") {
-            Some(Self::Mango)
+        } else if d.contains("NIRI") || d.contains("MANGO") {
+            Some(Self::Gnome)
         } else {
             None
         }
@@ -87,16 +79,6 @@ impl SessionId {
                 ProfileEntry {
                     relative_live: ".local/share/gnome-shell/extensions",
                     store_name: "gnome-shell-extensions",
-                },
-            ],
-            Self::Niri => &[
-                ProfileEntry {
-                    relative_live: ".config/niri",
-                    store_name: "niri",
-                },
-                ProfileEntry {
-                    relative_live: ".config/noctalia",
-                    store_name: "noctalia",
                 },
             ],
             Self::Plasma => &[
@@ -157,20 +139,6 @@ impl SessionId {
                     store_name: "share-konsole",
                 },
             ],
-            Self::Mango => &[
-                ProfileEntry {
-                    relative_live: ".config/mango",
-                    store_name: "mango",
-                },
-                ProfileEntry {
-                    relative_live: ".config/DankMaterialShell",
-                    store_name: "dank-material-shell",
-                },
-                ProfileEntry {
-                    relative_live: ".config/quickshell",
-                    store_name: "quickshell",
-                },
-            ],
         }
     }
 
@@ -188,7 +156,7 @@ pub enum SwitchError {
 impl std::fmt::Display for SwitchError {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
-            Self::UnknownSession(s) => write!(f, "DE inconnu: {s} (gnome|niri|plasma|mango)"),
+            Self::UnknownSession(s) => write!(f, "DE inconnu: {s} (gnome|plasma)"),
             Self::Io(s) => write!(f, "{s}"),
         }
     }
@@ -206,7 +174,8 @@ mod tests {
     fn parse_sessions() {
         assert_eq!(SessionId::parse("gnome"), Some(SessionId::Gnome));
         assert_eq!(SessionId::parse("PLASMA"), Some(SessionId::Plasma));
-        assert_eq!(SessionId::parse("mango"), Some(SessionId::Mango));
+        assert_eq!(SessionId::parse("mango"), Some(SessionId::Gnome));
+        assert_eq!(SessionId::parse("niri"), Some(SessionId::Gnome));
         assert_eq!(SessionId::parse("nope"), None);
     }
 
@@ -216,14 +185,9 @@ mod tests {
             SessionId::from_xdg_desktop("GNOME:GNOME-Classic"),
             Some(SessionId::Gnome)
         );
-        assert_eq!(SessionId::from_xdg_desktop("niri"), Some(SessionId::Niri));
         assert_eq!(
             SessionId::from_xdg_desktop("KDE"),
             Some(SessionId::Plasma)
-        );
-        assert_eq!(
-            SessionId::from_xdg_desktop("mango"),
-            Some(SessionId::Mango)
         );
     }
 

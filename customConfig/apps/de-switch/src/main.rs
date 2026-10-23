@@ -9,18 +9,14 @@ use std::process::ExitCode;
 #[derive(Debug, Clone, Copy, ValueEnum)]
 enum DeCli {
     Gnome,
-    Niri,
     Plasma,
-    Mango,
 }
 
 impl From<DeCli> for SessionId {
     fn from(d: DeCli) -> Self {
         match d {
             DeCli::Gnome => SessionId::Gnome,
-            DeCli::Niri => SessionId::Niri,
             DeCli::Plasma => SessionId::Plasma,
-            DeCli::Mango => SessionId::Mango,
         }
     }
 }

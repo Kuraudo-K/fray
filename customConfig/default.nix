@@ -7,12 +7,12 @@
     # branding (charcoal-crimson, wallpapers, thème Plymouth)
     ./branding
 
-    # desktop
+    # desktop (GNOME + Plasma ; niri/mango retires)
     ./desktop/gnome/paperwm.nix
     ./desktop/gnome/extensions.nix
-    ./desktop/niri/noctalia.nix
+    # ./desktop/niri/noctalia.nix
     ./desktop/kde/plasma.nix
-    ./desktop/mango
+    # ./desktop/mango
     ./desktop/de-switch.nix
 
     # boot
