@@ -43,7 +43,7 @@ let
   # Ecrit Session= pour GDM via fichier + D-Bus AccountsService (sudo -n).
   # Le fichier seul ne suffit pas si accounts-daemon a deja la valeur en memoire.
   fray-set-session = pkgs.writeShellScriptBin "fray-set-session" ''
-    set -euo pipefail
+    set -uo pipefail
     session="''${1:-}"
     user="''${2:-}"
     # Anciens niri/mango → gnome (DE retires)
@@ -85,11 +85,11 @@ let
     else
       printf '%s\n' '[User]' "Session=$session" "XSession=$session" "SessionType=wayland" "SystemAccount=false" > "$as_file"
     fi
-    chmod 644 "$as_file"
+    chmod 644 "$as_file" || true
     # Copie durable : GNOME reecrit Session= avec le DE courant a la deconnexion.
     mkdir -p /var/lib/fray/preferred-session
     printf '%s\n' "$session" > "/var/lib/fray/preferred-session/$user"
-    chmod 644 "/var/lib/fray/preferred-session/$user"
+    chmod 644 "/var/lib/fray/preferred-session/$user" || true
     # Prefetch GDM cache if present
     if [ -d /var/lib/gdm ]; then
       rm -f "/var/lib/gdm/.cache/accountsservice/users/$user" 2>/dev/null || true
@@ -103,7 +103,7 @@ let
           --object-path /org/freedesktop/Accounts \
           --method org.freedesktop.Accounts.FindUserById "int64:$uid" \
           2>/dev/null | ${pkgs.gnused}/bin/sed -n "s/.*'\\([^']*\\)'.*/\\1/p" | head -1
-      )"
+      )" || path=""
       if [ -n "''${path:-}" ]; then
         ${pkgs.glib}/bin/gdbus call --system --dest org.freedesktop.Accounts \
           --object-path "$path" --method org.freedesktop.Accounts.User.SetSession "$session" >/dev/null 2>&1 || true
@@ -114,6 +114,7 @@ let
       fi
     fi
     echo "[fray-set-session] $user -> $session ($as_file)"
+    exit 0
   '';
 
   fray-restore-session = pkgs.writeShellScriptBin "fray-restore-session" ''
@@ -254,21 +255,35 @@ in
       };
     };
 
-    # Chemin store + symlink profil (sudo match sur chemin resolu ou invoque)
+    # wheel+users : la regle %wheel ALL (mot de passe) ne doit pas gagner
+    # sur le helper. NOPASSWD explicite + !authenticate via extraConfig.
     security.sudo.extraRules = [
       {
-        groups = [ "users" ];
+        groups = [
+          "wheel"
+          "users"
+        ];
         commands = [
           {
             command = "${fray-set-session}/bin/fray-set-session";
-            options = [ "NOPASSWD" ];
+            options = [
+              "NOPASSWD"
+              "SETENV"
+            ];
           }
           {
             command = "/run/current-system/sw/bin/fray-set-session";
-            options = [ "NOPASSWD" ];
+            options = [
+              "NOPASSWD"
+              "SETENV"
+            ];
           }
         ];
       }
     ];
+    security.sudo.extraConfig = ''
+      Defaults!${fray-set-session}/bin/fray-set-session !authenticate
+      Defaults!/run/current-system/sw/bin/fray-set-session !authenticate
+    '';
   };
 }
