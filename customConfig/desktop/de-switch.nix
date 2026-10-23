@@ -40,7 +40,8 @@ let
     };
   };
 
-  # Ecrit Session=/XSession= pour GDM (AccountsService). Appelé en sudo -n.
+  # Ecrit Session= pour GDM via fichier + D-Bus AccountsService (sudo -n).
+  # Le fichier seul ne suffit pas si accounts-daemon a deja la valeur en memoire.
   fray-set-session = pkgs.writeShellScriptBin "fray-set-session" ''
     set -euo pipefail
     session="''${1:-}"
@@ -65,18 +66,20 @@ let
     if [ -f "$as_file" ]; then
       tmp="$(mktemp)"
       ${pkgs.gawk}/bin/awk -v s="$session" '
-        BEGIN { sess=0; xsess=0 }
+        BEGIN { sess=0; xsess=0; stype=0 }
         /^Session=/ { print "Session=" s; sess=1; next }
         /^XSession=/ { print "XSession=" s; xsess=1; next }
+        /^SessionType=/ { print "SessionType=wayland"; stype=1; next }
         { print }
         END {
           if (!sess) print "Session=" s
           if (!xsess) print "XSession=" s
+          if (!stype) print "SessionType=wayland"
         }
       ' "$as_file" > "$tmp"
       mv "$tmp" "$as_file"
     else
-      printf '%s\n' '[User]' "Session=$session" "XSession=$session" "SystemAccount=false" > "$as_file"
+      printf '%s\n' '[User]' "Session=$session" "XSession=$session" "SessionType=wayland" "SystemAccount=false" > "$as_file"
     fi
     chmod 644 "$as_file"
     # Copie durable : GNOME reecrit Session= avec le DE courant a la deconnexion.
@@ -86,6 +89,25 @@ let
     # Prefetch GDM cache if present
     if [ -d /var/lib/gdm ]; then
       rm -f "/var/lib/gdm/.cache/accountsservice/users/$user" 2>/dev/null || true
+    fi
+    # D-Bus : ce que GDM lit vraiment au login (pas seulement le fichier).
+    uid="$(id -u "$user" 2>/dev/null || true)"
+    if [ -n "''${uid:-}" ] && command -v ${pkgs.glib}/bin/gdbus >/dev/null 2>&1; then
+      path="$(
+        ${pkgs.glib}/bin/gdbus call --system \
+          --dest org.freedesktop.Accounts \
+          --object-path /org/freedesktop/Accounts \
+          --method org.freedesktop.Accounts.FindUserById "int64:$uid" \
+          2>/dev/null | ${pkgs.gnused}/bin/sed -n "s/.*'\\([^']*\\)'.*/\\1/p" | head -1
+      )"
+      if [ -n "''${path:-}" ]; then
+        ${pkgs.glib}/bin/gdbus call --system --dest org.freedesktop.Accounts \
+          --object-path "$path" --method org.freedesktop.Accounts.User.SetSession "$session" >/dev/null 2>&1 || true
+        ${pkgs.glib}/bin/gdbus call --system --dest org.freedesktop.Accounts \
+          --object-path "$path" --method org.freedesktop.Accounts.User.SetXSession "$session" >/dev/null 2>&1 || true
+        ${pkgs.glib}/bin/gdbus call --system --dest org.freedesktop.Accounts \
+          --object-path "$path" --method org.freedesktop.Accounts.User.SetSessionType wayland >/dev/null 2>&1 || true
+      fi
     fi
     echo "[fray-set-session] $user -> $session ($as_file)"
   '';
@@ -171,13 +193,13 @@ in
       fray-restore-session
     ];
 
-    # Defaut greeter initial (AccountsService ecrase apres fray-de-switch).
-    # mkForce : plasma6 pose aussi defaultSession = plasma.
-    services.displayManager.defaultSession = lib.mkForce "gnome";
+    # CRITIQUE : ne PAS poser defaultSession.
+    # NixOS injecte alors `set-session <de>` dans display-manager PreStart, ce qui
+    # ecrase AccountsService a chaque boot (ignore l'historique / Fray Switch).
+    # mkForce null : annule aussi le defaultSession=plasma de plasma6.
+    services.displayManager.defaultSession = lib.mkForce null;
 
-    # Restaure Session= avant ET apres GDM :
-    # - avant : base
-    # - apres : GDM greeter peut reecrire Session=gnome au demarrage
+    # Restaure Session= avant GDM, et encore dans PreStart (apres set-session si present).
     systemd.services.fray-restore-session = {
       description = "Restore Fray preferred greeter session (pre-GDM)";
       wantedBy = [ "display-manager.service" ];
@@ -188,6 +210,11 @@ in
         ExecStart = "${fray-restore-session}/bin/fray-restore-session";
         RemainAfterExit = true;
       };
+    };
+    systemd.services.display-manager = {
+      serviceConfig.ExecStartPre = lib.mkAfter [
+        "${fray-restore-session}/bin/fray-restore-session"
+      ];
     };
     systemd.services.fray-restore-session-post = {
       description = "Restore Fray preferred greeter session (post-GDM)";
@@ -201,6 +228,25 @@ in
         Type = "oneshot";
         ExecStart = "${fray-restore-session}/bin/fray-restore-session";
         RemainAfterExit = true;
+      };
+    };
+
+    # Apres logout, GNOME reecrit Session=gnome dans AccountsService.
+    # Des qu'un fichier users/ change, on reapplique preferred-session.
+    systemd.paths.fray-session-guard = {
+      description = "Watch AccountsService for Fray session restore";
+      wantedBy = [ "multi-user.target" ];
+      pathConfig = {
+        PathModified = "/var/lib/AccountsService/users";
+        Unit = "fray-session-guard.service";
+      };
+    };
+    systemd.services.fray-session-guard = {
+      description = "Re-apply Fray preferred session after AccountsService change";
+      after = [ "accounts-daemon.service" ];
+      serviceConfig = {
+        Type = "oneshot";
+        ExecStart = "${fray-restore-session}/bin/fray-restore-session";
       };
     };
 
