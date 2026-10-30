@@ -1,4 +1,5 @@
-# GNOME + tweaks (O-Tiling est dans extensions.nix)
+# GNOME + GDM + tweaks (O-Tiling / extensions : extensions.nix)
+# Option historique fray.desktop.gnomePaperwm (nom conservé pour compat hosts).
 {
   config,
   lib,

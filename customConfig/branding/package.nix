@@ -46,12 +46,6 @@ stdenvNoCC.mkDerivation {
       done
     done
 
-    # Archive seal (reference historique)
-    if [ -f logo/10-seal-fray.png ]; then
-      cp logo/10-seal-fray.png $out/share/fray/logo/10-seal-fray.png
-      cp logo/10-seal-fray.svg $out/share/fray/logo/10-seal-fray.svg
-    fi
-
     for SIZE in 16 32 48 64 128 256 512; do
       mkdir -p $out/share/icons/hicolor/''${SIZE}x''${SIZE}/apps
       mkdir -p $out/share/icons/hicolor/''${SIZE}x''${SIZE}/emblems

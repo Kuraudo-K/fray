@@ -1,4 +1,4 @@
-# KDE Connect (utile sous Mango / Plasma / GNOME)
+# KDE Connect (Plasma / GNOME) — import commenté dans default.nix
 {
   config,
   lib,

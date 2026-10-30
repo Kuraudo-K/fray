@@ -7,12 +7,10 @@
     # branding (charcoal-crimson, wallpapers, thème Plymouth)
     ./branding
 
-    # desktop (GNOME + Plasma ; niri/mango retires)
-    ./desktop/gnome/paperwm.nix
+    # desktop (GNOME + Plasma)
+    ./desktop/gnome/gnome.nix
     ./desktop/gnome/extensions.nix
-    # ./desktop/niri/noctalia.nix
     ./desktop/kde/plasma.nix
-    # ./desktop/mango
     ./desktop/de-switch.nix
 
     # boot
@@ -60,7 +58,7 @@
     ./apps/firefox.nix
     ./apps/terminal.nix
     ./apps/base.nix
-    ./apps/fray-apply  # Fray Editor Config (Python) ; Rust update-manager pas encore
+    ./apps/fray-apply  # Fray Editor Config (Python)
 
     # catalogue (fray.features.* + /etc/fray/catalog.json)
     ./catalog
