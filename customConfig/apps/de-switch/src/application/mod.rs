@@ -82,7 +82,7 @@ impl<'a> SwitchService<'a> {
 =====================
 Profils : ~/.local/share/fray/de-profiles/{gnome,plasma}/
 
-  gnome  -> dconf, paperwm, extensions gnome-shell
+  gnome  -> dconf, o-tiling, extensions gnome-shell
   plasma -> plasma*/kwin*/kdeglobals, dolphin/konsole,
            ~/.local/share/{plasma,kwin,konsole}
 

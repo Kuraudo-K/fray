@@ -1,4 +1,4 @@
-# GNOME + tweaks (PaperWM est dans extensions.nix)
+# GNOME + tweaks (O-Tiling est dans extensions.nix)
 {
   config,
   lib,
@@ -11,7 +11,7 @@ let
 in
 {
   options.fray.desktop.gnomePaperwm = {
-    enable = lib.mkEnableOption "GNOME desktop (use gnomeExtensions for PaperWM and friends)";
+    enable = lib.mkEnableOption "GNOME desktop (use gnomeExtensions for O-Tiling and friends)";
   };
 
   config = lib.mkIf cfg.enable {

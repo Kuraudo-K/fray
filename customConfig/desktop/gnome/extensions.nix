@@ -18,7 +18,7 @@ let
     brightness-control-using-ddcutil
     caffeine
     dash-to-dock
-    paperwm
+    o-tiling
     quick-settings-audio-panel
     vitals
   ];

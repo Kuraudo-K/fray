@@ -250,8 +250,8 @@
   desktops = {
     gnome = {
       label = {
-        fr = "GNOME + PaperWM";
-        en = "GNOME + PaperWM";
+        fr = "GNOME + O-Tiling";
+        en = "GNOME + O-Tiling";
       };
     };
     plasma = {

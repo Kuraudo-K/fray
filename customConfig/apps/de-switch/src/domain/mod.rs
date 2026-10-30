@@ -23,7 +23,7 @@ impl SessionId {
 
     pub fn label(self) -> &'static str {
         match self {
-            Self::Gnome => "GNOME + PaperWM",
+            Self::Gnome => "GNOME + O-Tiling",
             Self::Plasma => "KDE Plasma 6",
         }
     }
@@ -73,8 +73,8 @@ impl SessionId {
                     store_name: "dconf",
                 },
                 ProfileEntry {
-                    relative_live: ".config/paperwm",
-                    store_name: "paperwm",
+                    relative_live: ".config/o-tiling",
+                    store_name: "o-tiling",
                 },
                 ProfileEntry {
                     relative_live: ".local/share/gnome-shell/extensions",
@@ -192,12 +192,12 @@ mod tests {
     }
 
     #[test]
-    fn gnome_has_paperwm_entry() {
+    fn gnome_has_o_tiling_entry() {
         let names: Vec<_> = SessionId::Gnome
             .profile_entries()
             .iter()
             .map(|e| e.store_name)
             .collect();
-        assert!(names.contains(&"paperwm"));
+        assert!(names.contains(&"o-tiling"));
     }
 }
